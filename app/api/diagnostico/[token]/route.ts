@@ -21,7 +21,15 @@ export function criarHandlerDiagnostico(d: Deps) {
     switch (statusEfetivo(s, d.agora())) {
       case 'pronto': {
         if (!s.diagnosticoPdfS3Key) return resposta({ erro: 'indisponível' }, 425)
-        const url = await d.assinar(s.diagnosticoPdfS3Key)
+        let url: string
+        try {
+          url = await d.assinar(s.diagnosticoPdfS3Key)
+        } catch (e) {
+          // BUCKET_NAME ausente ou falha ao assinar: responde com os mesmos cabeçalhos
+          // (no-store/noindex) em vez de deixar escapar um 500 genérico do Next.
+          console.error('[diagnostico] falha ao assinar a URL do PDF', { erro: String(e) })
+          return resposta({ erro: 'serviço de diagnóstico indisponível' }, 503)
+        }
         return new NextResponse(null, { status: 302, headers: { ...CABECALHOS, Location: url } })
       }
       case 'pendente': case 'erro': return resposta({ erro: 'ainda não está pronto, tente em instantes' }, 425)

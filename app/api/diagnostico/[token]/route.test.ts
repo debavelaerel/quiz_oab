@@ -36,6 +36,23 @@ describe('GET /api/diagnostico/[token]', () => {
     const d = await com('desligado')
     expect((await chama(d.repo as never, d.token)).status).toBe(503)
   })
+  it('assinar rejeitando (BUCKET_NAME ausente, erro de assinatura): 503 com no-store/noindex', async () => {
+    const { repo, token } = await com('pronto', { diagnosticoPdfS3Key: 'diagnosticos/a.pdf' })
+    const r = await criarHandlerDiagnostico({ repo: repo as never, assinar: async () => { throw new Error('sem bucket') }, agora: () => new Date() })(
+      new Request('http://x'), { params: Promise.resolve({ token }) })
+    expect(r.status).toBe(503)
+    expect(await r.json()).toEqual({ erro: 'serviço de diagnóstico indisponível' })
+    expect(r.headers.get('Cache-Control')).toContain('no-store')
+    expect(r.headers.get('X-Robots-Tag')).toContain('noindex')
+  })
+  it('pendente velho (>10 min) é tratado como erro: 425', async () => {
+    const { repo, token } = await com('pendente', { diagnosticoSolicitadoEm: '2026-09-30T12:00:00.000Z' })
+    const agora = () => new Date('2026-09-30T12:11:00.000Z')
+    const r = await criarHandlerDiagnostico({ repo: repo as never, assinar: async (k: string) => k, agora })(
+      new Request('http://x'), { params: Promise.resolve({ token }) })
+    expect(r.status).toBe(425)
+    expect(await r.json()).toEqual({ erro: 'ainda não está pronto, tente em instantes' })
+  })
   it('token inexistente ou malformado: 404', async () => {
     const repo = criarMemorySessionRepo()
     expect((await chama(repo as never, 'nao-e-uuid')).status).toBe(404)
