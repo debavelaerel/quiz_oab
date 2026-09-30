@@ -30,6 +30,7 @@ export function useQuizSession() {
   const [teste, setTeste] = useState<string[]>([])
   // Fonte da verdade síncrona (o setState é assíncrono e os handlers precisam do valor novo na hora).
   const r = useRef({ token: '', seq: 0, A: {} as Resp, teste: [] as string[], hoje: '', iniciado: false })
+  const origem = useRef<{ utm?: Utm; hoje_override?: string }>({})
 
   const aplicar = useCallback((novoA: Resp, novoTeste: string[]) => {
     const s = r.current
@@ -50,9 +51,10 @@ export function useQuizSession() {
       source: qs.get('utm_source'), medium: qs.get('utm_medium'), campaign: qs.get('utm_campaign'),
       content: qs.get('utm_content'), term: qs.get('utm_term'),
     }
+    origem.current = { utm, hoje_override: qs.get('hoje') ?? undefined }
     const ctl = new AbortController()
     const t = setTimeout(() => ctl.abort(), TIMEOUT_START_MS)
-    api.start({ session_token: ler(), utm, hoje_override: qs.get('hoje') ?? undefined }, ctl.signal)
+    api.start({ session_token: ler(), ...origem.current }, ctl.signal)
       .then((res) => {
         s.token = res.session_token; s.seq = Math.max(s.seq, res.seq); s.hoje = res.hoje
         guardar(res.session_token)
@@ -81,8 +83,16 @@ export function useQuizSession() {
   const responderTeste = useCallback((i: number, letra: string) => { aplicar(r.current.A, comLetra(r.current.teste, i, letra)) }, [aplicar])
   const apagarTeste = useCallback((i: number) => { aplicar(r.current.A, semLetra(r.current.teste, i)) }, [aplicar])
 
+  /** Sessão perdida (404 no finish): abre outra, com as mesmas UTMs, e devolve o token novo. */
+  const novaSessao = useCallback(async (): Promise<string> => {
+    const res = await api.start(origem.current)
+    r.current.token = res.session_token; r.current.seq = res.seq
+    guardar(res.session_token)
+    return res.session_token
+  }, [])
+
   return {
-    pronto, hoje, A, teste,
+    pronto, hoje, A, teste, novaSessao,
     token: () => r.current.token,
     snapshot: () => ({ respostas: r.current.A, teste: r.current.teste, seq: r.current.seq }),
     responder, apagar, responderTeste, apagarTeste,
