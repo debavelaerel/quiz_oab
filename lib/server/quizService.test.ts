@@ -47,9 +47,34 @@ describe('iniciarSessao', () => {
     const r = await iniciarSessao(repo, { sessionToken: a.sessionToken, utm: UTM, hoje: HOJE })
     expect(r.retomada).toBe(false)
   })
+  it('NÃO retoma sessão concluída', async () => {
+    const a = await nova()
+    await concluirSessao(repo, { sessionToken: a.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true })
+    const r = await iniciarSessao(repo, { sessionToken: a.sessionToken, utm: UTM, hoje: HOJE })
+    expect(r.retomada).toBe(false)
+    expect(r.sessao.id).not.toBe(a.id)
+  })
 })
 
 describe('registrarSnapshot', () => {
+  it('422 para seq fora do intervalo int4', async () => {
+    const s = await nova()
+    for (const seq of [2 ** 31, 1e300]) {
+      await expect(registrarSnapshot(repo, { sessionToken: s.sessionToken, seq, respostas: {}, teste: [] })).rejects.toBeInstanceOf(EntradaInvalidaError)
+    }
+  })
+  it('perdeu a corrida para o finish: salvarSnapshot não grava e vira 409', async () => {
+    const s = await nova()
+    await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true })
+    // Simula a leitura feita antes do finish: buscarPorToken devolve a linha ainda em andamento na 1ª chamada.
+    let n = 0
+    const real = repo.buscarPorToken.bind(repo)
+    const corrida = Object.assign(Object.create(repo), {
+      buscarPorToken: async (t: string) => (n++ === 0 ? { ...(await real(t))!, status: 'em_andamento' as const } : real(t)),
+    })
+    await expect(registrarSnapshot(corrida, { sessionToken: s.sessionToken, seq: 99, respostas: { situacao: 'formado' }, teste: [] })).rejects.toBeInstanceOf(SessaoConcluidaError)
+    expect((await repo.buscarPorToken(s.sessionToken))!.respostas.horas).toBe('h3')
+  })
   it('grava e calcula a etapa atual', async () => {
     const s = await nova()
     const r = await registrarSnapshot(repo, { sessionToken: s.sessionToken, seq: 1, respostas: { situacao: 'formado' }, teste: [] })
@@ -129,6 +154,11 @@ describe('concluirSessao', () => {
     const s = await nova()
     await expect(concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato, consentimento: true })).rejects.toBeInstanceOf(EntradaInvalidaError)
   })
+  it.each([['null', null], ['undefined', undefined], ['string', 'x']])('422 com contato %s e nada é concluído', async (_n, contato) => {
+    const s = await nova()
+    await expect(concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: contato as never, consentimento: true })).rejects.toBeInstanceOf(EntradaInvalidaError)
+    expect((await repo.buscarPorToken(s.sessionToken))!.status).toBe('em_andamento')
+  })
   it('422 sem consentimento, com teste incompleto ou respostas incompletas', async () => {
     const s = await nova()
     const base = { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true }
@@ -169,7 +199,7 @@ describe('obterResultado', () => {
   it('expõe o link do PDF só quando pronto', async () => {
     const s = await nova()
     const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true })
-    if (sessao.diagnosticoStatus !== 'pendente') return
+    expect(sessao.diagnosticoStatus).toBe('pendente')
     expect((await obterResultado(repo, s.sessionToken)).diagnostico.url).toBeNull()
     await repo.atualizar(sessao.id, { diagnosticoStatus: 'pronto', diagnosticoPdfS3Key: 'k' })
     expect((await obterResultado(repo, s.sessionToken)).diagnostico.url).toBe(`/api/diagnostico/${sessao.diagnosticoToken}`)

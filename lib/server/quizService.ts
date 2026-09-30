@@ -1,6 +1,6 @@
 import { montarCodigo } from '@/lib/oab/codigo'
 import {
-  completo, etapaAtual, L, RespostaInvalidaError, sanear, saida, validarTeste, type Resp,
+  completo, etapaAtual, L, RespostaInvalidaError, sanear, saida, validarTeste,
 } from '@/lib/oab/fluxo'
 import { emailValido, nomeValido, whatsappValido } from '@/lib/validacao'
 import { normalizeEmail, normalizeWhatsapp } from '@/lib/normalize'
@@ -39,7 +39,7 @@ export async function registrarSnapshot(
   const s = await repo.buscarPorToken(p.sessionToken)
   if (!s) throw new SessaoInvalidaError()
   if (s.status === 'concluido') throw new SessaoConcluidaError()
-  if (!Number.isInteger(p.seq) || p.seq < 1) throw new EntradaInvalidaError('seq inválido', ['seq'])
+  if (!Number.isInteger(p.seq) || p.seq < 1 || p.seq > 2_147_483_647) throw new EntradaInvalidaError('seq inválido', ['seq'])
 
   const respostas = comoEntradaInvalida(() => sanear(p.respostas, s.hoje))
   const saiu = saida(respostas, s.hoje)
@@ -58,6 +58,7 @@ export async function registrarSnapshot(
 export type Contato = { nome_completo: unknown; email: unknown; whatsapp: unknown }
 
 function validarContato(c: Contato) {
+  if (!c || typeof c !== 'object') throw new EntradaInvalidaError('contato inválido', ['nome_completo', 'email', 'whatsapp'])
   const erros: string[] = []
   const nome = typeof c.nome_completo === 'string' ? c.nome_completo.trim() : ''
   const email = typeof c.email === 'string' ? c.email.trim() : ''
