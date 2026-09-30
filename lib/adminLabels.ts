@@ -1,0 +1,53 @@
+// Rótulos legíveis para o painel administrativo. As respostas vêm direto de
+// data.json (mesma fonte do quiz), então não há texto duplicado pra manter.
+import data from './oab/data.json'
+import type { DiagnosticoStatus, StatusSessao } from './server/types'
+
+type Pergunta = { titulo: string; opcoes: [string, string, string?][] }
+const PERGUNTAS = data.perguntas as unknown as Record<string, Pergunta>
+const VAZIO = '—'
+
+export const ROTULO_TIPO: Record<string, string> = {
+  ok: 'Turma no ritmo',
+  acima: 'Turma acima do ritmo',
+  sem_turma: 'Sem turma aberta',
+  sem_prova: 'Sem prova possível',
+  f2: '2ª fase',
+  cedo: 'Cedo demais',
+}
+
+export const ROTULO_DIAGNOSTICO: Record<DiagnosticoStatus, string> = {
+  nao_se_aplica: 'Não se aplica',
+  pendente: 'Gerando…',
+  pronto: 'Pronto',
+  erro: 'Erro',
+  desligado: 'Desligado',
+}
+
+export const ROTULO_STATUS: Record<StatusSessao, string> = {
+  em_andamento: 'Em andamento',
+  concluido: 'Concluído',
+  saiu: 'Saiu',
+}
+
+export const EXAMES = (data.exames as { id: string; nome: string }[]).map((e) => ({ id: e.id, nome: e.nome }))
+
+export const tituloPergunta = (campo: string): string => PERGUNTAS[campo]?.titulo ?? campo
+
+export function rotuloResposta(campo: string, valor: string | null | undefined): string {
+  if (valor === null || valor === undefined || valor === '') return VAZIO
+  const opcoes = PERGUNTAS[campo]?.opcoes
+  if (!opcoes) return valor
+  return valor
+    .split('+')
+    .map((v) => opcoes.find((o) => o[0] === v)?.[1] ?? v)
+    .join('; ')
+}
+
+export const rotuloTeste = (teste: string[] | null | undefined): string => (teste?.length ? teste.join(' ') : VAZIO)
+export const rotuloTipo = (tipo: string | null | undefined): string => (tipo ? (ROTULO_TIPO[tipo] ?? tipo) : VAZIO)
+export const rotuloDiagnostico = (s: DiagnosticoStatus | null | undefined): string => (s ? ROTULO_DIAGNOSTICO[s] ?? s : VAZIO)
+export const rotuloStatus = (s: StatusSessao | null | undefined): string => (s ? ROTULO_STATUS[s] ?? s : VAZIO)
+export const rotuloExame = (e: string | null | undefined): string =>
+  e ? (EXAMES.find((x) => x.id === e)?.nome ?? `OAB ${e}`) : VAZIO
+export const rotuloTurma = (dias: number | null | undefined): string => (dias ? `Turma de ${dias} dias` : VAZIO)
