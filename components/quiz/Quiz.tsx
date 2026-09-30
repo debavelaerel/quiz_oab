@@ -1,6 +1,7 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { proxima, totalPassos, type Campo, type Resp } from '@/lib/oab/fluxo'
+import { Avanco } from './avanco'
 import { P, QTD_TESTE } from './copy'
 import {
   ehPergunta, indicePergunta, indiceTeste, irPara, navInicial, podeVoltar, progresso, telaAtual, voltar,
@@ -22,16 +23,19 @@ export function Quiz() {
   const s = useQuizSession()
   const [vista, setVista] = useState<Vista>({ nav: navInicial, A: {} })
   const [querComecar, setQuerComecar] = useState(false)
-  const avancando = useRef(false)
+  const avanco = useRef(new Avanco()).current
   const larguraBarra = useRef(0)
   const tela = telaAtual(vista.nav)
   const { hoje } = s
 
   const ir = useCallback((t: Tela, A: Resp) => {
-    avancando.current = false
     setVista((v) => ({ nav: irPara(v.nav, t), A }))
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
+
+  // Tela nova: libera o próximo avanço. Desmontar: descarta o avanço adiado.
+  useEffect(() => { avanco.liberar() }, [vista.nav.hist.length, avanco])
+  useEffect(() => () => avanco.cancelar(), [avanco])
 
   // A data vem do servidor: o botão da intro espera o /start responder (ou falhar).
   useEffect(() => {
@@ -41,7 +45,7 @@ export function Quiz() {
   const onVoltar = () => {
     const { nav, saindo } = voltar(vista.nav)
     if (!saindo) return
-    avancando.current = false
+    avanco.cancelar() // senão o avanço adiado (160 ms) navegaria com as respostas de antes do "voltar"
     let A = s.A
     if (ehPergunta(saindo)) A = s.apagar(saindo)
     else if (indiceTeste(saindo) >= 0) s.apagarTeste(indiceTeste(saindo))
@@ -50,17 +54,18 @@ export function Quiz() {
   }
 
   const escolher = (k: Campo, v: string) => {
-    if (avancando.current) return
-    avancando.current = true
+    if (!avanco.livre) return
     const A = s.responder(k, v)
     track('quiz_answer', { pergunta: k, resposta: v })
-    setTimeout(() => ir(proxima(k, A, hoje), A), ATRASO_MS)
+    avanco.agendar(() => ir(proxima(k, A, hoje), A), ATRASO_MS)
   }
 
   const confirmar = (k: Campo, v: string) => {
-    const A = s.responder(k, v)
-    track('quiz_answer', { pergunta: k, resposta: v })
-    ir(proxima(k, A, hoje), A)
+    avanco.agendar(() => {
+      const A = s.responder(k, v)
+      track('quiz_answer', { pergunta: k, resposta: v })
+      ir(proxima(k, A, hoje), A)
+    })
   }
 
   const pct = progresso(tela, vista.A, hoje, QTD_TESTE)
@@ -81,7 +86,7 @@ export function Quiz() {
 
   function renderTela() {
     if (tela === 'intro') {
-      return <Intro onComecar={() => { track('quiz_start'); setQuerComecar(true) }} />
+      return <Intro esperando={querComecar} onComecar={() => { if (querComecar) return; track('quiz_start'); setQuerComecar(true) }} />
     }
     if (ehPergunta(tela)) {
       const props = { k: tela, A: vista.A, hoje, idx: indicePergunta(tela, vista.A, hoje), total: totalPassos(vista.A, hoje) }

@@ -1,6 +1,6 @@
 import { EXAMES } from '../copy'
 
-export function Intro({ onComecar }: { onComecar: () => void }) {
+export function Intro({ onComecar, esperando = false }: { onComecar: () => void; esperando?: boolean }) {
   return (
     <section className="screen">
       <div className="hero">
@@ -18,7 +18,7 @@ export function Intro({ onComecar }: { onComecar: () => void }) {
         <div className="factor"><i>2</i><span><b>O seu tempo por dia.</b> Cada turma do VDE tem um ritmo diferente.</span></div>
         <div className="factor"><i>3</i><span><b>O seu nível hoje.</b> Toda turma do VDE começa do zero, e o diagnóstico mostra o que ajustar no seu jeito de estudar.</span></div>
       </div>
-      <button className="cta" onClick={onComecar}>Descobrir a minha OAB</button>
+      <button className="cta" disabled={esperando} onClick={onComecar}>Descobrir a minha OAB</button>
       <p className="small">Sem cadastro. No fim, você recebe o diagnóstico completo pelo WhatsApp.</p>
     </section>
   )

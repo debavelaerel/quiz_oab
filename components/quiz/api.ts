@@ -29,7 +29,10 @@ export const api = {
   answer: (b: { session_token: string; seq: number; respostas: Resp; teste: string[] }) =>
     post<{ aceito: boolean; status: string; etapa: string }>('/api/quiz/answer', b, { keepalive: true }),
   finish: (b: unknown) => post<Resultado>('/api/quiz/finish', b),
-  result: async (token: string) =>
-    (await fetch(`/api/quiz/result?session_token=${encodeURIComponent(token)}`)).json() as Promise<Resultado>,
+  result: async (token: string): Promise<Resultado> => {
+    const r = await fetch(`/api/quiz/result?session_token=${encodeURIComponent(token)}`)
+    if (!r.ok) throw Object.assign(new Error(`HTTP ${r.status}`), { status: r.status, corpo: await r.json().catch(() => ({})) }) as Erro
+    return r.json()
+  },
   whatsapp: (token: string) => post<void>('/api/quiz/whatsapp', { session_token: token }, { keepalive: true }),
 }
