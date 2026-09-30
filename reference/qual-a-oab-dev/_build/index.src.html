@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qual a OAB da sua aprovação em 2027? | Método VDE</title>
+<meta name="description" content="Veja qual é a OAB ideal pra você se preparar em 2027 (OAB 48, 49 ou 50) com base no semestre que você está cursando, no seu tempo disponível e no seu nível de conhecimento.">
+<meta name="robots" content="noindex">
+<style>
+{{FONTS}}
+:root{
+  --roxo:#5a009f; --yel:#f5c518; --deep:#3b0069; --ink:#2d2733; --cinza:#4f4f4f; --mute:#8d7f9b;
+  --lil:#f5eefc; --lil2:#e7d8f6; --lil3:#c9a0ee; --yelt:#fff6d1; --yeld:#7a5c00;
+  --bg:#faf7fd; --card:#fff; --ok:#1f9d63; --okt:#e6f6ee;
+  --grad:linear-gradient(135deg,#3b0069 0%,#5a009f 55%,#7a2fd0 100%);
+  --r:18px; --shadow:0 10px 30px rgba(59,0,105,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100dvh;display:flex;flex-direction:column}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:inherit}
+b,strong{font-weight:700}
+.num{font-family:'Degular','Poppins',sans-serif;font-weight:900}
+
+.bar{background:var(--deep)}
+.top{max-width:620px;width:100%;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:block;width:118px;height:34px;background:url('assets/logo-branco.png') left center/contain no-repeat}
+.back{border:0;background:transparent;color:#e7d8f6;font-size:13px;font-weight:500;padding:6px 8px;border-radius:8px}
+.back:hover{background:rgba(255,255,255,.12);color:#fff}
+.back[hidden]{display:none}
+.progress{max-width:620px;width:100%;margin:14px auto 0;padding:0 20px}
+.progress[hidden]{display:none}
+.track{height:7px;border-radius:99px;background:var(--lil2);overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;background:var(--yel);transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+main{flex:1;display:flex;justify-content:center;padding:24px 20px 48px}
+.screen{width:100%;max-width:580px;animation:in .3s ease both}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* intro */
+.hero{background:var(--grad);color:#fff;border-radius:24px;padding:30px 24px 26px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero::after{content:'';position:absolute;right:-70px;bottom:-60px;width:260px;height:260px;background:url('assets/olho-branco.svg') center/contain no-repeat;opacity:.1;pointer-events:none}
+.pill{display:inline-block;background:var(--yel);color:var(--deep);font-weight:600;font-size:12px;border-radius:99px;padding:5px 12px}
+.hero h1{font-weight:800;font-size:clamp(28px,7.4vw,38px);line-height:1.08;letter-spacing:-.015em;margin:14px 0 12px}
+.hero p{font-size:15px;line-height:1.55;margin:0;opacity:.94;max-width:470px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;position:relative;z-index:1}
+.trio div{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:12px 10px 10px;text-align:center}
+.trio .num{display:block;font-size:44px;line-height:.9;color:var(--yel)}
+.trio span{display:block;font-size:11.5px;font-weight:500;line-height:1.3;opacity:.9;margin-top:4px}
+.trio .num{margin-top:0}
+.factors{display:grid;gap:10px;margin:20px 0 0}
+.factor{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--lil2);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.35}
+.factor i{flex:none;width:34px;height:34px;border-radius:10px;background:var(--lil);display:grid;place-items:center;font-style:normal;color:var(--roxo);font-weight:800;font-size:15px}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:16px;background:var(--roxo);color:#fff;font-weight:700;font-size:16.5px;padding:17px 20px;margin-top:22px;text-decoration:none;box-shadow:0 8px 20px rgba(90,0,159,.28);transition:transform .12s ease,box-shadow .12s ease}
+.cta:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(90,0,159,.32)}
+.cta.wa{background:#1faa53;box-shadow:0 8px 20px rgba(31,170,83,.3)}
+.cta.ghost{background:var(--card);color:var(--roxo);border:1.5px solid var(--lil3);box-shadow:none}
+.cta svg{width:22px;height:22px;flex:none}
+.small{font-size:12.5px;color:var(--mute);text-align:center;margin-top:12px;line-height:1.5}
+
+/* question */
+.step{font-size:12.5px;font-weight:700;color:var(--roxo);margin:0 0 8px}
+.q{font-weight:800;font-size:clamp(22px,5.6vw,27px);line-height:1.18;color:var(--roxo);letter-spacing:-.01em;margin:0 0 8px}
+.hint{font-size:14px;color:var(--cinza);line-height:1.5;margin:0 0 18px}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--card);border:1.5px solid var(--lil2);border-radius:16px;padding:15px 16px;transition:border-color .15s,background .15s,transform .1s}
+.opt:hover{border-color:var(--lil3);background:#fdfbff}
+.opt:active{transform:scale(.99)}
+.opt.sel{border-color:var(--roxo);background:var(--lil)}
+.opt .dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--lil3);position:relative}
+.opt .dot.sq{border-radius:6px}
+.opt.sel .dot{border-color:var(--roxo);background:var(--roxo);box-shadow:inset 0 0 0 4px #fff}
+.opt .t{font-weight:600;font-size:15.5px;line-height:1.3;display:block}
+.opt .s{font-size:13px;color:var(--mute);line-height:1.35;display:block;margin-top:2px}
+.grid10{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.grid10 .opt{justify-content:center;padding:16px 0;text-align:center}
+.grid10 .opt .t{font-family:'Degular','Poppins',sans-serif;font-weight:900;font-size:28px;line-height:1}
+.grid10 .opt .t small{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;vertical-align:top}
+.grid5 .opt .t{font-size:30px}
+.field{width:100%;font:inherit;font-size:17px;padding:16px 18px;border-radius:16px;border:1.5px solid var(--lil2);background:#fff;outline:none;margin-top:14px;color:var(--ink)}
+.field:focus{border-color:var(--roxo);box-shadow:0 0 0 4px var(--lil)}
+.cta[disabled]{opacity:.45;pointer-events:none}
+
+/* result */
+.res{background:var(--grad);color:#fff;border-radius:24px;padding:26px 22px 22px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+.res .hi{font-size:15px;color:#e7d8f6;margin:0}
+.res .q{color:#fff}
+.res .big{display:flex;justify-content:center;align-items:baseline;gap:10px;margin:6px 0 4px;color:#fff}
+.res .big span{font-weight:800;font-size:30px}
+.res .big .num{font-size:110px;line-height:.86;color:var(--yel);padding:0 4px 4px}
+.res .when{font-size:15px;color:#fff;margin:6px 0 0}
+.res .when b{color:var(--yel)}
+.chips{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:12.5px;font-weight:600;border-radius:99px;padding:5px 11px;background:rgba(255,255,255,.14);color:#fff}
+.chip.p{background:var(--yel);color:var(--deep)}
+.box{background:var(--card);border:1px solid var(--lil2);border-radius:20px;padding:20px 20px 18px;margin-top:16px}
+.box h2{font-size:16.5px;font-weight:700;color:var(--roxo);margin:0 0 10px;line-height:1.3}
+.box ul{list-style:none;margin:0;padding:0}
+.box li{position:relative;padding:7px 0 7px 30px;font-size:14.5px;line-height:1.45;border-top:1px dashed var(--lil2)}
+.box li:first-child{border-top:0}
+.box li::before{content:'';position:absolute;left:0;top:9px;width:20px;height:20px;border-radius:6px;background:var(--lil) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a009f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
+.box p{font-size:14.5px;line-height:1.55;margin:0;color:var(--cinza)}
+.box p+p{margin-top:8px}
+.lad{display:grid;gap:6px;margin-top:6px;text-align:left}
+.lad div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border-radius:12px;padding:9px 12px;background:var(--lil);font-size:13.5px}
+.lad div b{font-weight:700;color:var(--roxo)}
+.lad div.hit{background:var(--grad);color:#fff}
+.lad div.hit b{color:#fff}
+.lad em{font-style:normal;font-size:12px;opacity:.85;display:block}
+.video{margin:14px 0 4px;border-radius:18px;overflow:hidden;background:var(--deep);aspect-ratio:9/16;max-height:62vh;margin-left:auto;margin-right:auto;max-width:360px}
+.video video{width:100%;height:100%;object-fit:cover;display:block}
+.ph{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:#fff;background:var(--grad)}
+.ph .play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center}
+.ph .play svg{width:28px;height:28px;fill:#fff;margin-left:4px}
+.ph p{font-size:13px;line-height:1.45;margin:0;opacity:.92}
+.ph p b{display:block;font-size:16px;margin-bottom:4px}
+.enun{background:var(--card);border:1px solid var(--lil2);border-radius:18px;padding:16px 18px;font-size:15px;line-height:1.6;color:var(--ink)}
+.enun p{margin:0}
+.enun p+p{margin-top:10px}
+.opt.alt{align-items:flex-start}
+.opt .let{flex:none;width:28px;height:28px;border-radius:8px;background:var(--lil);color:var(--roxo);font-weight:800;font-size:14px;display:grid;place-items:center}
+.opt.alt.sel .let{background:var(--roxo);color:#fff}
+.opt.alt .t{font-weight:500;font-size:14.5px;line-height:1.45}
+.peek{position:relative;margin-top:16px;border-radius:20px;overflow:hidden;border:1px solid var(--lil2);background:var(--card);user-select:none;-webkit-user-select:none}
+.pk-doc{padding:18px 18px 40px;max-height:560px;overflow:hidden}
+.pk-top{display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;padding-bottom:10px;border-bottom:1px solid var(--lil2);margin-bottom:6px}
+.peek h4{margin:14px 0 6px;font-size:14.5px;font-weight:700;color:var(--roxo)}
+.bl{filter:blur(4.5px);pointer-events:none}
+.bl p{margin:0 0 6px;font-size:13.5px;line-height:1.5;color:var(--cinza)}
+.pk-kpi{display:flex;align-items:baseline;gap:10px;background:var(--grad);color:#fff;border-radius:12px;padding:10px 14px;margin-bottom:6px}
+.pk-kpi b{color:var(--yel);font-family:'Degular','Poppins',sans-serif;font-weight:900;font-size:26px}
+.pk-kpi span{font-size:13px}
+.pk-row{display:flex;gap:10px;align-items:center;background:var(--lil);border-radius:10px;padding:8px 12px;margin-bottom:5px;font-size:12.5px;color:var(--cinza)}
+.pk-row b{color:var(--roxo);white-space:nowrap}
+.pk-row.on{background:var(--roxo);color:#fff}
+.pk-row.on b{color:#fff}
+.pk-q{display:flex;flex-direction:column;border:1px solid var(--lil2);border-radius:10px;padding:8px 12px;margin-bottom:5px;font-size:12.5px;color:var(--cinza)}
+.pk-q b{color:var(--roxo)}
+.pk-lock{text-decoration:none;position:absolute;left:0;right:0;bottom:0;padding:56px 20px 20px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.95) 45%,#fff 75%)}
+.pk-ico{width:46px;height:46px;border-radius:50%;background:var(--yel);color:var(--deep);display:grid;place-items:center;margin-bottom:6px;box-shadow:0 8px 20px rgba(90,0,159,.28)}
+.pk-ico svg{width:22px;height:22px}
+.pk-lock b{font-size:15.5px;color:var(--roxo)}
+.pk-lock span{font-size:13px;color:var(--cinza)}
+.next{background:var(--deep);color:#fff;border-radius:20px;padding:18px 18px 8px;margin-top:16px}
+.next-t{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--lil3)}
+.next-i{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.next-i .num{flex:none;width:32px;height:32px;border-radius:10px;background:var(--yel);color:var(--deep);display:grid;place-items:center;font-size:20px;line-height:1}
+.next-i p{margin:0;font-size:14.5px;line-height:1.45;color:#e7d8f6}
+.next-i b{color:#fff}
+.form .lbl{display:block;font-size:13.5px;font-weight:600;color:var(--cinza);margin:14px 0 -8px}
+.form .field{margin-top:12px}
+.err{color:#b42318;font-size:13px;margin:10px 0 0}
+.cta.yel{background:var(--yel);color:var(--deep);box-shadow:0 8px 20px rgba(245,197,24,.35)}
+.small a{color:var(--roxo)}
+.restart{display:block;margin:18px auto 0;border:0;background:none;color:var(--mute);font-size:13px;text-decoration:underline}
+.center{text-align:center}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="bar"><header class="top">
+  <span class="logo" role="img" aria-label="Método VDE, OAB 1ª fase"></span>
+  <button class="back" id="back" hidden>← Voltar</button>
+</header></div>
+<div class="progress" id="progress" hidden><div class="track"><div class="fill" id="fill"></div></div></div>
+<main id="main"></main>
+
+<script>
+/* =========================================================================
+   CONFIGURAÇÃO (o time muda aqui sem mexer no resto)
+   ========================================================================= */
+const CONFIG = {
+  quizName: "Qual a OAB da sua aprovação em 2027?",
+  whatsapp: "5500000000000",          // número dos consultores, só dígitos, com DDI
+  instagram: "https://www.instagram.com/metodovde/",
+  instagramHandle: "@metodovde",
+  leadEndpoint: "",                   // URL que recebe o JSON do lead (nome, e-mail, WhatsApp e respostas). Sem isso, os contatos não vão pra lugar nenhum.
+  privacidadeTxt: "Ao continuar, você concorda em receber contato do Método VDE pelo WhatsApp e por e-mail.",
+  privacidadeUrl: "",                 // link da política de privacidade
+  videoParte2Src: "",                 // vídeo da Ana Clara antes do teste (roteiro em roteiro-video.md)
+};
+const DATA = {{DATA}};
+</script>
+<script>
+{{LOGIC}}
+</script>
+<script>
+"use strict";
+const L = QOLogic.make(DATA);
+const P = DATA.perguntas;
+const EX = Object.fromEntries(DATA.exames.map(e => [e.id, e]));
+const qs = new URLSearchParams(location.search);
+const TODAY = (() => {
+  const h = qs.get("hoje");
+  if (h && /^\d{4}-\d{2}-\d{2}$/.test(h)) return h;
+  const d = new Date(); const p = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+})();
+
+let A = {};
+let hist = [];               // stack of screen ids, for the back button
+const $main = document.getElementById("main");
+const $back = document.getElementById("back");
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const br = s => { const [y, m, d] = s.split("-"); return `${d}/${m}/${y}`; };
+const brc = s => { const [, m, d] = s.split("-"); return `${d}/${m}`; };
+const ord = n => `${n}º`;
+function track(ev, extra) { try { (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: ev }, extra || {})); } catch (e) {} }
+
+/* ---------- which question comes next ---------- */
+const ORDER = ["situacao", "regime", "periodo", "grade", "tentativa", "vezes", "pontos", "nivel", "inscrito", "metodo", "trava", "motivo", "compromisso", "trabalho", "rotina", "horas", "vde", "investir", "parcela"];
+function aplica(k) {
+  const cur = A.situacao === "cursando";
+  switch (k) {
+    case "regime": case "periodo": case "grade": return cur;
+    case "tentativa": return L.perguntaTentativa(A);
+    case "pontos": return A.tentativa === "reprov";
+    case "vezes": return A.tentativa === "reprov";
+    case "nivel": return A.tentativa !== "reprov";
+    case "inscrito": return !!L.exameInscricaoFechada(A, TODAY);
+    case "parcela": return A.investir === "parcela";
+    default: return true;
+  }
+}
+// Answers that end the quiz early.
+function saida() {
+  if (A.situacao === "cursando" && A.periodo && L.cedo(A, TODAY)) return "cedo";
+  if (A.tentativa === "f2") return "f2";
+  return null;
+}
+function proxima(from) {
+  const s = saida(); if (s) return s;
+  for (let i = ORDER.indexOf(from) + 1; i < ORDER.length; i++) if (aplica(ORDER[i])) return ORDER[i];
+  return "parte2";
+}
+// Before the first answer, count the longest path (student) so the total never grows.
+function totalPassos() {
+  if (A.situacao) return ORDER.filter(aplica).length;
+  A.situacao = "cursando"; const n = ORDER.filter(aplica).length; delete A.situacao; return n;
+}
+
+function go(id, push = true) {
+  if (push) hist.push(id);
+  $back.hidden = hist.length <= 1;
+  const qIdx = id === "situacao" ? 0 : ORDER.filter(aplica).indexOf(id);
+  const tIdx = /^t\d$/.test(id) ? Number(id.slice(1)) : -1;
+  const $pr = document.getElementById("progress");
+  $pr.hidden = qIdx < 0 && tIdx < 0;
+  if (qIdx >= 0) document.getElementById("fill").style.width = `${Math.round((qIdx / totalPassos()) * 100)}%`;
+  if (tIdx >= 0) document.getElementById("fill").style.width = `${Math.round((tIdx / DATA.teste.length) * 100)}%`;
+  if (id === "dados") { $pr.hidden = false; document.getElementById("fill").style.width = "96%"; }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (id === "intro") return intro();
+  if (ORDER.includes(id)) return pergunta(id, qIdx);
+  if (id === "parte2") return telaParte2();
+  if (id === "dados") return telaDados();
+  if (/^t\d$/.test(id)) return telaQuestao(Number(id.slice(1)));
+  if (id === "cedo") return telaCedo();
+  if (id === "f2") return telaF2();
+  return resultado();
+}
+$back.onclick = () => {
+  if (hist.length <= 1) return;
+  const cur = hist.pop();
+  if (ORDER.includes(cur)) delete A[cur];
+  if (/^t\d$/.test(cur)) RESP[Number(cur.slice(1))] = undefined;
+  go(hist[hist.length - 1], false);
+};
+
+/* ---------- screens ---------- */
+function intro() {
+  $main.innerHTML = `<section class="screen">
+    <div class="hero">
+      <span class="pill">Quiz rápido · 5 minutos</span>
+      <h1>Qual a OAB da sua aprovação em 2027?</h1>
+      <p>Veja qual é a OAB ideal pra você se preparar em 2027, com base no semestre que você está cursando, no seu tempo disponível e no seu nível de conhecimento pra prova.</p>
+      <div class="trio">${DATA.exames.map(e => `<div><span class="num">${e.id}</span><span>prova em ${e.mes}</span></div>`).join("")}</div>
+    </div>
+    <div class="factors">
+      <div class="factor"><i>1</i><span><b>O seu semestre na faculdade.</b> O edital só libera a prova pra quem estiver no 9º período no prazo.</span></div>
+      <div class="factor"><i>2</i><span><b>O seu tempo por dia.</b> Cada turma do VDE tem um ritmo diferente.</span></div>
+      <div class="factor"><i>3</i><span><b>O seu nível hoje.</b> Toda turma do VDE começa do zero, e o diagnóstico mostra o que ajustar no seu jeito de estudar.</span></div>
+    </div>
+    <button class="cta" id="start">Descobrir a minha OAB</button>
+    <p class="small">Sem cadastro. No fim, você recebe o diagnóstico completo pelo WhatsApp.</p>
+  </section>`;
+  document.getElementById("start").onclick = () => { track("quiz_start"); go(proxima("intro")); };
+}
+
+function tituloDe(k) {
+  const q = P[k];
+  if (k === "periodo") return A.regime === "ano" ? q.tituloAno.replace("{ano}", TODAY.slice(0, 4)) : q.titulo.replace("{fimSemestre}", fimSemestre());
+  if (k === "metodo" && A.tentativa === "reprov") return q.tituloReprov;
+  if (k === "inscrito") return q.titulo.replace("{exame}", L.exameInscricaoFechada(A, TODAY).nome);
+  return q.titulo;
+}
+function fimSemestre() {
+  const y = TODAY.slice(0, 4);
+  return QOLogic.semIdx(TODAY) % 2 ? `31 de dezembro de ${y}` : `30 de junho de ${y}`;
+}
+function hintDe(k) {
+  const sem = QOLogic.semIdx(TODAY) % 2 + 1, ano = TODAY.slice(0, 4);
+  switch (k) {
+    case "periodo": return A.regime === "ano"
+      ? "É o ano em que a sua matrícula está agora."
+      : "É o período em que a sua matrícula está neste semestre, não o que você acabou de terminar.";
+    case "grade": return "O edital olha o período em que a sua matrícula está, não quantos semestres você já fez.";
+    case "inscrito": { const e = L.exameInscricaoFechada(A, TODAY); return `As inscrições da ${e.nome} fecharam em ${br(e.inscFim)}.`; }
+    case "horas": return "Pensa num dia comum, com tudo o que você acabou de marcar. Melhor ser realista do que otimista.";
+    case "rotina": return "Pode marcar mais de uma.";
+    case "motivo": return "Pode marcar mais de uma. Vale tudo o que te faz levantar pra estudar.";
+    case "investir": return "É só pra gente te mostrar a condição que faz sentido pra você.";
+    case "parcela": return "No cartão, dá pra parcelar em até 12 vezes.";
+    case "compromisso": return "Sem resposta certa. Sinceridade aqui ajuda a gente a te indicar o caminho certo.";
+    case "trava": return "Pode marcar mais de uma.";
+    case "nivel": return "Não existe resposta certa. Serve pra gente entender de onde você parte.";
+    case "pontos": return "Se fez mais de uma vez, vale a última.";
+    default: return "";
+  }
+}
+function opcoesDe(k) {
+  let ops = P[k].opcoes;
+  if (k === "periodo" && A.regime === "ano") ops = ops.slice(0, 5);
+  if (k === "trava" && A.tentativa !== "reprov") ops = ops.filter(o => !P.trava.soReprov.includes(o[0]));
+  if (k === "metodo" && A.tentativa === "reprov") ops = ops.map(o => P.metodo.rotulosReprov[o[0]] ? [o[0], P.metodo.rotulosReprov[o[0]]] : o);
+  return ops;
+}
+
+function pergunta(k, idx) {
+  const hint = hintDe(k);
+  const head = `<p class="step">Pergunta ${idx + 1} de ${totalPassos()}</p><h2 class="q">${esc(tituloDe(k))}</h2>${hint ? `<p class="hint">${esc(hint)}</p>` : ""}`;
+  const ops = opcoesDe(k);
+  if (P[k] && P[k].multi) return perguntaMulti(k, head, ops);
+  const isGrid = k === "periodo";
+  const btn = o => `<button class="opt${A[k] === o[0] ? " sel" : ""}" data-v="${esc(o[0])}">${isGrid
+      ? `<span class="t">${esc(o[0])}<small>º</small></span>`
+      : `<span class="dot"></span><span><span class="t">${esc(o[1])}</span>${o[2] ? `<span class="s">${esc(o[2])}</span>` : ""}</span>`}</button>`;
+  $main.innerHTML = `<section class="screen">${head}
+    <div class="${isGrid ? `grid10${ops.length === 5 ? " grid5" : ""}` : "opts"}">${ops.map(btn).join("")}</div></section>`;
+  $main.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    A[k] = b.dataset.v;
+    // Changing an early answer invalidates the ones that depend on it.
+    ORDER.slice(ORDER.indexOf(k) + 1).forEach(x => { if (!aplica(x)) delete A[x]; });
+    b.classList.add("sel");
+    track("quiz_answer", { pergunta: k, resposta: A[k] });
+    setTimeout(() => go(proxima(k)), 160);
+  });
+}
+
+// Multiple choice: stored as "a+b"; the exclusive option clears the others.
+function perguntaMulti(k, head, ops) {
+  const exc = P[k].exclusiva;
+  let sel = new Set((A[k] || "").split("+").filter(Boolean));
+  const box = o => `<button class="opt${sel.has(o[0]) ? " sel" : ""}" data-v="${esc(o[0])}"><span class="dot sq"></span><span><span class="t">${esc(o[1])}</span>${o[2] ? `<span class="s">${esc(o[2])}</span>` : ""}</span></button>`;
+  $main.innerHTML = `<section class="screen">${head}<div class="opts">${ops.map(box).join("")}</div>
+    <button class="cta" id="ok" ${sel.size ? "" : "disabled"}>Continuar</button></section>`;
+  const $ok = document.getElementById("ok");
+  const paint = () => { $main.querySelectorAll(".opt").forEach(b => b.classList.toggle("sel", sel.has(b.dataset.v))); $ok.disabled = !sel.size; };
+  $main.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const v = b.dataset.v;
+    if (sel.has(v)) sel.delete(v);
+    else if (v === exc) sel = new Set([v]);
+    else { sel.delete(exc); sel.add(v); }
+    paint();
+  });
+  $ok.onclick = () => {
+    A[k] = ops.map(o => o[0]).filter(v => sel.has(v)).join("+");
+    track("quiz_answer", { pergunta: k, resposta: A[k] });
+    go(proxima(k));
+  };
+}
+
+// Plain-text routine for the sales team, straight in the WhatsApp message.
+function rotinaTxt() {
+  const lab = (k, v) => (P[k].opcoes.find(o => o[0] === v) || [, v])[1];
+  const partes = [];
+  if (A.situacao === "cursando") partes.push(`faculdade (${A.regime === "ano" ? A.periodo + "º ano" : A.periodo + "º período"})`);
+  else partes.push("já me formei");
+  if (A.trabalho && A.trabalho !== "nao") partes.push(lab("trabalho", A.trabalho).toLowerCase());
+  (A.rotina || "").split("+").filter(v => v && v !== "nada").forEach(v => partes.push(lab("rotina", v).toLowerCase()));
+  if (A.horas) partes.push(`${lab("horas", A.horas).toLowerCase()} por dia pra estudar`);
+  return partes.join(", ");
+}
+
+const low = s => s.charAt(0).toLowerCase() + s.slice(1);
+// Semicolons, not "e": the options themselves contain "e".
+const listaTxt = xs => xs.join("; ");
+// Plain text of an answer; multiple answers are joined.
+function optTxt(k) {
+  const um = v => {
+    const o = P[k].opcoes.find(o => o[0] === v);
+    if (!o) return v;
+    return o[2] ? `${low(o[1])} (${low(o[2].replace(/\.$/, ""))})` : low(o[1]);
+  };
+  return listaTxt(String(A[k] || "").split("+").filter(Boolean).map(um));
+}
+
+function travaTxt() { return optTxt("trava"); }
+
+/* ---------- part 2: level test ---------- */
+const RESP = [];             // one letter per question, "X" = didn't know
+const acertos = () => DATA.teste.filter((q, i) => RESP[i] === q.gabarito).length;
+const erreiTxt = () => {
+  const e = DATA.teste.filter((q, i) => RESP[i] !== q.gabarito).map(q => q.disciplina);
+  return e.length ? ` (errei ${e.length > 1 ? e.slice(0, -1).join(", ") + " e " + e[e.length - 1] : e[0]})` : "";
+};
+
+function telaParte2() {
+  track("quiz_parte2");
+  const v = CONFIG.videoParte2Src
+    ? `<video src="${esc(CONFIG.videoParte2Src)}" controls playsinline preload="metadata"></video>`
+    : `<div class="ph"><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><p><b>Vídeo da Ana Clara</b>Roteiro em roteiro-video.md. Troque CONFIG.videoParte2Src pelo link do vídeo.</p></div>`;
+  $main.innerHTML = `<section class="screen">
+    <p class="step">Parte 2 de 2 · Teste de nível</p>
+    <h2 class="q">Agora vamos completar o seu diagnóstico</h2>
+    <div class="video">${v}</div>
+    <div class="box"><ul>
+      <li><b>5 questões reais</b> das últimas provas da OAB, uma de cada: Ética, Constitucional, Trabalho, Penal e Processo Civil.</li>
+      <li>Responda sem consultar nada. É o seu nível de hoje que importa.</li>
+      <li>Não sabe? Marque <b>"Não sei"</b>. Chute atrapalha o diagnóstico.</li>
+    </ul></div>
+    <button class="cta" id="go">Começar o teste</button>
+  </section>`;
+  document.getElementById("go").onclick = () => go("t0");
+}
+
+function telaQuestao(i) {
+  const q = DATA.teste[i];
+  let sel = RESP[i] && RESP[i] !== "X" ? RESP[i] : null;
+  $main.innerHTML = `<section class="screen">
+    <p class="step">Questão ${i + 1} de ${DATA.teste.length} · ${esc(q.disciplina)} · OAB ${esc(q.exame)}</p>
+    <div class="enun">${q.enunciado.map(p => `<p>${esc(p)}</p>`).join("")}</div>
+    <div class="opts">${Object.entries(q.alternativas).map(([l, t]) =>
+      `<button class="opt alt${sel === l ? " sel" : ""}" data-v="${l}"><span class="let">${l}</span><span class="t">${esc(t)}</span></button>`).join("")}</div>
+    <button class="cta" id="ok" ${sel ? "" : "disabled"}>${i + 1 < DATA.teste.length ? "Confirmar e seguir" : "Confirmar e ver o resultado"}</button>
+    <button class="restart" id="ns">Não sei responder</button>
+  </section>`;
+  const $ok = document.getElementById("ok");
+  $main.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    sel = b.dataset.v;
+    $main.querySelectorAll(".opt").forEach(x => x.classList.toggle("sel", x === b));
+    $ok.disabled = false;
+  });
+  const next = v => {
+    RESP[i] = v;
+    track("quiz_teste", { questao: q.id, resposta: v, acertou: v === q.gabarito });
+    go(i + 1 < DATA.teste.length ? `t${i + 1}` : "dados");
+  };
+  $ok.onclick = () => sel && next(sel);
+  document.getElementById("ns").onclick = () => next("X");
+}
+
+/* ---------- lead form: unlocks the result ---------- */
+const soDigitos = s => s.replace(/\D/g, "");
+function mascaraTel(v) {
+  const d = soDigitos(v).slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+function telaDados() {
+  $main.innerHTML = `<section class="screen form">
+    <h2 class="q center">O seu diagnóstico está pronto</h2>
+    <p class="hint center">Preencha os dados abaixo pra liberar o seu resultado e descobrir qual é a sua OAB.</p>
+    <label class="lbl" for="f-nome">Nome</label>
+    <input class="field" id="f-nome" autocomplete="name" placeholder="Digite o seu nome" maxlength="80" value="${esc(A.nomeCompleto || "")}">
+    <label class="lbl" for="f-email">E-mail</label>
+    <input class="field" id="f-email" type="email" inputmode="email" autocomplete="email" placeholder="seu.melhor@email.com" maxlength="120" value="${esc(A.email || "")}">
+    <label class="lbl" for="f-tel">WhatsApp</label>
+    <input class="field" id="f-tel" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(DDD) 90000-0000" value="${esc(A.tel || "")}">
+    <p class="err" id="f-err" hidden></p>
+    <button class="cta yel" id="ok" disabled>Ver o meu resultado agora →</button>
+    <p class="small">${CONFIG.privacidadeTxt}${CONFIG.privacidadeUrl ? ` <a href="${esc(CONFIG.privacidadeUrl)}" target="_blank" rel="noopener">Política de privacidade</a>.` : ""}</p>
+  </section>`;
+  const $n = document.getElementById("f-nome"), $e = document.getElementById("f-email"), $t = document.getElementById("f-tel");
+  const $ok = document.getElementById("ok"), $err = document.getElementById("f-err");
+  const valido = () => $n.value.trim().length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($e.value.trim()) && [10, 11].includes(soDigitos($t.value).length);
+  const check = () => { $ok.disabled = !valido(); $err.hidden = true; };
+  $n.oninput = check; $e.oninput = check;
+  $t.oninput = () => { $t.value = mascaraTel($t.value); check(); };
+  $ok.onclick = () => {
+    if (!valido()) { $err.textContent = "Confere o nome, o e-mail e o WhatsApp com DDD."; $err.hidden = false; return; }
+    A.nomeCompleto = $n.value.trim(); A.nome = A.nomeCompleto.split(/\s+/)[0];
+    A.email = $e.value.trim(); A.tel = $t.value;
+    track("quiz_lead");
+    go("resultado");
+  };
+  check();
+  setTimeout(() => $n.focus(), 50);
+}
+
+function posLabel(pos) {
+  const max = A.regime === "ano" ? 5 : 10;
+  if (pos > max) return "curso concluído";
+  return A.regime === "ano" ? `${ord(pos)} ano` : `${ord(pos)} período`;
+}
+
+function telaCedo() {
+  const q = L.primeiraVez(A, TODAY);
+  track("quiz_result", { tipo: "cedo" });
+  $main.innerHTML = `<section class="screen">
+    <div class="res">
+      <p class="hi">Obrigada por responder!</p>
+      <h2 class="q" style="margin:10px 0 6px">A sua OAB vem a partir de ${q.ano}</h2>
+      <p class="when">O edital só libera a prova pra quem está no <b>${A.regime === "ano" ? "5º ano" : "9º período"}</b>, então as provas de 2027 ainda não são pra você. Aproveita esse tempo pra caprichar na base da faculdade e segue a gente pra acompanhar tudo sobre a OAB.</p>
+    </div>
+    <a class="cta ghost" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener" onclick="track('quiz_instagram',{tipo:'cedo'})">Acompanhar o ${esc(CONFIG.instagramHandle)}</a>
+    <button class="restart" onclick="location.reload()">Refazer o quiz</button>
+  </section>`;
+}
+
+function telaF2() {
+  track("quiz_result", { tipo: "f2" });
+  $main.innerHTML = `<section class="screen">
+    <div class="res">
+      <p class="hi">Parabéns pela 1ª fase!</p>
+      <h2 class="q" style="margin:10px 0 6px">Obrigada por responder</h2>
+      <p class="when">Esse quiz é pra quem ainda vai fazer a 1ª fase. Como você já passou dela, o seu foco agora é a 2ª. Segue a gente pra acompanhar tudo sobre ela.</p>
+    </div>
+    <a class="cta ghost" href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">Acompanhar o ${esc(CONFIG.instagramHandle)}</a>
+    <button class="restart" onclick="location.reload()">Refazer o quiz</button>
+  </section>`;
+}
+
+/* ---------- lead code ---------- */
+function leadCode() {
+  const campos = DATA.campos.map(c => c === "teste"
+    ? (RESP.length ? DATA.teste.map((_, i) => RESP[i] || "X").join("") : "-")
+    : (A[c] == null || A[c] === "") ? "-" : String(A[c]));
+  return `${DATA.prefixo}.${campos.join(".")}.${TODAY.replace(/-/g, "")}`;
+}
+function waLink(rec) {
+  const e = rec.exame ? EX[rec.exame].nome : "";
+  const msg = `Oi! Aqui é ${A.nome}. Fiz o quiz "${CONFIG.quizName}" e deu ${e}. Quero receber o meu diagnóstico completo e o meu plano de ação pra começar a me preparar agora.\n\nMinha rotina: ${rotinaTxt()}.${A.trava ? `\nO que mais me trava: ${travaTxt()}.` : ""}${A.motivo ? `\nPor que quero passar: ${optTxt("motivo")}.` : ""}${A.compromisso ? `\nO quanto topo mudar: ${optTxt("compromisso")}.` : ""}${RESP.length ? `\nNo teste: acertei ${acertos()} de ${DATA.teste.length}${erreiTxt()}.` : ""}${A.investir ? `\nPra investir: ${optTxt("investir")}${A.parcela ? ` (${optTxt("parcela")})` : ""}.` : ""}\n\n${leadCode()}`;
+  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
+function enviaLead(rec) {
+  if (!CONFIG.leadEndpoint) return;
+  const payload = Object.assign({}, A, { teste: RESP.slice(), hoje: TODAY, codigo: leadCode(), recomendacao: rec });
+  try { fetch(CONFIG.leadEndpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true }).catch(() => {}); } catch (e) {}
+}
+
+// Blurred preview of the real laudo: headings readable, content not. Curiosity, not content.
+function previa(rec) {
+  const e = EX[rec.exame];
+  const t = rec.turma ? DATA.turmas.find(x => x.exame === rec.exame && x.dias === rec.turma) : null;
+  const erradas = DATA.teste.filter((q, i) => RESP[i] !== q.gabarito);
+  const sinais = (erradas.length ? erradas : DATA.teste.slice(0, 1)).slice(0, 2)
+    .map(q => `<p>${esc(q.sinal.texto)}</p>`).join("");
+  const turmas = L.turmasDisponiveis(rec.exame, TODAY).slice(0, 3).map(x =>
+    `<div class="pk-row${t && x.dias === t.dias ? " on" : ""}"><b>${x.dias} dias</b><span>${esc(DATA.rotinas[String(x.dias)].rotina)}</span></div>`).join("");
+  const corr = DATA.teste.map((q, i) =>
+    `<div class="pk-q"><b>${i + 1}. ${esc(q.disciplina)}</b><span>${esc(q.comentario.slice(0, 90))}…</span></div>`).join("");
+  return `<div class="peek">
+    <div class="pk-doc" aria-hidden="true">
+      <div class="pk-top"><span>Diagnóstico · ${esc(A.nome)}</span><span>OAB ${e.id}</span></div>
+      <h4>A turma indicada pra você</h4>
+      <div class="bl">${t ? `<div class="pk-kpi"><b>${t.dias} dias</b><span>início previsto em ${br(t.inicio)}</span></div>` : ""}${turmas}</div>
+      <h4>O que os seus erros dizem</h4>
+      <div class="bl">${sinais}</div>
+      <h4>A correção das ${DATA.teste.length} questões</h4>
+      <div class="bl">${corr}</div>
+    </div>
+    <a class="pk-lock" href="${waLink(rec)}" target="_blank" rel="noopener" onclick="track('quiz_whatsapp',{origem:'previa'})">
+      <div class="pk-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <b>Liberado no WhatsApp</b>
+      <span>Diagnóstico completo em PDF + o seu plano de ação pra começar agora.</span>
+    </a>
+  </div>`;
+}
+
+const WA_ICON = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>`;
+
+function resultado() {
+  const rec = L.recomendar(A, TODAY);
+  track("quiz_result", { tipo: rec.tipo, exame: rec.exame || "", turma: rec.turma || "" });
+  enviaLead(rec);
+  if (!rec.exame) {
+    $main.innerHTML = `<section class="screen"><div class="res"><h2 class="q">Obrigada por responder, ${esc(A.nome || "")}!</h2>
+      <p class="when">Chama a gente no WhatsApp que o time te ajuda a planejar a sua próxima prova.</p></div>
+      <a class="cta wa" href="${waLink(rec)}" target="_blank" rel="noopener">${WA_ICON}Falar com o time do VDE</a></section>`;
+    return;
+  }
+  const e = EX[rec.exame];
+  const dias = L.diasAte(TODAY, e.fase1);
+  const outros = DATA.exames.filter(x => x.id !== rec.exame && L.statusExame(A, x, TODAY) !== "passou").map(x => x.nome);
+  const itens = [];
+  if (A.situacao === "cursando") itens.push("A projeção dos seus períodos, semestre a semestre, até a prova");
+  if (outros.length) itens.push(`Por que ${outros.join(" e ")} ${outros.length > 1 ? "não são" : "não é"} a melhor escolha pra você agora`);
+  itens.push("A turma do VDE que cabe na sua rotina e a data pra começar");
+  itens.push("A correção comentada das 5 questões do teste, com o artigo de cada uma");
+  itens.push(A.tentativa === "reprov" ? "O que precisa mudar no seu jeito de estudar pra não repetir a última prova" : "O que muda no seu jeito de estudar a partir de agora");
+  $main.innerHTML = `<section class="screen">
+    <div class="res">
+      <p class="hi">${esc(A.nome)}, a OAB da sua aprovação é a</p>
+      <div class="big"><span>OAB</span><span class="num">${e.id}</span></div>
+      <p class="when">1ª fase em <b>${br(e.fase1)}</b>, daqui a <b>${dias} dias</b>.</p>
+      <div class="chips"><span class="chip">prova em ${e.mes}</span><span class="chip p">2ª fase em ${brc(e.fase2)}</span><span class="chip">teste: ${acertos()} de ${DATA.teste.length}</span></div>
+    </div>
+    <div class="box"><h2>O seu diagnóstico completo já está pronto</h2>
+      <ul>${itens.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+    </div>
+    ${previa(rec)}
+    <div class="next">
+      <p class="next-t">No WhatsApp, o time do VDE te entrega:</p>
+      <div class="next-i"><span class="num">1</span><p><b>O seu diagnóstico completo</b>, em PDF, com a correção do teste.</p></div>
+      <div class="next-i"><span class="num">2</span><p><b>Um plano de ação pra você começar AGORA</b> a se preparar pra ${e.nome}: por onde começar, em que ordem e como encaixar na sua semana.</p></div>
+    </div>
+    <a class="cta wa" id="wa" href="${waLink(rec)}" target="_blank" rel="noopener">${WA_ICON}Quero o meu diagnóstico e o meu plano</a>
+    <p class="small">É só mandar a mensagem que já vai pronta. A conversa é com o time do VDE.</p>
+    <button class="restart" onclick="location.reload()">Refazer o quiz</button>
+  </section>`;
+  document.getElementById("wa").onclick = () => track("quiz_whatsapp", { exame: rec.exame });
+}
+
+go("intro");
+</script>
+</body>
+</html>

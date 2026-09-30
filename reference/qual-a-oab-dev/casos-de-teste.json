@@ -1,0 +1,3079 @@
+{
+ "_sobre": "Gerado por _build/build-entrega.py a partir de diagnosis/. Não editar à mão.",
+ "casos": [
+  {
+   "nome": "Maria",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.cursando.sem.8.dia.nunca.-.b1.-.zero.h3.estagio.insta.nada.materiais.advocacia.bastante.parcela.p80.CBAXA.-.20260929",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:zero",
+     "trava:materiais",
+     "motivo:advocacia",
+     "compromisso:bastante",
+     "trabalho:estagio",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 4,
+     "erradas": [
+      "penal"
+     ],
+     "questoes_atencao": 12
+    }
+   },
+   "laudo_html": "exemplos/oab-48-maria-2026-09-29.html"
+  },
+  {
+   "nome": "Joana",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.formado.-.-.-.reprov.p1.-.-.video.h2.integral.nao.filhos.denovo+rotina.orgulho+mudar.tudo.avista.-.ABADC.v3.20260929",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 180,
+    "atalho": {
+     "exame": "48",
+     "turma": 90,
+     "horas": 3
+    },
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:reprov",
+     "pontos:p1",
+     "metodo:video",
+     "trava:denovo",
+     "trava:rotina",
+     "motivo:orgulho",
+     "motivo:mudar",
+     "compromisso:tudo",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:nao"
+    ],
+    "teste": {
+     "acertos": 3,
+     "erradas": [
+      "etica",
+      "processo_civil"
+     ],
+     "questoes_atencao": 25
+    }
+   },
+   "laudo_html": "exemplos/oab-49-joana-2026-09-29.html"
+  },
+  {
+   "nome": "Pedro",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.cursando.sem.7.atraso.nunca.-.b0.-.solto.h15.meio.gratis.familia.tempo.mudar.pouco.desconto.-.XXDXX.-.20260929",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Confirme o seu período",
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "grade:atraso",
+     "tentativa:nunca",
+     "nivel:b0",
+     "metodo:solto",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:pouco",
+     "trabalho:meio",
+     "rotina:familia",
+     "horas:h15",
+     "vde:gratis"
+    ],
+    "teste": {
+     "acertos": 0,
+     "erradas": [
+      "etica",
+      "constitucional",
+      "trabalho",
+      "penal",
+      "processo_civil"
+     ],
+     "questoes_atencao": 58
+    }
+   },
+   "laudo_html": "exemplos/oab-49-pedro-2026-09-29.html"
+  },
+  {
+   "nome": "Lucas",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.cursando.sem.6.dia.nunca.-.b0.-.questoes.h35.nao.insta.outros.questao+nervoso.concursos.decidindo.nada.-.CBADA.-.20260929",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b0",
+     "metodo:questoes",
+     "trava:questao",
+     "trava:nervoso",
+     "motivo:concursos",
+     "compromisso:decidindo",
+     "trabalho:nao",
+     "rotina:outros",
+     "horas:h35",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   },
+   "laudo_html": "exemplos/oab-50-lucas-2026-09-29.html"
+  },
+  {
+   "nome": "Bia",
+   "hoje": "2026-09-30",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.parcela.p80.CBADA.-.20260930",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   },
+   "laudo_html": "exemplos/oab-48-bia-2026-09-30.html"
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 180,
+    "atalho": {
+     "exame": "48",
+     "turma": 120,
+     "horas": 2.5
+    },
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.1.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2030,
+     "sem": 2
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.2.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2030,
+     "sem": 1
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.3.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2029,
+     "sem": 2
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.4.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2029,
+     "sem": 1
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.5.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2028,
+     "sem": 2
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.6.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.6.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.ano.1.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2030,
+     "sem": null
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-01",
+   "codigo": "QO1.cursando.ano.2.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260901",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2029,
+     "sem": null
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260929",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-09-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20260929",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 180,
+    "atalho": {
+     "exame": "48",
+     "turma": 90,
+     "horas": 3
+    },
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "48",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-06",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261006",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "48",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261027",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-10-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h35.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261027",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h35",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "48",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 150,
+    "atalho": {
+     "exame": "48",
+     "turma": 40,
+     "horas": 4
+    },
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h4.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "48",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h4",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-11-10",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261110",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261215",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261215",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": {
+     "exame": "49",
+     "turma": 120,
+     "horas": 2.5
+    },
+    "turma_anual": true,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": {
+     "exame": "49",
+     "turma": 120,
+     "horas": 2.5
+    },
+    "turma_anual": true,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "48",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": {
+     "exame": "49",
+     "turma": 120,
+     "horas": 2.5
+    },
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2026-12-29",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20261229",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-01-05",
+   "codigo": "QO1.cursando.sem.1.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270105",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2031,
+     "sem": 1
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-01-05",
+   "codigo": "QO1.cursando.ano.1.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270105",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2031,
+     "sem": null
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-01-26",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270126",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-01-26",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270126",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": {
+     "exame": "49",
+     "turma": 90,
+     "horas": 3
+    },
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 180,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "49",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-09",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270209",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "49",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-23",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270223",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-02-23",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h35.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270223",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h35",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-16",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270316",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "49",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-16",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h4.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270316",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "49",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": false,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h4",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-30",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270330",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-30",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270330",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 150,
+    "atalho": {
+     "exame": "49",
+     "turma": 40,
+     "horas": 4
+    },
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-30",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270330",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-30",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270330",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-03-30",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270330",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-13",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270413",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-13",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270413",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 150,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "49",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-04-27",
+   "codigo": "QO1.cursando.sem.7.dia.nunca.-.b1.-.video.h25.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270427",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 120,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:cursando",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h25",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-05-25",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270525",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-05-25",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270525",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-05-25",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270525",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": null,
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "sem_prova",
+    "pergunta_inscricao": "50",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h3.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 90,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h3",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "50",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-15",
+   "codigo": "QO1.formado.-.-.-.f2.-.b1.n.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270615",
+   "esperado": {
+    "tipo": "f2",
+    "pergunta_inscricao": "50",
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270629",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270629",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-06-29",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h35.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270629",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 60,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h35",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-07-06",
+   "codigo": "QO1.cursando.sem.1.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270706",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2031,
+     "sem": 2
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-07-20",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270720",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-07-20",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270720",
+   "esperado": {
+    "tipo": "acima",
+    "exame": "50",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Ajuste de rotina"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-07-20",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h4.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270720",
+   "esperado": {
+    "tipo": "ok",
+    "exame": "50",
+    "turma": 40,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h4",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-08-17",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270817",
+   "esperado": {
+    "tipo": "sem_turma",
+    "exame": "50",
+    "turma": null,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [
+     "Menos horas por dia, mais antecedência"
+    ],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h15",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-08-17",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.s.video.h2.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270817",
+   "esperado": {
+    "tipo": "sem_turma",
+    "exame": "50",
+    "turma": null,
+    "atalho": null,
+    "turma_anual": true,
+    "pergunta_inscricao": "50",
+    "recebe_laudo": true,
+    "avisos": [],
+    "argumentos": [
+     "situacao:formado",
+     "tentativa:nunca",
+     "nivel:b1",
+     "metodo:video",
+     "trava:tempo",
+     "motivo:mudar",
+     "compromisso:bastante",
+     "trabalho:integral",
+     "rotina:filhos",
+     "horas:h2",
+     "vde:insta"
+    ],
+    "teste": {
+     "acertos": 5,
+     "erradas": [],
+     "questoes_atencao": 0
+    }
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.formado.-.-.-.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "sem_prova",
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.cursando.sem.8.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2028,
+     "sem": 1
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.cursando.sem.9.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2027,
+     "sem": 2
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.cursando.sem.10.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2027,
+     "sem": 1
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.cursando.ano.4.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2028,
+     "sem": null
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  },
+  {
+   "nome": "",
+   "hoje": "2027-09-14",
+   "codigo": "QO1.cursando.ano.5.dia.nunca.-.b1.-.video.h15.integral.insta.filhos.tempo.mudar.bastante.avista.-.CBADA.-.20270914",
+   "esperado": {
+    "tipo": "cedo",
+    "quando": {
+     "ano": 2027,
+     "sem": null
+    },
+    "pergunta_inscricao": null,
+    "recebe_laudo": false
+   }
+  }
+ ]
+}
