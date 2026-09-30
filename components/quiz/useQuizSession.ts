@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Campo, Resp } from '@/lib/oab/fluxo'
 import { api, type Utm } from './api'
-import { comLetra, comResposta, semLetra, semResposta } from './estado'
+import { comLetra, comResposta, mesmoEstado, semLetra, semResposta } from './estado'
 
 const CHAVE = 'qo:session'
 const guardar = (t: string) => { try { localStorage.setItem(CHAVE, t) } catch { /* sem storage */ } }
@@ -33,7 +33,8 @@ export function useQuizSession() {
 
   const aplicar = useCallback((novoA: Resp, novoTeste: string[]) => {
     const s = r.current
-    if (novoA === s.A && novoTeste === s.teste) return
+    // Reescolher a mesma resposta (ex.: ao retomar) não gera escrita.
+    if (mesmoEstado(novoA, novoTeste, s.A, s.teste)) return
     s.A = novoA; s.teste = novoTeste; s.seq += 1
     setA(novoA); setTeste(novoTeste)
     if (!s.token) return

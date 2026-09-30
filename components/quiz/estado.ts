@@ -39,3 +39,8 @@ export function comLetra(teste: readonly string[], i: number, letra: string): st
 export function semLetra(teste: readonly string[], i: number): string[] {
   return teste.length > i ? teste.slice(0, i) : (teste as string[])
 }
+
+/** Mesmo conteúdo, ignorando a ordem das chaves (o jsonb do servidor reordena). */
+export function mesmoEstado(a: Resp, ta: readonly string[], b: Resp, tb: readonly string[]): boolean {
+  return ORDER.every((k) => a[k] === b[k]) && ta.length === tb.length && ta.every((l, i) => l === tb[i])
+}

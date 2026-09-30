@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { sanear, type Resp } from '@/lib/oab/fluxo'
-import { comLetra, comResposta, limparDependentes, semLetra, semResposta } from './estado'
+import { comLetra, comResposta, limparDependentes, mesmoEstado, semLetra, semResposta } from './estado'
 
 const HOJE = '2026-09-30'
 const reprovado: Resp = {
@@ -49,5 +49,13 @@ describe('semResposta / teste', () => {
     expect(semLetra(['A', 'B', 'C'], 2)).toEqual(['A', 'B'])
     const t = ['A']
     expect(semLetra(t, 3)).toBe(t)
+  })
+})
+
+describe('mesmoEstado', () => {
+  it('ignora a ordem das chaves e compara o teste', () => {
+    expect(mesmoEstado({ situacao: 'formado', tentativa: 'nunca' }, ['A'], { tentativa: 'nunca', situacao: 'formado' }, ['A'])).toBe(true)
+    expect(mesmoEstado({ situacao: 'formado' }, [], { situacao: 'formado', tentativa: 'nunca' }, [])).toBe(false)
+    expect(mesmoEstado({}, ['A'], {}, ['B'])).toBe(false)
   })
 })
