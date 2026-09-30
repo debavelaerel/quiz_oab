@@ -79,6 +79,9 @@ function existeEmDados(k: Campo, v: string): boolean {
  * e tudo que vem depois de uma saída antecipada.
  */
 export function sanear(entrada: Record<string, unknown>, hoje: string): Resp {
+  if (entrada === null || typeof entrada !== 'object' || Array.isArray(entrada)) {
+    throw new RespostaInvalidaError('corpo inválido')
+  }
   for (const [k, v] of Object.entries(entrada)) {
     if (!(ORDER as readonly string[]).includes(k)) throw new RespostaInvalidaError(`campo desconhecido: ${k}`)
     if (typeof v !== 'string') throw new RespostaInvalidaError(`valor inválido em ${k}`)
