@@ -52,3 +52,8 @@ create trigger quiz_sessions_updated_at before update on quiz_sessions
 
 -- RLS ligado e SEM policy: só a service_role (que ignora RLS) acessa.
 alter table quiz_sessions enable row level security;
+
+-- Grants explícitos: projetos novos do Supabase não expõem tabelas novas às roles da Data API.
+grant select, insert, update, delete on quiz_sessions to service_role;
+grant usage, select on all sequences in schema public to service_role;
+revoke all on quiz_sessions from anon, authenticated;

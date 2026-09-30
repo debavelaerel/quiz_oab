@@ -33,28 +33,30 @@ export function criarMemorySessionRepo(): SessionRepo & { todas(): QuizSession[]
     async salvarSnapshot(id, patch) {
       const s = porId(id)
       if (!s || s.status === 'concluido' || !(s.seq < patch.seq)) return null
-      Object.assign(s, patch, { updatedAt: agora() })
+      Object.assign(s, clone(patch), { updatedAt: agora() })
       return clone(s)
     },
     async concluir(id, patch) {
       const s = porId(id)
       if (!s || s.status === 'concluido') return null
-      Object.assign(s, patch, { status: 'concluido', updatedAt: agora() })
+      Object.assign(s, clone(patch), { status: 'concluido', updatedAt: agora() })
       return clone(s)
     },
     async atualizar(id, patch) {
       const s = porId(id)
       if (!s) throw new Error('sessão inexistente')
-      Object.assign(s, patch, { updatedAt: agora() })
+      Object.assign(s, clone(patch), { updatedAt: agora() })
       return clone(s)
     },
     async listar(f: FiltroListagem) {
       const b = f.busca?.toLowerCase()
+      const digitos = (f.busca ?? '').replace(/\D/g, '')
       const filtradas = linhas
         .filter((l) => !f.tipo || l.tipo === f.tipo)
         .filter((l) => !f.exame || l.exame === f.exame)
         .filter((l) => !f.status || l.status === f.status)
-        .filter((l) => !b || [l.refCurta, l.nomeCompleto, l.email, l.whatsapp].some((c) => c?.toLowerCase().includes(b)))
+        .filter((l) => !b || [l.refCurta, l.nomeCompleto, l.email, l.whatsapp].some((c) => c?.toLowerCase().includes(b)) ||
+          (digitos.length >= 4 && !!l.whatsappNormalizado?.includes(digitos)))
         .sort((a, c) => c.startedAt.localeCompare(a.startedAt) || c.id - a.id)
       const ini = (f.pagina - 1) * f.porPagina
       return { sessoes: filtradas.slice(ini, ini + f.porPagina).map(clone), total: filtradas.length }
