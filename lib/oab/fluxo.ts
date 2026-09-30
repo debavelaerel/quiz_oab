@@ -83,9 +83,9 @@ export function sanear(entrada: Record<string, unknown>, hoje: string): Resp {
     throw new RespostaInvalidaError('corpo inválido')
   }
   for (const [k, v] of Object.entries(entrada)) {
-    if (!(ORDER as readonly string[]).includes(k)) throw new RespostaInvalidaError(`campo desconhecido: ${k}`)
-    if (typeof v !== 'string') throw new RespostaInvalidaError(`valor inválido em ${k}`)
-    if (!existeEmDados(k as Campo, v)) throw new RespostaInvalidaError(`resposta inexistente em ${k}: ${v}`)
+    if (!(ORDER as readonly string[]).includes(k)) throw new RespostaInvalidaError('campo desconhecido')
+    if (typeof v !== 'string') throw new RespostaInvalidaError('valor inválido')
+    if (!existeEmDados(k as Campo, v)) throw new RespostaInvalidaError('resposta inexistente')
   }
   const A: Resp = {}
   for (const k of ORDER) {

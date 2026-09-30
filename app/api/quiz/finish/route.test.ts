@@ -48,4 +48,17 @@ describe('POST /api/quiz/finish', () => {
     const s = (await repo.buscarPorToken(sessao.sessionToken))!
     expect(agendar).toHaveBeenCalledTimes(s.tipo && ['ok', 'acima', 'sem_turma'].includes(s.tipo) ? 1 : 0)
   })
+  it('a tarefa agendada nunca rejeita, mesmo que a geração falhe', async () => {
+    const repo = criarMemorySessionRepo()
+    const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
+    const tarefas: Array<() => void | Promise<void>> = []
+    const gerar = vi.fn(async () => { throw new Error('boom') })
+    const erro = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    await criarHandlerFinish({ repo, agendar: (t) => tarefas.push(t), gerar })(post('4.4.4.4', corpo(sessao.sessionToken)))
+    expect(tarefas).toHaveLength(1)
+    await expect(Promise.resolve(tarefas[0]())).resolves.toBeUndefined()
+    expect(gerar).toHaveBeenCalledTimes(1)
+    expect(erro).toHaveBeenCalled()
+    erro.mockRestore()
+  })
 })

@@ -33,7 +33,7 @@ export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; ger
         contato: c.contato as never, consentimento: c.consentimento,
       })
       if (novo && sessao.tipo && TIPOS_COM_DIAGNOSTICO.includes(sessao.tipo)) {
-        d.agendar(() => gerar(d.repo, sessao)) // nunca propaga erro: só grava em diagnostico_pdf_erro
+        d.agendar(() => gerar(d.repo, sessao).catch((e) => console.error('[finish] diagnóstico em background falhou', e)))
       }
       // Serializa só o resultado público; a sessão tem PII (e-mail, WhatsApp, token do diagnóstico).
       return NextResponse.json(await obterResultado(d.repo, sessao.sessionToken))

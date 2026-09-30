@@ -123,3 +123,12 @@ describe('completo / etapaAtual / teste', () => {
     expect(validarTeste(['A', 'B', 'C', 'D', 'X'], false)).toHaveLength(5)
   })
 })
+
+describe('sanear: mensagens de erro fixas', () => {
+  it('não ecoam conteúdo da requisição', () => {
+    const msg = (e: Record<string, unknown>) => { try { sanear(e, HOJE) } catch (x) { return (x as Error).message } return '' }
+    expect(msg({ hack: 'x' })).toBe('campo desconhecido')
+    expect(msg({ situacao: 'naoexiste-ZZZ' })).toBe('resposta inexistente')
+    expect(msg({ situacao: 5 })).toBe('valor inválido')
+  })
+})

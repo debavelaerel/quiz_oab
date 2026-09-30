@@ -16,4 +16,9 @@ describe('POST /api/quiz/whatsapp', () => {
     expect((await repo.buscarPorToken(sessao.sessionToken))!.whatsappClicadoEm).not.toBeNull()
     expect((await h(post({ session_token: 'x' }))).status).toBe(204)
   })
+  it('204 para corpo literal null ou não-JSON', async () => {
+    const h = criarHandlerWhatsapp(criarMemorySessionRepo())
+    expect((await h(new Request('http://x', { method: 'POST', body: 'null' }))).status).toBe(204)
+    expect((await h(new Request('http://x', { method: 'POST', body: 'lixo' }))).status).toBe(204)
+  })
 })
