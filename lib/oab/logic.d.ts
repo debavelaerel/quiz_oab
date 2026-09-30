@@ -7,7 +7,13 @@ export type Recomendacao =
   | { tipo: 'f2' }
   | { tipo: 'cedo'; quando: Quando }
 export type Atalho = { exame: string; turma: number; horas: number } | null
+export type Turma = { exame: string; dias: number; vendasIni: string; vendasFim: string; inicio: string }
+export type StatusExame = 'passou' | 'nao_libera' | 'sem_inscricao' | 'ok'
 export interface Logic {
+  primeiraVez(A: Respostas, hoje: string): Quando
+  statusExame(A: Respostas, ex: { fase1: string; inscFim: string; corte: string }, hoje: string): StatusExame
+  turmasDisponiveis(exame: string, hoje: string): Turma[]
+  diasAte(hoje: string, data: string): number
   cedo(A: Respostas, hoje: string): boolean
   perguntaTentativa(A: Respostas): boolean
   exameInscricaoFechada(A: Respostas, hoje: string): { id: string; nome: string } | null
