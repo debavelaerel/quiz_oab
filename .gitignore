@@ -14,3 +14,5 @@ tsconfig.tsbuildinfo
 services/diagnostico-pdf/.venv
 test-results
 playwright-report
+supabase/.temp
+supabase/.branches
