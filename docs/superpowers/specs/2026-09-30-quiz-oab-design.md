@@ -264,8 +264,7 @@ Esta seção **substitui** o que contradiz as seções anteriores (§3.3 tela `d
   desde o início. O `start` devolve `nome` quando retoma a sessão. `nome_completo` deixa de ser coletado: a coluna fica
   (sem migration) e fica `null` nas sessões novas; o admin e o CSV mostram `nome`.
 - O `finish` passa a receber `contato: { email, whatsapp }` + `consentimento`; o nome vem da sessão. Sem nome na sessão
-  → 422 com `campos: ['nome']`. O corpo do `finish` também pode trazer `nome` (usado só quando a sessão ainda não tem nome,
-  ex.: sessão nova aberta depois de um 404). A tela volta ao passo do nome com o que já foi digitado.
+  → 422 com `campos: ['nome']`. O corpo do `finish` também pode trazer `nome`; quando válido, vale sobre o já gravado na sessão (o `finish` reenvia respostas e teste do cliente pelo mesmo motivo); sem nome no corpo, vale o da sessão. A tela volta ao passo do nome com o que já foi digitado.
 - O diagnóstico em PDF, a mensagem do WhatsApp (`montarMensagemWhatsApp`), o admin e o e-mail usam esse `nome`.
 
 ### 10.2 O nome aparece em 5 pontos do quiz

@@ -44,6 +44,7 @@ describe('POST /api/quiz/finish', () => {
     expect(r.status).toBe(422)
     expect((await r.json()).campos).toEqual(['nome'])
     expect(agendar).not.toHaveBeenCalled()
+    expect((await repo.buscarPorToken(sessao.sessionToken))!.status).toBe('em_andamento')
   })
   it('agenda exatamente uma vez numa conclusão simples e não vaza PII na resposta', async () => {
     const repo = criarMemorySessionRepo()

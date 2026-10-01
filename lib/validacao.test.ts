@@ -87,5 +87,5 @@ describe('whatsappValido', () => {
 
 describe('nomeCurtoValido (primeiro nome ou apelido)', () => {
   it.each(['Ma', 'Maria', ' Zé ', 'João Pedro', 'Ana-Clara'])('aceita %p', (n) => expect(nomeCurtoValido(n)).toBe(true))
-  it.each(['', ' ', 'A', '12', '1a', '😀😀', 'x'.repeat(81)])('recusa %p', (n) => expect(nomeCurtoValido(n)).toBe(false))
+  it.each(['', ' ', 'A', '12', '1a', '😀😀', 'x'.repeat(81), 'Ma\nria', 'Ma\tria', 'Maria\u202E'])('recusa %p', (n) => expect(nomeCurtoValido(n)).toBe(false))
 })

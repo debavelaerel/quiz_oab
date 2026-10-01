@@ -20,6 +20,7 @@ export function nomeValido(nome: string): boolean {
 export function nomeCurtoValido(nome: string): boolean {
   const aparado = nome.trim()
   if (aparado.length < 2 || aparado.length > 80) return false
+  if (/[\p{Cc}\u202A-\u202E\u2066-\u2069]/u.test(aparado)) return false
   return (aparado.match(/\p{L}/gu) ?? []).length >= 2
 }
 

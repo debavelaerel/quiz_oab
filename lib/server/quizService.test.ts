@@ -259,6 +259,11 @@ describe('nome (v3)', () => {
     const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: ' Ana ' })
     expect(sessao.nome).toBe('Ana')
   })
+  it('nome válido no corpo do finish vale sobre o nome da sessão', async () => {
+    const s = await nova('Maria')
+    const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: ' Ana ' })
+    expect(sessao.nome).toBe('Ana')
+  })
   it('nome inválido no corpo do finish cai para o nome da sessão', async () => {
     const s = await nova('Maria')
     const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: '1' })
