@@ -4,6 +4,7 @@ import data from '@/lib/oab/data.json'
 import { L, type Resp } from '@/lib/oab/fluxo'
 import type { Recomendacao } from '@/lib/oab/logic'
 import { montarMensagemWhatsApp } from '@/lib/oab/whatsapp'
+import { br } from './copy'
 
 export const TESTE = data.teste
 const ROTINAS = data.rotinas as Record<string, { horas: number; rotina: string }>
@@ -52,8 +53,16 @@ export function exameDe(id: string): Exame {
 /** Cabeçalho do resultado: "1ª fase em ..., daqui a N dias." */
 export const diasAteProva = (exame: string, hoje: string) => L.diasAte(hoje, exameDe(exame).fase1)
 
+type TurmaDatas = { inicio: string; inicio2?: string; aConfirmar?: boolean }
+
+/** Início da turma como o lead vê; turma com datas ainda não divulgadas nunca mostra data (pacote do VDE, 30/09/2026). */
+export function inicioTxt(t: TurmaDatas): string {
+  if (t.aConfirmar) return 'início: data a confirmar'
+  return `início previsto em ${br(t.inicio)}${t.inicio2 ? ` ou ${br(t.inicio2)}` : ''}`
+}
+
 export type Previa = {
-  turma: { dias: number; inicio: string } | null
+  turma: { dias: number; texto: string } | null
   turmas: { dias: number; rotina: string; on: boolean }[]
   sinais: string[]
   correcao: { n: number; disciplina: string; comentario: string }[]
@@ -64,7 +73,7 @@ export function previaDe(rec: { exame: string; turma?: number | null }, teste: r
   const t = rec.turma ? data.turmas.find((x) => x.exame === rec.exame && x.dias === rec.turma) ?? null : null
   const erradas = TESTE.filter((q, i) => teste[i] !== q.gabarito)
   return {
-    turma: t ? { dias: t.dias, inicio: t.inicio } : null,
+    turma: t ? { dias: t.dias, texto: inicioTxt(t) } : null,
     turmas: L.turmasDisponiveis(rec.exame, hoje).slice(0, 3)
       .map((x) => ({ dias: x.dias, rotina: ROTINAS[String(x.dias)].rotina, on: !!t && x.dias === t.dias })),
     sinais: (erradas.length ? erradas : TESTE.slice(0, 1)).slice(0, 2).map((q) => q.sinal.texto),

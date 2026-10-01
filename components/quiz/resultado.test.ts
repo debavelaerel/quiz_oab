@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { acertos, brc, diasAteProva, itensDiagnostico, linkWhatsApp, outrosExames, previaDe, quandoCedo, TESTE } from './resultado'
+import data from '@/lib/oab/data.json'
+import { acertos, brc, diasAteProva, inicioTxt, itensDiagnostico, linkWhatsApp, outrosExames, previaDe, quandoCedo, TESTE } from './resultado'
 
 const GAB = TESTE.map((q) => q.gabarito)
 
@@ -58,7 +59,7 @@ describe('resultado: cabeçalho e lista', () => {
 describe('previaDe', () => {
   it('turma indicada marcada, até 3 turmas, sinais dos erros e correção das 5', () => {
     const p = previaDe({ exame: '48', turma: 90 }, ['X', 'X', 'X', 'X', 'X'], '2026-10-01')
-    expect(p.turma).toEqual({ dias: 90, inicio: '2026-10-12' })
+    expect(p.turma).toEqual({ dias: 90, texto: 'início previsto em 12/10/2026' })
     expect(p.turmas.length).toBeLessThanOrEqual(3)
     expect(p.turmas.filter((t) => t.on).map((t) => t.dias)).toEqual([90])
     expect(p.sinais).toEqual([TESTE[0].sinal.texto, TESTE[1].sinal.texto])
@@ -70,5 +71,44 @@ describe('previaDe', () => {
     expect(p.sinais).toEqual([TESTE[0].sinal.texto])
     expect(p.turma).toBeNull()
     expect(p.turmas.every((t) => !t.on)).toBe(true)
+  })
+})
+
+const teste = ['A', 'B', 'C', 'D', 'A']
+const HOJE = '2026-09-30'
+const turmas = data.turmas as unknown as { exame: string; dias: number; inicio: string; inicio2?: string; aConfirmar?: boolean }[]
+
+describe('inicioTxt (regra do pacote do VDE)', () => {
+  it('turma normal: início previsto com a data completa', () => {
+    expect(inicioTxt({ inicio: '2026-11-23' })).toBe('início previsto em 23/11/2026')
+  })
+  it('dois cronogramas: mostra os dois', () => {
+    expect(inicioTxt({ inicio: '2026-11-23', inicio2: '2026-12-07' })).toBe('início previsto em 23/11/2026 ou 07/12/2026')
+  })
+  it('aConfirmar: nunca mostra data', () => {
+    const txt = inicioTxt({ inicio: '2027-03-29', aConfirmar: true })
+    expect(txt).toBe('início: data a confirmar')
+    expect(txt).not.toMatch(/2027|29\/03/)
+  })
+})
+
+describe('previaDe com as turmas reais do data.json', () => {
+  it('turma aConfirmar: texto "data a confirmar" e nenhuma data (ISO ou BR) em toda a prévia', () => {
+    const t = turmas.find((x) => x.aConfirmar)
+    expect(t).toBeDefined()
+    const p = previaDe({ exame: t!.exame, turma: t!.dias }, teste, HOJE)
+    expect(p.turma?.texto).toBe('início: data a confirmar')
+    const json = JSON.stringify(p)
+    expect(json).not.toContain(t!.inicio)
+    expect(json).not.toContain(t!.inicio.split('-').reverse().join('/'))
+  })
+  it('turma com inicio2: o texto traz as duas datas', () => {
+    const t = turmas.find((x) => x.inicio2 && !x.aConfirmar)
+    expect(t).toBeDefined()
+    const p = previaDe({ exame: t!.exame, turma: t!.dias }, teste, HOJE)
+    expect(p.turma?.texto).toContain(' ou ')
+  })
+  it('sem turma indicada: turma nula', () => {
+    expect(previaDe({ exame: '48', turma: null }, teste, HOJE).turma).toBeNull()
   })
 })

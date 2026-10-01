@@ -1,4 +1,3 @@
-import { br } from '../copy'
 import type { Previa as DadosPrevia } from '../resultado'
 
 type Props = { nome: string; exame: string; p: DadosPrevia; qtdTeste: number; href: string; onClick: () => void }
@@ -11,7 +10,7 @@ export function Previa({ nome, exame, p, qtdTeste, href, onClick }: Props) {
         <div className="pk-top"><span>Diagnóstico · {nome}</span><span>OAB {exame}</span></div>
         <h4>A turma indicada pra você</h4>
         <div className="bl">
-          {p.turma ? <div className="pk-kpi"><b>{p.turma.dias} dias</b><span>início previsto em {br(p.turma.inicio)}</span></div> : null}
+          {p.turma ? <div className="pk-kpi"><b>{p.turma.dias} dias</b><span>{p.turma.texto}</span></div> : null}
           {p.turmas.map((x) => <div key={x.dias} className={`pk-row${x.on ? ' on' : ''}`}><b>{x.dias} dias</b><span>{x.rotina}</span></div>)}
         </div>
         <h4>O que os seus erros dizem</h4>
