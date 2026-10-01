@@ -68,4 +68,19 @@ describe('whatsappValido', () => {
   it('mais de 11 dígitos sem ser +55: inválido', () => {
     expect(whatsappValido('119876543210')).toBe(false)
   })
+  it('DDD inexistente: inválido mesmo com 11 dígitos', () => {
+    for (const ddd of ['00', '10', '20', '23', '25', '26', '29', '30', '36', '39', '40', '50', '52', '56', '60', '70', '72', '76', '78', '80', '90']) {
+      expect(whatsappValido(`${ddd}987654321`), ddd).toBe(false)
+    }
+    expect(whatsappValido('+55 (23) 98765-4321')).toBe(false)
+  })
+  it('todo DDD brasileiro existente: válido (com e sem +55)', () => {
+    const ddds = [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38,
+      41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+      71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+    for (const ddd of ddds) {
+      expect(whatsappValido(`(${ddd}) 98765-4321`), String(ddd)).toBe(true)
+      expect(whatsappValido(`+55 ${ddd} 98765-4321`), `+55 ${ddd}`).toBe(true)
+    }
+  })
 })
