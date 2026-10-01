@@ -1,6 +1,7 @@
 // Filtros da lista de leads do admin: leitura/validação a partir da URL e
 // montagem da query (paginação e "Exportar CSV" repassam os mesmos filtros).
 import { EXAMES, ROTULO_STATUS, ROTULO_TIPO } from './adminLabels'
+import { ALFABETO_REF } from './server/refCurta'
 import type { StatusSessao } from './server/types'
 
 export type FiltrosAdmin = {
@@ -14,6 +15,17 @@ export type FiltrosAdmin = {
 // Teto pra um número enorme nunca chegar ao `range` do PostgREST.
 const PAGINA_MAX = 10_000
 
+// A mensagem do WhatsApp e a lista mostram a referência como "#K7F2", mas
+// ref_curta é gravada sem o "#": tira o "#" do começo e, se o que sobra tem a
+// forma de uma referência (4 letras do alfabeto da ref), põe em maiúsculas.
+const FORMA_REF = new RegExp(`^[${ALFABETO_REF}]{4}$`, 'i')
+
+function limparBusca(bruta: string | undefined): string | undefined {
+  const b = bruta?.trim().replace(/^#+\s*/, '').slice(0, 200)
+  if (!b) return undefined
+  return FORMA_REF.test(b) ? b.toUpperCase() : b
+}
+
 type Entrada = URLSearchParams | Record<string, string | string[] | undefined>
 
 function pegar(e: Entrada, k: string): string | undefined {
@@ -22,7 +34,7 @@ function pegar(e: Entrada, k: string): string | undefined {
 }
 
 export function lerFiltros(e: Entrada): FiltrosAdmin {
-  const busca = pegar(e, 'busca')?.trim().slice(0, 200) || undefined
+  const busca = limparBusca(pegar(e, 'busca'))
   const tipo = pegar(e, 'tipo')
   const exame = pegar(e, 'exame')
   const status = pegar(e, 'status')

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { lerFiltros } from '../adminFiltros'
 import { criarMemorySessionRepo } from './memorySessionRepo'
 
 const utm = { utmSource: null, utmMedium: null, utmCampaign: null, utmContent: null, utmTerm: null }
@@ -15,6 +16,17 @@ describe('memorySessionRepo', () => {
     expect((await r.listar({ ...f, busca: 'maria' })).total).toBe(1)
     expect((await r.listar({ ...f, busca: '(11) 99999-1234' })).total).toBe(1)
     expect((await r.listar({ ...f, busca: '91234' })).total).toBe(1)
+  })
+
+  it('listar acha o lead pela referência colada como na mensagem do WhatsApp (#XXXX)', async () => {
+    const r = criarMemorySessionRepo()
+    const s = await r.criar({ hoje: '2026-09-30', utm })
+    await r.criar({ hoje: '2026-09-30', utm })
+    const f = { pagina: 1, porPagina: 10 }
+    for (const digitado of [`#${s.refCurta}`, ` #${s.refCurta.toLowerCase()} `, s.refCurta]) {
+      const { busca } = lerFiltros({ busca: digitado })
+      expect((await r.listar({ ...f, busca })).sessoes.map((x) => x.id)).toEqual([s.id])
+    }
   })
 
   it('snapshot exige seq crescente; concluída recusa snapshot e segunda conclusão', async () => {

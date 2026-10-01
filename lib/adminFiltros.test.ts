@@ -14,6 +14,19 @@ describe('adminFiltros', () => {
     expect(lerFiltros({ tipo: 'constructor', status: 'toString' })).toMatchObject({ tipo: undefined, status: undefined })
     expect(lerFiltros({ busca: ['a', 'b'] }).busca).toBe('a')
   })
+  it('busca por referência: tira o # (como na mensagem do WhatsApp) e põe em maiúsculas', () => {
+    expect(lerFiltros({ busca: '#K7F2' }).busca).toBe('K7F2')
+    expect(lerFiltros({ busca: ' #k7f2 ' }).busca).toBe('K7F2')
+    expect(lerFiltros({ busca: '# k7f2' }).busca).toBe('K7F2')
+    expect(lerFiltros({ busca: 'K7F2' }).busca).toBe('K7F2')
+    expect(lerFiltros(new URLSearchParams('busca=%23K7F2')).busca).toBe('K7F2')
+  })
+  it('texto com # que não tem forma de referência fica como digitado, sem o #', () => {
+    expect(lerFiltros({ busca: '#maria silva' }).busca).toBe('maria silva')
+    expect(lerFiltros({ busca: '#k0f1' }).busca).toBe('k0f1') // 0 e 1 não existem no alfabeto da ref
+    expect(lerFiltros({ busca: 'ana' }).busca).toBe('ana')
+    expect(lerFiltros({ busca: '#' }).busca).toBeUndefined()
+  })
   it('aceita URLSearchParams', () => {
     expect(lerFiltros(new URLSearchParams('busca=9999&status=saiu')))
       .toEqual({ busca: '9999', tipo: undefined, exame: undefined, status: 'saiu', pagina: 1 })
