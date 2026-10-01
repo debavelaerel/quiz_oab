@@ -18,6 +18,14 @@ describe('memorySessionRepo', () => {
     expect((await r.listar({ ...f, busca: '91234' })).total).toBe(1)
   })
 
+  it('listar acha pelo nome (primeiro nome gravado no início do quiz)', async () => {
+    const r = criarMemorySessionRepo()
+    const s = await r.criar({ hoje: '2026-09-30', utm })
+    await r.atualizar(s.id, { nome: 'Beatriz' })
+    const out = await r.listar({ busca: 'beatr', pagina: 1, porPagina: 25 })
+    expect(out.total).toBe(1)
+  })
+
   it('listar acha o lead pela referência colada como na mensagem do WhatsApp (#XXXX)', async () => {
     const r = criarMemorySessionRepo()
     const s = await r.criar({ hoje: '2026-09-30', utm })

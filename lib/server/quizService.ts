@@ -2,7 +2,7 @@ import { montarCodigo } from '@/lib/oab/codigo'
 import {
   completo, etapaAtual, L, RespostaInvalidaError, sanear, saida, validarTeste,
 } from '@/lib/oab/fluxo'
-import { emailValido, nomeValido, whatsappValido } from '@/lib/validacao'
+import { emailValido, nomeCurtoValido, whatsappValido } from '@/lib/validacao'
 import { normalizeEmail, normalizeWhatsapp } from '@/lib/normalize'
 import type { SessionRepo } from './sessionRepo'
 import type { DiagnosticoStatus, QuizSession, RecomendacaoGravada, Utm } from './types'
@@ -34,12 +34,17 @@ export async function iniciarSessao(repo: SessionRepo, p: { sessionToken?: strin
 
 export async function registrarSnapshot(
   repo: SessionRepo,
-  p: { sessionToken: string; seq: number; respostas: Record<string, unknown>; teste: unknown },
+  p: { sessionToken: string; seq: number; respostas: Record<string, unknown>; teste: unknown; nome?: unknown },
 ) {
   const s = await repo.buscarPorToken(p.sessionToken)
   if (!s) throw new SessaoInvalidaError()
   if (s.status === 'concluido') throw new SessaoConcluidaError()
   if (!Number.isInteger(p.seq) || p.seq < 1 || p.seq > 2_147_483_647) throw new EntradaInvalidaError('seq inválido', ['seq'])
+  let nome: string | undefined
+  if (p.nome !== undefined) {
+    if (typeof p.nome !== 'string' || !nomeCurtoValido(p.nome)) throw new EntradaInvalidaError('nome inválido', ['nome'])
+    nome = p.nome.trim()
+  }
 
   const respostas = comoEntradaInvalida(() => sanear(p.respostas, s.hoje))
   const saiu = saida(respostas, s.hoje)
@@ -47,7 +52,7 @@ export async function registrarSnapshot(
   const etapa = etapaAtual(respostas, teste, s.hoje)
   const status = saiu ? 'saiu' : 'em_andamento'
 
-  const gravada = await repo.salvarSnapshot(s.id, { seq: p.seq, respostas, teste, status, saidaTipo: saiu, ultimaPergunta: etapa })
+  const gravada = await repo.salvarSnapshot(s.id, { seq: p.seq, respostas, teste, status, saidaTipo: saiu, ultimaPergunta: etapa, ...(nome !== undefined ? { nome } : {}) })
   if (gravada) return { aceito: true, status: gravada.status, etapa }
   // Não gravou: seq velho, ou a sessão foi concluída entre a leitura e a escrita.
   const atual = await repo.buscarPorToken(p.sessionToken)
@@ -55,24 +60,28 @@ export async function registrarSnapshot(
   return { aceito: false, status: atual?.status ?? s.status, etapa: atual?.ultimaPergunta ?? etapa }
 }
 
-export type Contato = { nome_completo: unknown; email: unknown; whatsapp: unknown }
+export type Contato = { email: unknown; whatsapp: unknown }
 
 function validarContato(c: Contato) {
-  if (!c || typeof c !== 'object') throw new EntradaInvalidaError('contato inválido', ['nome_completo', 'email', 'whatsapp'])
+  if (!c || typeof c !== 'object') throw new EntradaInvalidaError('contato inválido', ['email', 'whatsapp'])
   const erros: string[] = []
-  const nome = typeof c.nome_completo === 'string' ? c.nome_completo.trim() : ''
   const email = typeof c.email === 'string' ? c.email.trim() : ''
   const whatsapp = typeof c.whatsapp === 'string' ? c.whatsapp.trim() : ''
-  if (!nomeValido(nome)) erros.push('nome_completo')
   if (!emailValido(email)) erros.push('email')
   if (!whatsappValido(whatsapp)) erros.push('whatsapp')
   if (erros.length) throw new EntradaInvalidaError('contato inválido', erros)
-  return { nome, email, whatsapp }
+  return { email, whatsapp }
+}
+
+/** Nome efetivo do lead: o do corpo do finish (sessão nova depois de um 404) ou o já gravado. */
+function resolverNome(doCorpo: unknown, daSessao: string | null): string | null {
+  if (typeof doCorpo === 'string' && nomeCurtoValido(doCorpo)) return doCorpo.trim()
+  return daSessao && nomeCurtoValido(daSessao) ? daSessao : null
 }
 
 export async function concluirSessao(
   repo: SessionRepo,
-  p: { sessionToken: string; respostas: Record<string, unknown>; teste: unknown; contato: Contato; consentimento: unknown },
+  p: { sessionToken: string; respostas: Record<string, unknown>; teste: unknown; contato: Contato; consentimento: unknown; nome?: unknown },
 ): Promise<{ sessao: QuizSession; novo: boolean }> {
   const s = await repo.buscarPorToken(p.sessionToken)
   if (!s) throw new SessaoInvalidaError()
@@ -80,6 +89,8 @@ export async function concluirSessao(
 
   if (p.consentimento !== true) throw new EntradaInvalidaError('consentimento obrigatório', ['consentimento'])
   const contato = validarContato(p.contato)
+  const nome = resolverNome(p.nome, s.nome)
+  if (!nome) throw new EntradaInvalidaError('nome obrigatório', ['nome'])
   const respostas = comoEntradaInvalida(() => sanear(p.respostas, s.hoje))
   if (!completo(respostas, s.hoje)) throw new EntradaInvalidaError('respostas incompletas ou com saída antecipada', ['respostas'])
   const teste = comoEntradaInvalida(() => validarTeste(p.teste, false))
@@ -91,7 +102,7 @@ export async function concluirSessao(
 
   const concluida = await repo.concluir(s.id, {
     respostas, teste, status: 'concluido', saidaTipo: null, ultimaPergunta: 'resultado',
-    nomeCompleto: contato.nome, nome: contato.nome.split(/\s+/)[0],
+    nome,
     email: contato.email, whatsapp: contato.whatsapp,
     emailNormalizado: normalizeEmail(contato.email), whatsappNormalizado: normalizeWhatsapp(contato.whatsapp),
     consentimentoEm: agora, consentimentoVersao: VERSAO_CONSENTIMENTO,

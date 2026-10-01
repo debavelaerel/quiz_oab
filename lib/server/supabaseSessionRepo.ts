@@ -51,7 +51,7 @@ export function criarSupabaseSessionRepo(db: SupabaseClient): SessionRepo {
         const b = f.busca.replace(/[%,()*"\\]/g, ' ').trim()
         const digitos = f.busca.replace(/\D/g, '')
         const extra = digitos.length >= 4 ? `,whatsapp_normalizado.ilike.%${digitos}%` : ''
-        q = q.or(`ref_curta.ilike.%${b}%,nome_completo.ilike.%${b}%,email.ilike.%${b}%,whatsapp.ilike.%${b}%${extra}`)
+        q = q.or(`ref_curta.ilike.%${b}%,nome.ilike.%${b}%,nome_completo.ilike.%${b}%,email.ilike.%${b}%,whatsapp.ilike.%${b}%${extra}`)
       }
       const ini = (f.pagina - 1) * f.porPagina
       const { data, error, count } = await q.order('started_at', { ascending: false }).order('id', { ascending: false }).range(ini, ini + f.porPagina - 1)

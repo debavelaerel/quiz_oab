@@ -77,7 +77,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     <Link href={`/admin/leads/${s.diagnosticoToken}`} className="font-semibold text-slate-900 underline decoration-slate-300">#{s.refCurta}</Link>
                   </td>
                   <td className="px-3 py-2">
-                    <Link href={`/admin/leads/${s.diagnosticoToken}`}>{s.nomeCompleto ?? <span className="text-slate-400">sem contato</span>}</Link>
+                    <Link href={`/admin/leads/${s.diagnosticoToken}`}>{(s.nomeCompleto ?? s.nome) ?? <span className="text-slate-400">sem contato</span>}</Link>
                     {s.email && <div className="text-xs text-slate-500">{s.email}</div>}
                   </td>
                   <td className="px-3 py-2">

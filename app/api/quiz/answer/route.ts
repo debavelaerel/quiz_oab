@@ -20,7 +20,7 @@ export function criarHandlerAnswer(repo: SessionRepo) {
     }
     try {
       const r = await registrarSnapshot(repo, {
-        sessionToken: c.session_token, seq: Number(c.seq), respostas: c.respostas as Record<string, unknown>, teste: c.teste ?? [],
+        sessionToken: c.session_token, seq: Number(c.seq), respostas: c.respostas as Record<string, unknown>, teste: c.teste ?? [], nome: c.nome,
       })
       return NextResponse.json(r)
     } catch (e) {

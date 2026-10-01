@@ -10,7 +10,7 @@ const RESP = {
 }
 const corpo = (token: string) => ({
   session_token: token, respostas: RESP, teste: ['C', 'B', 'A', 'X', 'A'],
-  contato: { nome_completo: 'Maria Souza', email: 'maria@exemplo.com', whatsapp: '(85) 99999-0000' }, consentimento: true,
+  nome: 'Maria', contato: { email: 'maria@exemplo.com', whatsapp: '(85) 99999-0000' }, consentimento: true,
 })
 const post = (ip: string, body: unknown) => new Request('http://x', { method: 'POST', body: JSON.stringify(body), headers: { 'x-forwarded-for': ip } })
 
@@ -31,8 +31,18 @@ describe('POST /api/quiz/finish', () => {
     const repo = criarMemorySessionRepo()
     const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
     const agendar = vi.fn()
-    const r = await criarHandlerFinish({ repo, agendar })(post('4.4.4.2', { ...corpo(sessao.sessionToken), contato: { nome_completo: 'Maria', email: 'x', whatsapp: '1' } }))
+    const r = await criarHandlerFinish({ repo, agendar })(post('4.4.4.2', { ...corpo(sessao.sessionToken), contato: { email: 'x', whatsapp: '1' } }))
     expect(r.status).toBe(422)
+    expect(agendar).not.toHaveBeenCalled()
+  })
+  it('422 com campos [nome] quando não há nome nem na sessão nem no corpo', async () => {
+    const repo = criarMemorySessionRepo()
+    const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
+    const { nome: _n, ...semNome } = corpo(sessao.sessionToken)
+    const agendar = vi.fn()
+    const r = await criarHandlerFinish({ repo, agendar })(post('4.4.4.9', semNome))
+    expect(r.status).toBe(422)
+    expect((await r.json()).campos).toEqual(['nome'])
     expect(agendar).not.toHaveBeenCalled()
   })
   it('agenda exatamente uma vez numa conclusão simples e não vaza PII na resposta', async () => {

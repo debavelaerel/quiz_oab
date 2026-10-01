@@ -23,6 +23,16 @@ describe('POST /api/quiz/start', () => {
     const com = criarHandlerStart({ repo, agora: () => new Date('2026-09-30T12:00:00Z'), permitirOverride: true })
     expect((await (await com(req({ hoje_override: '2027-01-15' }))).json()).hoje).toBe('2027-01-15')
   })
+  it('devolve nome null em sessão nova e o nome gravado na retomada', async () => {
+    const repo = criarMemorySessionRepo()
+    const h = criarHandlerStart({ repo, agora: () => new Date('2026-09-30T12:00:00Z'), permitirOverride: false })
+    const a = await (await h(req({}))).json()
+    expect(a.nome).toBeNull()
+    await repo.atualizar(repo.todas()[0].id, { nome: 'Maria' })
+    const b = await (await h(req({ session_token: a.session_token }))).json()
+    expect(b.retomada).toBe(true)
+    expect(b.nome).toBe('Maria')
+  })
   it('400 para JSON inválido', async () => {
     const h = criarHandlerStart({ repo: criarMemorySessionRepo(), agora: () => new Date(), permitirOverride: false })
     const r = await h(new Request('http://x', { method: 'POST', body: '{', headers: { 'x-forwarded-for': '2.2.2.2' } }))

@@ -30,6 +30,7 @@ export function criarHandlerStart(d: Deps) {
     })
     return NextResponse.json({
       session_token: sessao.sessionToken, hoje: sessao.hoje, retomada,
+      nome: retomada ? sessao.nome : null,
       respostas: retomada ? sessao.respostas : {}, teste: retomada ? sessao.teste : [], seq: sessao.seq,
     })
   }

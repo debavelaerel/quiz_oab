@@ -15,6 +15,16 @@ describe('POST /api/quiz/answer', () => {
     expect(r.status).toBe(200)
     expect(await r.json()).toMatchObject({ aceito: true, etapa: 'tentativa' })
   })
+  it('grava o nome do snapshot; 422 para nome inválido', async () => {
+    const repo = criarMemorySessionRepo()
+    const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
+    const h = criarHandlerAnswer(repo)
+    const ok = await h(post('3.3.3.5', { session_token: sessao.sessionToken, seq: 1, respostas: {}, teste: [], nome: 'Maria' }))
+    expect(ok.status).toBe(200)
+    expect((await repo.buscarPorToken(sessao.sessionToken))!.nome).toBe('Maria')
+    const ruim = await h(post('3.3.3.6', { session_token: sessao.sessionToken, seq: 2, respostas: {}, teste: [], nome: 'A' }))
+    expect(ruim.status).toBe(422)
+  })
   it('422 para token malformado, 404 desconhecido, 422 para resposta inexistente', async () => {
     const repo = criarMemorySessionRepo()
     const h = criarHandlerAnswer(repo)

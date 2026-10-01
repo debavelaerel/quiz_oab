@@ -14,7 +14,7 @@ export const maxDuration = 60
 const POR_PAGINA = 500
 const CAMPOS = data.campos as string[]
 const CABECALHO = [
-  'ref_curta', 'status', 'tipo', 'exame', 'turma', 'nome_completo', 'email', 'whatsapp', 'diagnostico_status',
+  'ref_curta', 'status', 'tipo', 'exame', 'turma', 'nome', 'email', 'whatsapp', 'diagnostico_status',
   'whatsapp_clicado_em', 'utm_source', 'utm_medium', 'utm_campaign', 'started_at', 'completed_at',
   'utm_content', 'utm_term', 'saida_tipo', 'ultima_pergunta', 'diagnostico_pdf_erro', 'email_erro', ...CAMPOS,
 ]
@@ -22,7 +22,7 @@ const CABECALHO = [
 function linha(s: QuizSession, agora: Date): unknown[] {
   const respostas = s.respostas as Record<string, string | undefined>
   return [
-    s.refCurta, s.status, s.tipo, s.exame, s.turma, s.nomeCompleto, s.email, s.whatsapp, statusEfetivo(s, agora),
+    s.refCurta, s.status, s.tipo, s.exame, s.turma, s.nomeCompleto ?? s.nome, s.email, s.whatsapp, statusEfetivo(s, agora),
     s.whatsappClicadoEm, s.utmSource, s.utmMedium, s.utmCampaign, s.startedAt, s.completedAt,
     s.utmContent, s.utmTerm, s.saidaTipo, s.ultimaPergunta, s.diagnosticoPdfErro, s.emailErro,
     ...CAMPOS.map((c) => (c === 'teste' ? s.teste.join('') : respostas[c] ? rotuloResposta(c, respostas[c]) : '')),

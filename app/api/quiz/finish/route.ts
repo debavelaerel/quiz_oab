@@ -30,7 +30,7 @@ export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; ger
     try {
       const { sessao, novo } = await concluirSessao(d.repo, {
         sessionToken: c.session_token, respostas: c.respostas as Record<string, unknown>, teste: c.teste,
-        contato: c.contato as never, consentimento: c.consentimento,
+        contato: c.contato as never, consentimento: c.consentimento, nome: c.nome,
       })
       if (novo && sessao.tipo && TIPOS_COM_DIAGNOSTICO.includes(sessao.tipo)) {
         d.agendar(() => gerar(d.repo, sessao).catch((e) => console.error('[finish] diagnóstico em background falhou', e)))

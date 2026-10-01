@@ -58,7 +58,7 @@ export default async function LeadDetalhePage({
     <div>
       <Link href="/admin/leads" className="text-sm text-slate-500 underline">← Leads</Link>
       <h1 className="mt-2 text-2xl font-bold">
-        {s.nomeCompleto ?? 'Lead sem contato'} <span className="font-mono text-slate-400">#{s.refCurta}</span>
+        {(s.nomeCompleto ?? s.nome) ?? 'Lead sem contato'} <span className="font-mono text-slate-400">#{s.refCurta}</span>
       </h1>
       <p className="text-sm text-slate-500">{rotuloStatus(s.status)} · início {formatarData(s.startedAt)}{s.completedAt ? ` · concluído ${formatarData(s.completedAt)}` : ''}</p>
 
@@ -83,7 +83,7 @@ export default async function LeadDetalhePage({
 
         <Bloco titulo="Contato">
           <dl>
-            <Linha rotulo="Nome">{s.nomeCompleto ?? '—'}</Linha>
+            <Linha rotulo="Nome">{(s.nomeCompleto ?? s.nome) ?? '—'}</Linha>
             <Linha rotulo="E-mail">{s.email ?? '—'}</Linha>
             <Linha rotulo="WhatsApp">{s.whatsapp ?? '—'}</Linha>
             <Linha rotulo="Consentimento">{s.consentimentoEm ? `${formatarData(s.consentimentoEm)} · versão ${s.consentimentoVersao ?? '—'}` : '—'}</Linha>

@@ -20,7 +20,7 @@ export interface SessionRepo {
   /** Atômico: só grava se seq < patch.seq e status <> 'concluido'. Devolve null se não gravou. */
   salvarSnapshot(
     id: number,
-    patch: Pick<QuizSession, 'seq' | 'respostas' | 'teste' | 'status' | 'saidaTipo' | 'ultimaPergunta'>,
+    patch: Pick<QuizSession, 'seq' | 'respostas' | 'teste' | 'status' | 'saidaTipo' | 'ultimaPergunta'> & Partial<Pick<QuizSession, 'nome'>>,
   ): Promise<QuizSession | null>
   /** Atômico: só conclui se status <> 'concluido'. Devolve null se já estava concluída. */
   concluir(id: number, patch: Partial<QuizSession>): Promise<QuizSession | null>

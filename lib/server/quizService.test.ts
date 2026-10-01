@@ -13,13 +13,15 @@ const RESP = {
   compromisso: 'bastante', trabalho: 'estagio', rotina: 'nada', horas: 'h3', vde: 'insta', investir: 'parcela', parcela: 'p80',
 }
 const TESTE = ['C', 'B', 'A', 'X', 'A']
-const CONTATO = { nome_completo: 'Maria Souza', email: 'Maria@Exemplo.com', whatsapp: '(85) 99999-0000' }
+const CONTATO = { email: 'Maria@Exemplo.com', whatsapp: '(85) 99999-0000' }
 
 let repo: ReturnType<typeof criarMemorySessionRepo>
 beforeEach(() => { repo = criarMemorySessionRepo() })
 
-async function nova() {
-  return (await iniciarSessao(repo, { utm: UTM, hoje: HOJE })).sessao
+async function nova(nome: string | null = 'Maria') {
+  const s = (await iniciarSessao(repo, { utm: UTM, hoje: HOJE })).sessao
+  if (nome) await repo.atualizar(s.id, { nome })
+  return (await repo.buscarPorToken(s.sessionToken))!
 }
 
 describe('iniciarSessao', () => {
@@ -126,6 +128,7 @@ describe('concluirSessao', () => {
     expect(sessao.emailNormalizado).toBe('maria@exemplo.com')
     expect(sessao.whatsappNormalizado).toBe('5585999990000')
     expect(sessao.nome).toBe('Maria')
+    expect(sessao.nomeCompleto).toBeNull()
     expect(sessao.consentimentoEm).not.toBeNull()
     expect(sessao.consentimentoVersao).toBe('v1')
     expect(sessao.tipo).toBe(sessao.recomendacao!.tipo)
@@ -142,12 +145,11 @@ describe('concluirSessao', () => {
     const s = await nova()
     const args = { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true }
     const a = await concluirSessao(repo, args)
-    const b = await concluirSessao(repo, { ...args, contato: { ...CONTATO, nome_completo: 'Outro Nome' } })
+    const b = await concluirSessao(repo, { ...args, contato: { ...CONTATO, email: 'outro@exemplo.com' } })
     expect(b.novo).toBe(false)
-    expect(b.sessao.nomeCompleto).toBe(a.sessao.nomeCompleto)
+    expect(b.sessao.email).toBe(a.sessao.email)
   })
   it.each([
-    ['nome de uma palavra', { ...CONTATO, nome_completo: 'Maria' }],
     ['e-mail inválido', { ...CONTATO, email: 'maria@' }],
     ['WhatsApp sem o 9º dígito', { ...CONTATO, whatsapp: '(85) 9999-0000' }],
   ])('422 com %s', async (_n, contato) => {
@@ -223,5 +225,47 @@ describe('registrarCliqueWhatsapp', () => {
     await registrarCliqueWhatsapp(repo, s.sessionToken)
     expect((await repo.buscarPorToken(s.sessionToken))!.whatsappClicadoEm).toBe(t1)
     expect(t1).not.toBeNull()
+  })
+})
+
+describe('nome (v3)', () => {
+  it('o snapshot grava o nome aparado; um snapshot sem nome não o apaga', async () => {
+    const s = await nova(null)
+    await registrarSnapshot(repo, { sessionToken: s.sessionToken, seq: 1, respostas: {}, teste: [], nome: '  Maria  ' })
+    expect((await repo.buscarPorToken(s.sessionToken))!.nome).toBe('Maria')
+    await registrarSnapshot(repo, { sessionToken: s.sessionToken, seq: 2, respostas: { situacao: 'formado' }, teste: [] })
+    expect((await repo.buscarPorToken(s.sessionToken))!.nome).toBe('Maria')
+  })
+  it.each([[''], ['A'], ['12'], ['x'.repeat(81)], [42 as unknown as string]])('422 e nada gravado para nome inválido %p', async (nome) => {
+    const s = await nova(null)
+    await expect(registrarSnapshot(repo, { sessionToken: s.sessionToken, seq: 1, respostas: {}, teste: [], nome })).rejects.toBeInstanceOf(EntradaInvalidaError)
+    expect((await repo.buscarPorToken(s.sessionToken))!.nome).toBeNull()
+  })
+  it('snapshot com nome em sessão concluída: 409 e o nome não muda', async () => {
+    const s = await nova()
+    await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true })
+    await expect(registrarSnapshot(repo, { sessionToken: s.sessionToken, seq: 9, respostas: {}, teste: [], nome: 'Outro' })).rejects.toBeInstanceOf(SessaoConcluidaError)
+    expect((await repo.buscarPorToken(s.sessionToken))!.nome).toBe('Maria')
+  })
+  it('finish sem nome na sessão e sem nome no corpo: 422 com campos [nome]', async () => {
+    const s = await nova(null)
+    const e = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true }).catch((x) => x)
+    expect(e).toBeInstanceOf(EntradaInvalidaError)
+    expect((e as EntradaInvalidaError).campos).toEqual(['nome'])
+    expect((await repo.buscarPorToken(s.sessionToken))!.status).toBe('em_andamento')
+  })
+  it('finish com nome no corpo (sessão nova depois de um 404) grava o nome', async () => {
+    const s = await nova(null)
+    const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: ' Ana ' })
+    expect(sessao.nome).toBe('Ana')
+  })
+  it('nome inválido no corpo do finish cai para o nome da sessão', async () => {
+    const s = await nova('Maria')
+    const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: '1' })
+    expect(sessao.nome).toBe('Maria')
+  })
+  it('contato só com e-mail e WhatsApp é válido; sem e-mail é 422', async () => {
+    const s = await nova()
+    await expect(concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: { whatsapp: CONTATO.whatsapp } as never, consentimento: true })).rejects.toBeInstanceOf(EntradaInvalidaError)
   })
 })

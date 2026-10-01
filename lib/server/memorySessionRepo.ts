@@ -55,7 +55,7 @@ export function criarMemorySessionRepo(): SessionRepo & { todas(): QuizSession[]
         .filter((l) => !f.tipo || l.tipo === f.tipo)
         .filter((l) => !f.exame || l.exame === f.exame)
         .filter((l) => !f.status || l.status === f.status)
-        .filter((l) => !b || [l.refCurta, l.nomeCompleto, l.email, l.whatsapp].some((c) => c?.toLowerCase().includes(b)) ||
+        .filter((l) => !b || [l.refCurta, l.nome, l.nomeCompleto, l.email, l.whatsapp].some((c) => c?.toLowerCase().includes(b)) ||
           (digitos.length >= 4 && !!l.whatsappNormalizado?.includes(digitos)))
         .sort((a, c) => c.startedAt.localeCompare(a.startedAt) || c.id - a.id)
       const ini = (f.pagina - 1) * f.porPagina

@@ -16,7 +16,7 @@ describe('GET /api/quiz/result', () => {
     const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
     await concluirSessao(repo, {
       sessionToken: sessao.sessionToken, respostas: RESP, teste: ['C', 'B', 'A', 'X', 'A'],
-      contato: { nome_completo: 'Maria Souza', email: 'maria@exemplo.com', whatsapp: '(85) 99999-0000' }, consentimento: true,
+      nome: 'Maria', contato: { email: 'maria@exemplo.com', whatsapp: '(85) 99999-0000' }, consentimento: true,
     })
     const h = criarHandlerResult(repo)
     const r = await h(get(`session_token=${sessao.sessionToken}`))
