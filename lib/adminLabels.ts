@@ -51,3 +51,20 @@ export const rotuloStatus = (s: StatusSessao | null | undefined): string => (s ?
 export const rotuloExame = (e: string | null | undefined): string =>
   e ? (EXAMES.find((x) => x.id === e)?.nome ?? `OAB ${e}`) : VAZIO
 export const rotuloTurma = (dias: number | null | undefined): string => (dias ? `Turma de ${dias} dias` : VAZIO)
+
+type Aviso = { tom: 'ok' | 'erro'; texto: string }
+const AVISOS: Record<string, Aviso> = {
+  'regenerar-pronto': { tom: 'ok', texto: 'Diagnóstico regenerado: pronto.' },
+  'regenerar-erro': { tom: 'erro', texto: 'A regeneração falhou (serviço de PDF indisponível?). Veja o erro no bloco Diagnóstico.' },
+  'regenerar-desligado': { tom: 'erro', texto: 'Serviço de diagnóstico desligado (armazenamento não configurado).' },
+  'regenerar-pendente': { tom: 'ok', texto: 'Regeneração em andamento.' },
+  'regenerar-invalido': { tom: 'erro', texto: 'Este diagnóstico não pode ser regenerado no estado atual.' },
+  'email-enviado': { tom: 'ok', texto: 'E-mail reenviado.' },
+  'email-falhou': { tom: 'erro', texto: 'Não foi possível reenviar o e-mail. Veja o erro no bloco Diagnóstico.' },
+  'email-invalido': { tom: 'erro', texto: 'O e-mail só pode ser reenviado com o diagnóstico pronto.' },
+}
+export const mensagemAviso = (aviso: string | undefined): Aviso | null =>
+  aviso && Object.hasOwn(AVISOS, aviso) ? AVISOS[aviso] : null
+
+const FMT_DATA = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' })
+export const formatarData = (iso: string | null | undefined): string => (iso ? FMT_DATA.format(new Date(iso)) : VAZIO)

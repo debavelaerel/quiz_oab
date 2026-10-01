@@ -35,3 +35,18 @@ describe('adminLabels', () => {
     expect(rotuloTurma(null)).toBe('—')
   })
 })
+
+describe('avisos e datas', async () => {
+  const { mensagemAviso, formatarData } = await import('./adminLabels')
+  it('mensagemAviso', () => {
+    expect(mensagemAviso('regenerar-pronto')).toEqual({ tom: 'ok', texto: 'Diagnóstico regenerado: pronto.' })
+    expect(mensagemAviso('regenerar-erro')?.tom).toBe('erro')
+    expect(mensagemAviso('email-enviado')?.tom).toBe('ok')
+    expect(mensagemAviso('qualquer')).toBeNull()
+    expect(mensagemAviso(undefined)).toBeNull()
+  })
+  it('formatarData em horário de Brasília', () => {
+    expect(formatarData('2026-09-30T15:05:00.000Z')).toBe('30/09/2026, 12:05')
+    expect(formatarData(null)).toBe('—')
+  })
+})
