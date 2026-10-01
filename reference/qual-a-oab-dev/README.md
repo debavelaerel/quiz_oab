@@ -76,7 +76,7 @@ A OAB 47 ficou de fora porque, em 29/09/2026, só tinha gabarito preliminar (o d
 
 O laudo soma as disciplinas ligadas aos erros, sem contar duas vezes a mesma ("25 das 80 questões pedem atenção"). "Não sei" conta como erro. Na mensagem do WhatsApp vai "acertei 3 de 5 (errei Ética e Processo Civil)".
 
-Horas por turma (Ana Clara, 29/09/2026): 180 e 150 dias, 2h de seg a sex; 120 dias, 2h30 de seg a sáb; 90 dias, 3h; 60 dias, 3h30; 40 dias, 4h sem folga. Datas das turmas: `calendario/_build/events.py`.
+Horas por turma (Ana Clara, 29/09/2026): 180 e 150 dias, 2h de seg a sex; 120 dias, 2h30 de seg a sáb; 90 dias, 3h; 60 dias, 3h30; 40 dias, 4h sem folga. Datas das turmas: `calendario/_build/events.py`. Inícios confirmados por ela em 30/09/2026 (150D OAB 49 e 40D OAB 48 com 2 cronogramas, `inicio2`); vendas confirmadas até o 180D OAB 50 (menos o fim dele); **as demais vendas ainda a confirmar**. O `data.json` vale sobre o calendário.
 
 ## Pendências
 

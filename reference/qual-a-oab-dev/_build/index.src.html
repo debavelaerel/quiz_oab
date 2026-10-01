@@ -558,7 +558,7 @@ function previa(rec) {
     <div class="pk-doc" aria-hidden="true">
       <div class="pk-top"><span>Diagnóstico · ${esc(A.nome)}</span><span>OAB ${e.id}</span></div>
       <h4>A turma indicada pra você</h4>
-      <div class="bl">${t ? `<div class="pk-kpi"><b>${t.dias} dias</b><span>início previsto em ${br(t.inicio)}</span></div>` : ""}${turmas}</div>
+      <div class="bl">${t ? `<div class="pk-kpi"><b>${t.dias} dias</b><span>${t.aConfirmar ? "início: data a confirmar" : `início previsto em ${br(t.inicio)}${t.inicio2 ? ` ou ${br(t.inicio2)}` : ""}`}</span></div>` : ""}${turmas}</div>
       <h4>O que os seus erros dizem</h4>
       <div class="bl">${sinais}</div>
       <h4>A correção das ${DATA.teste.length} questões</h4>

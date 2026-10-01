@@ -4,6 +4,19 @@ Este documento explica como o funil funciona e o que falta ligar. Junto com o `_
 `_build/logic.js` e o `casos-de-teste.json`, dá pra colocar o quiz no ar e implementar o laudo em
 qualquer linguagem sem abrir o Python.
 
+> **Atenção: datas das turmas.** Inícios e períodos de venda em `data.json > turmas` confirmados pelo VDE
+> em 30/09/2026, menos: o fim das vendas do 180D OAB 50 e as vendas do 40D OAB 49 e do 150D, 120D, 90D, 60D
+> e 40D OAB 50, que ainda são previsão. A recomendação depende delas (qual turma ainda tem matrícula).
+> Quando chegarem, é só trocar no `data.json` e rodar `build.py`, `check.py` e `build-entrega.py`.
+>
+> Essas turmas têm `"aConfirmar": true` (e o 180D OAB 50, `"fimVendasAConfirmar": true`). As datas delas
+> no JSON são só previsão interna, pra lógica saber se a turma está à venda. **Nunca mostre essas datas pro
+> lead:** o quiz, o laudo e o deck mostram "Data a confirmar" (e "a partir de 01/03" no 180D OAB 50). Quando
+> a data for divulgada, apague a flag.
+>
+> Duas turmas têm **dois cronogramas** (`inicio` e `inicio2`): 150D OAB 49 (23/11 e 07/12) e 40D OAB 48
+> (23/11 e 04/12). O laudo e o quiz mostram "23/11 ou 07/12".
+
 ## O que o funil faz
 
 1. **O quiz** (`index.html`) é uma página só, autocontida (fontes, logo e dados embutidos). Faz as
@@ -147,5 +160,5 @@ Python 3.9+, sem dependências. O PDF precisa de Node + Playwright: rode
 
 ## Ainda pendente do lado do VDE
 
-Número do WhatsApp, `leadEndpoint`, política de privacidade, vídeo da parte 2, preço e acesso da Turma
-Anual. As datas das turmas são previsões e mudam no `data.json`.
+**Vendas do 180D OAB 50 (fim), do 40D OAB 49 e do 150D ao 40D OAB 50**, número do WhatsApp, `leadEndpoint`, política de privacidade, vídeo da parte 2, preço e acesso da Turma
+Anual.

@@ -20,6 +20,28 @@ def brc(s):
     return f"{s[8:10]}/{s[5:7]}"
 
 
+A_CONFIRMAR = "Data a confirmar"
+
+
+def inicio_txt(t, curto=False):
+    """Start date; turmas with two schedules show both ("23/11/2026 ou 07/12/2026").
+    Turmas whose dates were not released yet (aConfirmar) never show a date."""
+    if t.get("aConfirmar"):
+        return A_CONFIRMAR
+    f = brc if curto else br
+    return f(t["inicio"]) + (f" ou {f(t['inicio2'])}" if t.get("inicio2") else "")
+
+
+def matricula_txt(t, f=None):
+    """Sales window as shown to the lead; unreleased dates are never shown."""
+    f = f or brc
+    if t.get("aConfirmar"):
+        return A_CONFIRMAR
+    if t.get("fimVendasAConfirmar"):
+        return f"a partir de {f(t['vendasIni'])}"
+    return f"{f(t['vendasIni'])} a {f(t['vendasFim'])}"
+
+
 def horas_txt(h):
     inteiro = int(h)
     return f"{inteiro}h" if h == inteiro else f"{inteiro}h30"
@@ -150,10 +172,10 @@ def bloco_turmas(A, today, rec):
             s, cls = f"Pede {horas_txt(ht)} por dia", "off"
         else:
             s, cls = "Cabe na sua rotina", ""
-        mat = "encerradas" if st == "encerrada" else f"{brc(t['vendasIni'])} a {brc(t['vendasFim'])}"
+        mat = "encerradas" if st == "encerrada" else matricula_txt(t)
         linhas.append(f"<tr class='{cls}'><td><b class='num'>{t['dias']}</b> dias</td>"
                       f"<td>{e(DATA['rotinas'][str(t['dias'])]['rotina'])}</td>"
-                      f"<td>{mat}</td><td>{br(t['inicio'])}</td><td><span class='st'>{s}</span></td></tr>")
+                      f"<td>{mat}</td><td>{inicio_txt(t)}</td><td><span class='st'>{s}</span></td></tr>")
     return (f"<h2>As turmas do VDE pra {e(ex['nome'])}</h2>"
             f"<p class='note'>Você disse ter <b>{label(A, 'horas').lower()}</b> por dia. Todas as turmas preparam do zero: "
             "o que muda entre elas é quanto tempo falta pra prova e quantas horas por dia cada uma pede.</p>"
@@ -314,7 +336,7 @@ def build_html(A, today, nome=""):
     kpis = [("1ª fase", br(ex["fase1"])), ("Faltam", f"{dias} dias")]
     if t:
         kpis.append(("Turma indicada", f"{t['dias']} dias"))
-        kpis.append(("Início previsto", br(t["inicio"])))
+        kpis.append(("Início previsto", inicio_txt(t, curto=bool(t.get("inicio2")))))
     kpi_html = "".join(f"<div><span>{k}</span><b class='num'>{v}</b></div>" for k, v in kpis)
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <title>Diagnóstico · {e(nome or 'lead')} · {e(ex['nome'])}</title><style>{head_css()}</style></head><body>

@@ -62,6 +62,7 @@
       "rotina": "4h por dia, sem dia de folga. É a reta final."
     }
   },
+  "_turmasPendente": "Inícios e vendas confirmados pela Ana Clara em 30/09/2026 (150D OAB 49 e 40D OAB 48 têm 2 cronogramas: inicio e inicio2). aConfirmar: true = datas ainda não divulgadas (40D OAB 49, 150D a 40D OAB 50): as datas desses registros são só uma previsão interna pra lógica decidir se a turma está à venda, e NUNCA aparecem pro lead (o laudo, o quiz e o deck mostram \"Data a confirmar\"). fimVendasAConfirmar: true = só o fim das vendas não foi divulgado (180D OAB 50: mostra \"a partir de 01/03\").",
   "turmas": [
     {
       "exame": "48",
@@ -81,15 +82,16 @@
       "exame": "48",
       "dias": 60,
       "vendasIni": "2026-10-22",
-      "vendasFim": "2026-11-06",
+      "vendasFim": "2026-11-08",
       "inicio": "2026-11-03"
     },
     {
       "exame": "48",
       "dias": 40,
-      "vendasIni": "2026-11-16",
+      "vendasIni": "2026-11-09",
       "vendasFim": "2026-12-13",
-      "inicio": "2026-11-23"
+      "inicio": "2026-11-23",
+      "inicio2": "2026-12-04"
     },
     {
       "exame": "49",
@@ -101,29 +103,30 @@
     {
       "exame": "49",
       "dias": 150,
-      "vendasIni": "2026-11-16",
-      "vendasFim": "2026-12-27",
-      "inicio": "2026-12-07"
+      "vendasIni": "2026-11-09",
+      "vendasFim": "2026-12-20",
+      "inicio": "2026-11-23",
+      "inicio2": "2026-12-07"
     },
     {
       "exame": "49",
       "dias": 120,
-      "vendasIni": "2027-01-11",
-      "vendasFim": "2027-01-25",
+      "vendasIni": "2027-01-04",
+      "vendasFim": "2027-01-31",
       "inicio": "2027-01-18"
     },
     {
       "exame": "49",
       "dias": 90,
       "vendasIni": "2027-02-01",
-      "vendasFim": "2027-02-17",
-      "inicio": "2027-02-08"
+      "vendasFim": "2027-02-21",
+      "inicio": "2027-02-15"
     },
     {
       "exame": "49",
       "dias": 60,
-      "vendasIni": "2027-03-01",
-      "vendasFim": "2027-03-15",
+      "vendasIni": "2027-02-22",
+      "vendasFim": "2027-03-21",
       "inicio": "2027-03-08"
     },
     {
@@ -131,49 +134,56 @@
       "dias": 40,
       "vendasIni": "2027-03-22",
       "vendasFim": "2027-04-12",
-      "inicio": "2027-03-29"
+      "inicio": "2027-03-29",
+      "aConfirmar": true
     },
     {
       "exame": "50",
       "dias": 180,
-      "vendasIni": "2027-03-08",
+      "vendasIni": "2027-03-01",
       "vendasFim": "2027-03-28",
-      "inicio": "2027-03-15"
+      "inicio": "2027-03-15",
+      "fimVendasAConfirmar": true
     },
     {
       "exame": "50",
       "dias": 150,
       "vendasIni": "2027-04-05",
       "vendasFim": "2027-04-22",
-      "inicio": "2027-04-12"
+      "inicio": "2027-04-12",
+      "aConfirmar": true
     },
     {
       "exame": "50",
       "dias": 120,
       "vendasIni": "2027-05-10",
       "vendasFim": "2027-05-24",
-      "inicio": "2027-05-17"
+      "inicio": "2027-05-17",
+      "aConfirmar": true
     },
     {
       "exame": "50",
       "dias": 90,
       "vendasIni": "2027-06-07",
       "vendasFim": "2027-06-23",
-      "inicio": "2027-06-14"
+      "inicio": "2027-06-14",
+      "aConfirmar": true
     },
     {
       "exame": "50",
       "dias": 60,
       "vendasIni": "2027-07-05",
       "vendasFim": "2027-07-19",
-      "inicio": "2027-07-12"
+      "inicio": "2027-07-12",
+      "aConfirmar": true
     },
     {
       "exame": "50",
       "dias": 40,
       "vendasIni": "2027-07-26",
       "vendasFim": "2027-08-16",
-      "inicio": "2027-08-02"
+      "inicio": "2027-08-02",
+      "aConfirmar": true
     }
   ],
   "regra": {
