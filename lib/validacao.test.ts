@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nomeValido, emailValido, whatsappValido } from './validacao'
+import { nomeValido, nomeCurtoValido, emailValido, whatsappValido } from './validacao'
 
 describe('nomeValido', () => {
   it('nome e sobrenome: válido', () => {
@@ -83,4 +83,9 @@ describe('whatsappValido', () => {
       expect(whatsappValido(`+55 ${ddd} 98765-4321`), `+55 ${ddd}`).toBe(true)
     }
   })
+})
+
+describe('nomeCurtoValido (primeiro nome ou apelido)', () => {
+  it.each(['Ma', 'Maria', ' Zé ', 'João Pedro', 'Ana-Clara'])('aceita %p', (n) => expect(nomeCurtoValido(n)).toBe(true))
+  it.each(['', ' ', 'A', '12', '1a', '😀😀', 'x'.repeat(81)])('recusa %p', (n) => expect(nomeCurtoValido(n)).toBe(false))
 })

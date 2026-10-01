@@ -16,6 +16,13 @@ export function nomeValido(nome: string): boolean {
   return aparado.split(/\s+/).filter(Boolean).length >= 2
 }
 
+/** Primeiro nome ou apelido (tela "Como podemos te chamar?"): 2 a 80 caracteres, ao menos 2 letras. */
+export function nomeCurtoValido(nome: string): boolean {
+  const aparado = nome.trim()
+  if (aparado.length < 2 || aparado.length > 80) return false
+  return (aparado.match(/\p{L}/gu) ?? []).length >= 2
+}
+
 // E-mail em formato padrão: local@dominio.tld, sem espaço, TLD só com
 // letras (2+). Não tenta cobrir todo o RFC 5322 — é validação de formulário,
 // não parser de e-mail.
