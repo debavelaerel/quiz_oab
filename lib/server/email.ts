@@ -8,6 +8,11 @@ function transporteSmtp(): Transporter {
     port: Number(process.env.SMTP_PORT || 1025),
     secure: process.env.SMTP_SECURE === '1',
     auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } : undefined,
+    // Os padrões do nodemailer chegam a minutos: um SMTP que não responde
+    // seguraria o envio em segundo plano por muito tempo.
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
   })
 }
 
