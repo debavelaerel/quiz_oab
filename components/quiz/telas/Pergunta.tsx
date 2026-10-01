@@ -4,17 +4,17 @@ import type { Campo, Resp } from '@/lib/oab/fluxo'
 import { opcoesDe } from '../copy'
 import { Cabecalho } from './Cabecalho'
 
-type Props = { k: Campo; A: Resp; hoje: string; idx: number; total: number; onEscolher: (v: string) => void }
+type Props = { k: Campo; A: Resp; hoje: string; idx: number; total: number; nome: string; onEscolher: (v: string) => void }
 
 /** Escolha única. `periodo` vira a grade de números. */
-export function Pergunta({ k, A, hoje, idx, total, onEscolher }: Props) {
+export function Pergunta({ k, A, hoje, idx, total, nome, onEscolher }: Props) {
   const [marcado, setMarcado] = useState(A[k])
   const ops = opcoesDe(k, A)
   const grade = k === 'periodo'
   const clicar = (v: string) => { setMarcado(v); onEscolher(v) }
   return (
     <section className="screen">
-      <Cabecalho k={k} A={A} hoje={hoje} idx={idx} total={total} />
+      <Cabecalho k={k} A={A} hoje={hoje} idx={idx} total={total} nome={nome} />
       <div className={grade ? `grid10${ops.length === 5 ? ' grid5' : ''}` : 'opts'}>
         {ops.map((o) => (
           <button key={o.v} className={`opt${marcado === o.v ? ' sel' : ''}`} onClick={() => clicar(o.v)}>

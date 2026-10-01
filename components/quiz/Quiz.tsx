@@ -16,6 +16,7 @@ import { Cedo } from './telas/Cedo'
 import { Dados } from './telas/Dados'
 import { F2 } from './telas/F2'
 import { Intro } from './telas/Intro'
+import { Nome } from './telas/Nome'
 import { Parte2 } from './telas/Parte2'
 import { Pergunta } from './telas/Pergunta'
 import { PerguntaMulti } from './telas/PerguntaMulti'
@@ -48,7 +49,7 @@ export function Quiz() {
 
   // A data vem do servidor: o botão da intro espera o /start responder (ou falhar).
   useEffect(() => {
-    if (querComecar && s.pronto) { setQuerComecar(false); ir(proxima('intro', s.A, hoje), s.A) }
+    if (querComecar && s.pronto) { setQuerComecar(false); ir('nome', s.A) }
   }, [querComecar, s.pronto, s.A, hoje, ir])
 
   const onVoltar = () => {
@@ -85,13 +86,13 @@ export function Quiz() {
     })
   }
 
-  // O finish leva o snapshot inteiro (respostas + teste) do momento do clique.
+  // O finish leva o snapshot inteiro (respostas + teste + nome) do momento do clique.
   const enviarDados = (f: Form) => finalizar<DadosResultado>({
     token: s.token(),
     novaSessao: s.novaSessao,
     enviar: (token) => {
-      const { respostas, teste } = s.snapshot()
-      return api.finish({ session_token: token, respostas, teste, contato: contatoDe(f), consentimento: true })
+      const { respostas, teste, nome } = s.snapshot()
+      return api.finish({ session_token: token, respostas, teste, ...(nome ? { nome } : {}), contato: contatoDe(f), consentimento: true })
     },
   })
 
@@ -115,8 +116,11 @@ export function Quiz() {
     if (tela === 'intro') {
       return <Intro esperando={querComecar} onComecar={() => { if (querComecar) return; track('quiz_start'); setQuerComecar(true) }} />
     }
+    if (tela === 'nome') {
+      return <Nome inicial={s.nome} onContinuar={(n) => { s.definirNome(n); ir(proxima('intro', s.A, hoje), s.A) }} />
+    }
     if (ehPergunta(tela)) {
-      const props = { k: tela, A: vista.A, hoje, idx: indicePergunta(tela, vista.A, hoje), total: totalPassos(vista.A, hoje) }
+      const props = { k: tela, A: vista.A, hoje, idx: indicePergunta(tela, vista.A, hoje), total: totalPassos(vista.A, hoje), nome: s.nome }
       return P[tela].multi
         ? <PerguntaMulti {...props} onConfirmar={(v) => confirmar(tela, v)} />
         : <Pergunta {...props} onEscolher={(v) => escolher(tela, v)} />
@@ -127,7 +131,7 @@ export function Quiz() {
     }
     if (tela === 'parte2') return <Parte2 onComecar={() => avanco.agendar(() => ir('t0', s.A))} />
     if (tela === 'dados') {
-      return <Dados enviar={enviarDados} onPronto={(r) => { track('quiz_lead'); setResultado(r); ir('resultado', s.A) }} />
+      return <Dados nome={s.nome} enviar={enviarDados} onPronto={(r) => { track('quiz_lead'); setResultado(r); ir('resultado', s.A) }} onFaltaNome={() => ir('nome', s.A)} />
     }
     if (tela === 'cedo') return <Cedo A={vista.A} hoje={hoje} />
     if (tela === 'f2') return <F2 />

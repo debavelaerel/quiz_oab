@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import './fonts.css'
 import './quiz.css'
+import './form.css'
 
 export const metadata: Metadata = {
   title: 'Qual a OAB da sua aprovação em 2027? | Método VDE',
