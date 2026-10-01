@@ -13,7 +13,7 @@ export default defineConfig({
     // exclusão o glob padrão do Vitest pega os *.test.tsx de dentro deles e
     // roda contra uma segunda cópia do React (diferente da que o jsdom usa
     // aqui), estourando "Cannot read properties of null (reading 'useState')".
-    exclude: ['**/node_modules/**', 'reference/**', '**/.worktrees/**', '**/.claude/worktrees/**'],
+    exclude: ['**/node_modules/**', 'reference/**', 'e2e/**', '**/.worktrees/**', '**/.claude/worktrees/**'],
   },
   resolve: {
     alias: { '@': path.resolve(__dirname, '.') },
