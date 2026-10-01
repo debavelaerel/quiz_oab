@@ -50,7 +50,10 @@ async def iniciar() -> None:
     if _browser is not None:
         return
     _playwright = await async_playwright().start()
-    _browser = await _playwright.chromium.launch(headless=True)
+    # --disable-dev-shm-usage: o /dev/shm padrão de um contêiner Docker tem só
+    # 64MB, pouco pro Chromium — sem a flag ele grava a memória compartilhada lá
+    # e cai ("Target crashed") em páginas maiores. Com ela usa /tmp.
+    _browser = await _playwright.chromium.launch(headless=True, args=["--disable-dev-shm-usage"])
 
 
 async def encerrar() -> None:

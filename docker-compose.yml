@@ -1,0 +1,63 @@
+# Ambiente LOCAL de desenvolvimento — NÃO é configuração de produção.
+# Sobe: MinIO (S3 local) + criação do bucket, Mailpit (SMTP falso com UI) e o
+# serviço Python que gera o PDF do diagnóstico. O Supabase sobe à parte
+# (`npx supabase start`) e o Next roda no host (`npm run dev`).
+#
+#   docker compose -p quiz-oab up -d --build
+#
+# As credenciais abaixo (minioadmin/minioadmin, segredo-local) são SÓ de
+# desenvolvimento local. As portas do host são configuráveis (ver .env.example
+# e README) para não colidir com outros projetos na mesma máquina.
+#
+# Imagem do MinIO: `minio/minio` não pode mais ser baixada do Docker Hub e a
+# `quay.io/minio/minio` passou a exigir login (401). A da Chainguard é pública,
+# traz o `minio` e o `mc` na mesma imagem e tem shell — por isso serve também
+# para o contêiner que cria o bucket.
+name: quiz-oab
+
+services:
+  minio:
+    image: cgr.dev/chainguard/minio:latest
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: minioadmin # só local
+      MINIO_ROOT_PASSWORD: minioadmin # só local
+    ports:
+      - "${MINIO_PORT:-9000}:9000" # API S3 (o navegador baixa o PDF daqui)
+      - "${MINIO_CONSOLE_PORT:-9001}:9001" # console web
+    volumes:
+      - minio-data:/data
+
+  minio-init:
+    image: cgr.dev/chainguard/minio:latest
+    depends_on: [minio]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until mc alias set local http://minio:9000 minioadmin minioadmin >/dev/null 2>&1; do sleep 1; done
+        mc mb --ignore-existing local/diagnosticos-oab
+    restart: "no"
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_SMTP_PORT:-1025}:1025" # SMTP
+      - "${MAILPIT_UI_PORT:-8025}:8025" # UI e API (http://localhost:8025)
+
+  diagnostico-pdf:
+    build: ./services/diagnostico-pdf
+    ports:
+      - "${DIAGNOSTICO_PDF_PORT:-8000}:8000"
+    environment:
+      DIAGNOSTICO_SERVICE_SECRET: ${DIAGNOSTICO_SERVICE_SECRET:-segredo-local}
+      BUCKET_NAME: diagnosticos-oab
+      REGION: us-east-1
+      S3_ENDPOINT: http://minio:9000 # rede interna do compose
+      ACCESS_KEY: minioadmin # só local
+      SECRET_KEY: minioadmin # só local
+    depends_on:
+      minio-init:
+        condition: service_completed_successfully
+
+volumes:
+  minio-data:
