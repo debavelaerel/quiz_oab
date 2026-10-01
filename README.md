@@ -41,7 +41,7 @@ testes do serviço fora do Docker).
 
 ```bash
 npm ci
-cp .env.example .env.local            # e preencha (ver abaixo)
+cp .env.example .env.local            # e preencha (ver abaixo); ponha ALLOW_HOJE_OVERRIDE=1 nele
 
 # 1) Supabase local (portas 643xx — ver nota)
 npx supabase start
@@ -54,8 +54,10 @@ docker compose -p quiz-oab --env-file .env.local up -d --build
 npm run dev                           # ou: npx next dev -p 3100 (se a 3000 estiver ocupada)
 ```
 
-Abra `http://localhost:3000/?hoje=2026-09-30` (o `?hoje=` só funciona com
-`ALLOW_HOJE_OVERRIDE=1`). Endereços locais:
+Abra `http://localhost:3000/?hoje=2026-09-30`. O `?hoje=` só funciona com
+`ALLOW_HOJE_OVERRIDE=1` no `.env.local` — o `.env.example` traz a variável **vazia** de
+propósito (ela nunca pode ir para produção); defina-a só na sua máquina, e também para rodar o
+e2e. Endereços locais:
 
 | O quê | URL |
 | --- | --- |
@@ -94,7 +96,8 @@ npx tsc --noEmit
 (cd services/diagnostico-pdf && python3 -m venv .venv && . .venv/bin/activate \
   && pip install -r requirements.txt && pytest -q)
 
-# E2E do caminho feliz: precisa do stack de pé (Supabase + compose) e do .env.local.
+# E2E do caminho feliz: precisa do stack de pé (Supabase + compose) e do .env.local
+# com ALLOW_HOJE_OVERRIDE=1 (o teste abre /?hoje=2026-09-30).
 npx playwright install chromium
 E2E_PORT=3100 npm run e2e              # sobe (ou reutiliza) `next dev` na E2E_PORT
 ```
@@ -137,7 +140,7 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 | `S3_PUBLIC_ENDPOINT` | Next | `http://localhost:9000` (o que o navegador enxerga) | vazio |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Next | Mailpit `localhost:1025` | SMTP do provedor; `SMTP_HOST` vazio = não envia (registra `email_erro`) |
 | `APP_URL` | Next | `http://localhost:3000` | URL pública do quiz (base do link no e-mail) |
-| `ALLOW_HOJE_OVERRIDE` | Next | `1` | **nunca** definir |
+| `ALLOW_HOJE_OVERRIDE` | Next | `1` no `.env.local` (vazio no `.env.example`) | **nunca** definir |
 | `NEXT_PUBLIC_WHATSAPP`, `NEXT_PUBLIC_PRIVACIDADE_URL`, `NEXT_PUBLIC_VIDEO_PARTE2` | Next (navegador) | — | **build args** da imagem |
 | `MINIO_PORT`, `MINIO_CONSOLE_PORT`, `MAILPIT_SMTP_PORT`, `MAILPIT_UI_PORT`, `DIAGNOSTICO_PDF_PORT` | docker compose | padrões | — |
 | `E2E_PORT` | Playwright | `3100` | — |
@@ -164,8 +167,10 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 - **Rate limit em memória, por instância:** com mais de uma instância do Next cada uma conta por
   si; para um limite global é preciso um armazenamento compartilhado (ex.: Redis) ou o WAF.
 - **IP do cliente (`lib/server/ip.ts`):** usa o **último** valor do `X-Forwarded-For`. Isso só
-  está certo atrás de um único proxy confiável (ALB direto). Atrás de CloudFront + ALB o último
-  salto é o CloudFront, e todos os usuários passam a dividir o mesmo limite.
+  está certo atrás de exatamente um proxy confiável (ALB direto). Sem proxy nenhum o header não
+  vem e todo mundo cai na mesma chave (`desconhecido`), dividindo um único limite. Atrás de
+  CloudFront + ALB o último salto é o CloudFront, e todos os usuários também passam a dividir o
+  mesmo limite.
 - **`after()`:** o PDF é disparado com `after()` depois da resposta do `finish`. Funciona em
   container Node de longa duração (não em serverless que congela após a resposta). Se o
   container reiniciar no meio da geração (deploy), o diagnóstico fica `pendente`, vira `erro`
@@ -177,12 +182,22 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 - **Admin:** senha única (`ADMIN_PASSWORD`) e cookie assinado (HMAC, 7 dias). Não há revogação
   de sessão no servidor: trocar `ADMIN_SESSION_SECRET` derruba todas as sessões.
 - **`ALLOW_HOJE_OVERRIDE` nunca em produção** (deixaria qualquer um simular a data).
+- **Serviço de PDF:** se o Chromium cair, a próxima requisição relança o browser; cada render
+  tem teto de ~40 s (estourou → HTTP 504). `GET /health` (sem autenticação) responde **503**
+  `{"ok": false, "browser": "desconectado"}` enquanto o browser estiver caído e 200 `{"ok": true}`
+  quando está de pé.
 - **Imagem Python:** roda como root e inclui o pytest. Aceitável por ora; endurecer depois
   (usuário não-root, imagem sem dependências de teste).
 - **Analytics:** além dos eventos originais existe `quiz_download` (clique em "Baixar meu
   diagnóstico").
 - **WhatsApp:** a mensagem não leva mais o código `QO1…`; leva a ref curta (`#ABCD`), e o
-  consultor acha o lead pela ref no `/admin`.
+  consultor acha o lead pela ref no `/admin` (pode colar com ou sem o `#`).
+- **Lista do `/admin`:** mostra **todas** as sessões, inclusive visitas anônimas que nunca
+  deixaram contato (aparecem como "sem contato"). Para ver só quem terminou o quiz, use o filtro
+  de status **Concluído**.
+- **URLs do admin levam o token do diagnóstico**, que é o mesmo token do link público do PDF.
+  Não cole URLs do admin em canais compartilhados (Slack, grupos, tickets): quem tiver a URL
+  baixa o PDF com os dados pessoais do lead.
 
 ## 6. Banco
 

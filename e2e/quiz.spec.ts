@@ -4,6 +4,8 @@ import { expect, test, type Page } from '@playwright/test'
 // PDF + Mailpit + `next dev`): intro → formado → nunca fez → demais perguntas
 // (primeira opção; nas de múltipla escolha, uma opção + Continuar) → parte 2 →
 // 5 questões do teste → dados → resultado com o diagnóstico disponível.
+// Usa ?hoje=2026-09-30: exige ALLOW_HOJE_OVERRIDE=1 no .env.local (só local/e2e,
+// NUNCA em produção — o .env.example traz a variável vazia).
 
 const passo = (page: Page) => page.locator('main p.step').first()
 

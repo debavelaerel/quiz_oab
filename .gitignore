@@ -18,3 +18,6 @@ supabase/.temp
 supabase/.branches
 next-env.d.ts
 .playwright-mcp/
+# Gerados pelo `next dev` (instruções para agentes de IA) — não fazem parte do projeto.
+AGENTS.md
+CLAUDE.md
