@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 
 // Caminho feliz completo contra o stack local (Supabase + MinIO + serviço de
-// PDF + Mailpit + `next dev`): intro → formado → nunca fez → demais perguntas
+// PDF + Mailpit + `next dev`): intro → nome → formado → nunca fez → demais perguntas
 // (primeira opção; nas de múltipla escolha, uma opção + Continuar) → parte 2 →
 // 5 questões do teste → dados → resultado com o diagnóstico disponível.
 // Usa ?hoje=2026-09-30: exige ALLOW_HOJE_OVERRIDE=1 no .env.local (só local/e2e,
@@ -25,6 +25,11 @@ test('caminho feliz: quiz → resultado → diagnóstico disponível', async ({ 
   await page.goto('/?hoje=2026-09-30')
   await page.getByRole('button', { name: 'Descobrir a minha OAB' }).click()
 
+  // Nome primeiro.
+  await page.getByLabel('Seu nome').fill('Maria')
+  await page.getByRole('button', { name: /Começar o quiz/ }).click()
+  await expect(page.getByRole('heading', { name: /Pra começar, Maria:/ })).toBeVisible()
+
   // Formado e nunca fez a prova.
   await expect(passo(page)).toHaveText(/^Pergunta 1 de/)
   await page.getByRole('button', { name: /^Já me formei/ }).click()
@@ -47,15 +52,16 @@ test('caminho feliz: quiz → resultado → diagnóstico disponível', async ({ 
     await page.getByRole('button', { name: /^Confirmar e (seguir|ver o resultado)$/ }).click()
   }
 
-  // Dados de contato (e-mail único por execução).
-  await page.getByLabel('Nome').fill('Maria Souza')
-  await page.getByLabel('E-mail').fill(`maria+${Date.now()}@exemplo.com`)
+  // Contato (e-mail único por execução), WhatsApp primeiro.
+  await expect(page.getByRole('heading', { name: /^Maria, deixe seu e-mail e WhatsApp/ })).toBeVisible()
   await page.getByLabel('WhatsApp').fill('85999990000')
+  await page.getByLabel('E-mail').fill(`maria+${Date.now()}@exemplo.com`)
   await page.getByRole('button', { name: /Ver o meu resultado agora/ }).click()
 
   // Resultado: a OAB recomendada é uma das três de 2027.
   await expect(page.getByText(/a OAB da sua aprovação é a/)).toBeVisible()
   await expect(page.locator('.big .num')).toHaveText(/^(48|49|50)$/)
+  await expect(page.getByText(/^Maria, a OAB da sua aprovação é a/)).toBeVisible()
 
   // WhatsApp: leva a ref curta (#…, codificada como %23) e não o código QO1.
   const wa = page.locator('a.cta.wa').first()

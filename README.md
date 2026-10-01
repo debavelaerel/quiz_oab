@@ -102,8 +102,8 @@ npx playwright install chromium
 E2E_PORT=3100 npm run e2e              # sobe (ou reutiliza) `next dev` na E2E_PORT
 ```
 
-O e2e percorre intro → formado → nunca fez → demais perguntas → parte 2 → 5 questões → dados →
-resultado, e confere a OAB (48/49/50), o link do WhatsApp (com a ref `#…`, sem `QO1`) e o botão
+O e2e percorre intro → nome → formado → nunca fez → demais perguntas → parte 2 → 5 questões → contato
+(WhatsApp e e-mail) → resultado (com o nome), e confere a OAB (48/49/50), o link do WhatsApp (com a ref `#…`, sem `QO1`) e o botão
 "Baixar meu diagnóstico" (até 70 s). Cada execução cria um lead novo (`maria+<timestamp>@exemplo.com`).
 
 ### Problemas comuns
@@ -215,6 +215,20 @@ A fonte única é `reference/qual-a-oab-dev/_build/data.json`:
 4. Republicar **as duas imagens juntas** (Next e serviço de PDF). O hash do `data.json` protege
    contra divergência: se só uma for atualizada, o serviço responde `409` e o diagnóstico fica
    `erro` até as duas baterem.
+
+**Quando o VDE envia um zip novo** (em vez de editar o `data.json`): descompactar sobre
+`reference/qual-a-oab-dev` (apagando o que sumiu do pacote), rodar `npm run sync:oab`, rodar
+`npx vitest run` + `pytest` do serviço e reconstruir as **duas** imagens.
+
+### Fluxo do quiz (v3)
+
+- **Nome primeiro:** a tela "Como podemos te chamar?" vem logo após a intro; o nome é gravado no
+  `answer` (e, como fallback, também é aceito no corpo do `finish`) e aparece nos títulos das
+  perguntas e no resultado.
+- **Formulário final enxuto:** só WhatsApp e e-mail. `nome_completo` fica nulo nas sessões novas
+  (a coluna foi mantida); o `/admin` mostra e exporta o `nome`.
+- **Datas de turma:** turma sem data aparece como "Data a confirmar" e há dois cronogramas.
+  Datas internas de turmas `aConfirmar` são só da lógica e não são exibidas.
 
 ## 8. Pendências
 
