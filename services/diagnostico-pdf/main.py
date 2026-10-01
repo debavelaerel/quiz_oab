@@ -18,7 +18,7 @@ from diagnosis import logic as L  # noqa: E402
 from diagnosis import report  # noqa: E402
 from diagnosis.answers import LeadInvalido, from_code  # noqa: E402
 from fastapi import Depends, FastAPI, Header, HTTPException  # noqa: E402
-from fastapi.responses import Response  # noqa: E402
+from fastapi.responses import JSONResponse, Response  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
 
 logger = logging.getLogger("diagnostico-pdf")
@@ -66,7 +66,11 @@ def _chave_recomendacao(rec: dict) -> tuple:
 
 
 @app.get("/health")
-def health() -> dict:
+def health():
+    # Sem autenticação (health check do balanceador). 503 com o Chromium caído: o
+    # orquestrador vê o serviço doente; a próxima requisição de PDF relança o browser.
+    if not render.conectado():
+        return JSONResponse(status_code=503, content={"ok": False, "browser": "desconectado"})
     return {"ok": True}
 
 
@@ -91,7 +95,11 @@ async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verif
         chave = f"diagnosticos/{req.diagnostico_token}.pdf"
 
     html = report.build_html(A, hoje, req.nome)
-    pdf = await render.html_para_pdf(html)
+    try:
+        pdf = await render.html_para_pdf(html)
+    except TimeoutError:
+        logger.error("render do PDF estourou o tempo")
+        raise HTTPException(status_code=504, detail="tempo esgotado ao gerar o PDF")
 
     if chave is not None:
         try:

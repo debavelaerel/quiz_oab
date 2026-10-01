@@ -24,6 +24,7 @@ def client(monkeypatch):
 
     monkeypatch.setattr(main.render, "iniciar", noop)
     monkeypatch.setattr(main.render, "encerrar", noop)
+    monkeypatch.setattr(main.render, "conectado", lambda: True)
     with TestClient(main.app) as c:
         yield c
 
@@ -42,7 +43,24 @@ H = {"X-Diagnostico-Secret": "seg"}
 
 
 def test_health(client):
-    assert client.get("/health").json() == {"ok": True}
+    r = client.get("/health")
+    assert r.status_code == 200
+    assert r.json() == {"ok": True}
+
+
+def test_health_503_com_o_browser_desconectado(client, monkeypatch):
+    monkeypatch.setattr(main.render, "conectado", lambda: False)
+    r = client.get("/health")  # sem segredo: o health check do balanceador não autentica
+    assert r.status_code == 503
+    assert r.json() == {"ok": False, "browser": "desconectado"}
+
+
+def test_504_quando_o_render_estoura_o_tempo(client, monkeypatch):
+    async def trava(html: str) -> bytes:
+        raise TimeoutError
+
+    monkeypatch.setattr(main.render, "html_para_pdf", trava)
+    assert client.post("/diagnostico", json=corpo(), headers=H).status_code == 504
 
 
 def test_sem_segredo_401(client):
