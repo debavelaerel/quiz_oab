@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { alternar, fimSemestre, hintDe, juntar, opcoesDe, tituloDe } from './copy'
+import { alternar, fimSemestre, hintDe, juntar, opcoesDe, tituloContato, tituloDe } from './copy'
 
 describe('tituloDe', () => {
   it('periodo semestral troca {fimSemestre} conforme o semestre de hoje', () => {
@@ -59,5 +59,32 @@ describe('múltipla escolha', () => {
   it('junta na ordem canônica das opções', () => {
     const ops = opcoesDe('rotina', {})
     expect(juntar(ops, ['outros', 'filhos'])).toBe('filhos+outros')
+  })
+})
+
+describe('títulos com o nome (v3)', () => {
+  const HOJE = '2026-09-30'
+  it.each([
+    ['situacao', 'Pra começar, Maria: como está a sua faculdade de Direito hoje?'],
+    ['nivel', 'Maria, com sinceridade: como está a sua base pra prova da OAB?'],
+    ['motivo', 'E agora a mais importante, Maria: por que você quer passar na OAB?'],
+    ['compromisso', 'Maria, o quanto você topa mudar na sua rotina pra passar?'],
+  ] as const)('%s usa o nome', (k, esperado) => {
+    expect(tituloDe(k, {}, HOJE, 'Maria')).toBe(esperado)
+  })
+  it('sem nome, vale o título original do data.json', () => {
+    expect(tituloDe('situacao', {}, HOJE)).toBe('Pra começar: como está a sua faculdade de Direito hoje?')
+    expect(tituloDe('situacao', {}, HOJE, '')).toBe('Pra começar: como está a sua faculdade de Direito hoje?')
+  })
+  it('perguntas fora da lista não mudam', () => {
+    expect(tituloDe('horas', {}, HOJE, 'Maria')).toBe(tituloDe('horas', {}, HOJE))
+  })
+  it('o nome é texto: "$&" e tags não são interpretados', () => {
+    expect(tituloDe('nivel', {}, HOJE, 'A$&B')).toContain('A$&B, com sinceridade')
+    expect(tituloDe('nivel', {}, HOJE, '<b>x</b>')).toContain('<b>x</b>, com sinceridade')
+  })
+  it('título da tela de contato', () => {
+    expect(tituloContato('Maria')).toBe('Maria, deixe seu e-mail e WhatsApp pra receber o seu resultado')
+    expect(tituloContato('')).toBe('Deixe seu e-mail e WhatsApp pra receber o seu resultado')
   })
 })

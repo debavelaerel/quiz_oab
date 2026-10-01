@@ -13,7 +13,7 @@ async function post<T>(url: string, corpo: unknown, opts: { keepalive?: boolean;
 }
 
 export type Utm = { source: string | null; medium: string | null; campaign: string | null; content: string | null; term: string | null }
-export type RespostaStart = { session_token: string; hoje: string; retomada: boolean; respostas: Resp; teste: string[]; seq: number }
+export type RespostaStart = { session_token: string; hoje: string; retomada: boolean; respostas: Resp; teste: string[]; seq: number; nome: string | null }
 
 export type Resultado = {
   recomendacao: Recomendacao & { atalho: unknown }
@@ -26,7 +26,7 @@ export type Resultado = {
 export const api = {
   start: (b: { session_token?: string; utm?: Utm; hoje_override?: string }, signal?: AbortSignal) =>
     post<RespostaStart>('/api/quiz/start', b, { signal }),
-  answer: (b: { session_token: string; seq: number; respostas: Resp; teste: string[] }) =>
+  answer: (b: { session_token: string; seq: number; respostas: Resp; teste: string[]; nome?: string }) =>
     post<{ aceito: boolean; status: string; etapa: string }>('/api/quiz/answer', b, { keepalive: true }),
   finish: (b: unknown) => post<Resultado>('/api/quiz/finish', b),
   result: async (token: string): Promise<Resultado> => {

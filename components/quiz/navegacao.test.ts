@@ -33,3 +33,12 @@ describe('progresso', () => {
     expect(progresso('parte2', {}, HOJE, 5)).toBeNull()
   })
 })
+
+describe('tela do nome', () => {
+  it('a tela do nome não tem barra de progresso e voltar dela não apaga resposta', () => {
+    expect(progresso('nome', {}, '2026-09-30', 5)).toBeNull()
+    const n = irPara(navInicial, 'nome')
+    const { saindo } = voltar(n)
+    expect(saindo).toBe('nome')
+  })
+})

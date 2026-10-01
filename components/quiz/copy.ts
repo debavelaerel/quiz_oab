@@ -41,7 +41,21 @@ export function fimSemestre(hoje: string): string {
   return semestre(hoje) ? `31 de dezembro de ${y}` : `30 de junho de ${y}`
 }
 
-export function tituloDe(k: Campo, A: Resp, hoje: string): string {
+/** Variações com o nome da pessoa (só a camada de UI; o data.json do VDE fica intocado). */
+const COM_NOME: Partial<Record<Campo, string>> = {
+  situacao: 'Pra começar, {nome}: como está a sua faculdade de Direito hoje?',
+  nivel: '{nome}, com sinceridade: como está a sua base pra prova da OAB?',
+  motivo: 'E agora a mais importante, {nome}: por que você quer passar na OAB?',
+  compromisso: '{nome}, o quanto você topa mudar na sua rotina pra passar?',
+}
+
+export function tituloContato(nome: string): string {
+  return nome ? `${nome}, deixe seu e-mail e WhatsApp pra receber o seu resultado` : 'Deixe seu e-mail e WhatsApp pra receber o seu resultado'
+}
+
+export function tituloDe(k: Campo, A: Resp, hoje: string, nome = ''): string {
+  const modelo = nome ? COM_NOME[k] : undefined
+  if (modelo) return modelo.replace('{nome}', () => nome) // função: "$&" digitado não é expandido
   const q = P[k]
   if (k === 'periodo') {
     return A.regime === 'ano' ? q.tituloAno!.replace('{ano}', hoje.slice(0, 4)) : q.titulo.replace('{fimSemestre}', fimSemestre(hoje))

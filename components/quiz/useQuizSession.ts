@@ -28,18 +28,19 @@ export function useQuizSession() {
   const [hoje, setHoje] = useState('')
   const [A, setA] = useState<Resp>({})
   const [teste, setTeste] = useState<string[]>([])
+  const [nome, setNome] = useState('')
   // Fonte da verdade síncrona (o setState é assíncrono e os handlers precisam do valor novo na hora).
-  const r = useRef({ token: '', seq: 0, A: {} as Resp, teste: [] as string[], hoje: '', iniciado: false })
+  const r = useRef({ token: '', seq: 0, A: {} as Resp, teste: [] as string[], nome: '', hoje: '', iniciado: false })
   const origem = useRef<{ utm?: Utm; hoje_override?: string }>({})
 
-  const aplicar = useCallback((novoA: Resp, novoTeste: string[]) => {
+  const aplicar = useCallback((novoA: Resp, novoTeste: string[], novoNome: string = r.current.nome) => {
     const s = r.current
     // Reescolher a mesma resposta (ex.: ao retomar) não gera escrita.
-    if (mesmoEstado(novoA, novoTeste, s.A, s.teste)) return
-    s.A = novoA; s.teste = novoTeste; s.seq += 1
-    setA(novoA); setTeste(novoTeste)
+    if (novoNome === s.nome && mesmoEstado(novoA, novoTeste, s.A, s.teste)) return
+    s.A = novoA; s.teste = novoTeste; s.nome = novoNome; s.seq += 1
+    setA(novoA); setTeste(novoTeste); setNome(novoNome)
     if (!s.token) return
-    api.answer({ session_token: s.token, seq: s.seq, respostas: novoA, teste: novoTeste }).catch(() => undefined)
+    api.answer({ session_token: s.token, seq: s.seq, respostas: novoA, teste: novoTeste, ...(novoNome ? { nome: novoNome } : {}) }).catch(() => undefined)
   }, [])
 
   useEffect(() => {
@@ -60,7 +61,8 @@ export function useQuizSession() {
         guardar(res.session_token)
         if (res.retomada) {
           s.A = res.respostas ?? {}; s.teste = res.teste ?? []
-          setA(s.A); setTeste(s.teste)
+          s.nome = res.nome ?? ''
+          setA(s.A); setTeste(s.teste); setNome(s.nome)
         }
         setHoje(res.hoje)
       })
@@ -83,6 +85,8 @@ export function useQuizSession() {
   const responderTeste = useCallback((i: number, letra: string) => { aplicar(r.current.A, comLetra(r.current.teste, i, letra)) }, [aplicar])
   const apagarTeste = useCallback((i: number) => { aplicar(r.current.A, semLetra(r.current.teste, i)) }, [aplicar])
 
+  const definirNome = useCallback((n: string) => { aplicar(r.current.A, r.current.teste, n.trim()) }, [aplicar])
+
   /** Sessão perdida (404 no finish): abre outra, com as mesmas UTMs, e devolve o token novo. */
   const novaSessao = useCallback(async (): Promise<string> => {
     const res = await api.start(origem.current)
@@ -92,10 +96,10 @@ export function useQuizSession() {
   }, [])
 
   return {
-    pronto, hoje, A, teste, novaSessao,
+    pronto, hoje, A, teste, nome, novaSessao,
     token: () => r.current.token,
-    snapshot: () => ({ respostas: r.current.A, teste: r.current.teste, seq: r.current.seq }),
-    responder, apagar, responderTeste, apagarTeste,
+    snapshot: () => ({ respostas: r.current.A, teste: r.current.teste, seq: r.current.seq, nome: r.current.nome }),
+    responder, definirNome, apagar, responderTeste, apagarTeste,
   }
 }
 
