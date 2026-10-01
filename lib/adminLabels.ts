@@ -58,6 +58,7 @@ const AVISOS: Record<string, Aviso> = {
   'regenerar-erro': { tom: 'erro', texto: 'A regeneração falhou (serviço de PDF indisponível?). Veja o erro no bloco Diagnóstico.' },
   'regenerar-desligado': { tom: 'erro', texto: 'Serviço de diagnóstico desligado (armazenamento não configurado).' },
   'regenerar-pendente': { tom: 'ok', texto: 'Regeneração em andamento.' },
+  'regenerar-em-andamento': { tom: 'erro', texto: 'O diagnóstico já está sendo gerado. Aguarde um minuto e recarregue.' },
   'regenerar-invalido': { tom: 'erro', texto: 'Este diagnóstico não pode ser regenerado no estado atual.' },
   'email-enviado': { tom: 'ok', texto: 'E-mail reenviado.' },
   'email-falhou': { tom: 'erro', texto: 'Não foi possível reenviar o e-mail. Veja o erro no bloco Diagnóstico.' },

@@ -6,6 +6,7 @@ import { ORDER } from '@/lib/oab/fluxo'
 import {
   formatarData, mensagemAviso, rotuloDiagnostico, rotuloExame, rotuloResposta, rotuloStatus, rotuloTeste, rotuloTipo, rotuloTurma, tituloPergunta,
 } from '@/lib/adminLabels'
+import FormAcao from '@/components/admin/FormAcao'
 import { obterRepo } from '@/lib/server/container'
 import { statusEfetivo } from '@/lib/server/quizService'
 import { isUuid } from '@/lib/server/uuid'
@@ -107,9 +108,7 @@ export default async function LeadDetalhePage({
               <a href={`/api/admin/leads/${s.diagnosticoToken}/pdf`} className={`${botao} border-slate-900 bg-slate-900 text-white`}>Baixar PDF</a>
             )}
             {podeRegenerar && (
-              <form method="post" action={`/api/admin/leads/${s.diagnosticoToken}/regenerar`}>
-                <button type="submit" className={`${botao} border-slate-300`}>Regenerar</button>
-              </form>
+              <FormAcao action={`/api/admin/leads/${s.diagnosticoToken}/regenerar`} rotulo="Regenerar" rotuloEnviando="Regenerando…" className={`${botao} border-slate-300`} />
             )}
             {diag === 'pronto' && s.email && (
               <form method="post" action={`/api/admin/leads/${s.diagnosticoToken}/reenviar-email`}>

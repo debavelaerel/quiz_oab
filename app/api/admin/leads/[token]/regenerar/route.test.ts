@@ -21,11 +21,29 @@ describe('POST /api/admin/leads/[token]/regenerar', () => {
     expect(enviar).toHaveBeenCalledTimes(1)
   })
   it('serviço de PDF fora do ar: termina em erro, sem lançar (200 com status erro)', async () => {
-    const { repo, params } = await leadConcluido({ diagnosticoStatus: 'pendente' })
+    const { repo, params } = await leadConcluido({ diagnosticoStatus: 'erro' })
     const gerar = async () => { throw new DiagnosticoIndisponivel('ECONNREFUSED') }
     const r = await criarHandlerRegenerar(deps(repo as never, { gerar }))(post(), params)
     expect(r.status).toBe(200)
     expect(await r.json()).toEqual({ status: 'erro' })
+  })
+  it('pendente recente (<60s): 409 sem chamar gerar (já está sendo gerado); form recebe o aviso', async () => {
+    const agora = new Date('2026-09-30T12:00:30.000Z')
+    const { repo, s, params } = await leadConcluido({ diagnosticoStatus: 'pendente', diagnosticoSolicitadoEm: '2026-09-30T12:00:00.000Z' })
+    const gerar = vi.fn()
+    const r = await criarHandlerRegenerar(deps(repo as never, { gerar, agora: () => agora }))(post(), params)
+    expect(r.status).toBe(409)
+    expect((await r.json()).erro).toBe('o diagnóstico já está sendo gerado')
+    expect(gerar).not.toHaveBeenCalled()
+    const f = await criarHandlerRegenerar(deps(repo as never, { gerar, agora: () => agora }))(post({ form: true }), params)
+    expect(f.headers.get('location')).toBe(`http://x/admin/leads/${s.diagnosticoToken}?aviso=regenerar-em-andamento`)
+  })
+  it('pendente com mais de 60s: pode regenerar', async () => {
+    const agora = new Date('2026-09-30T12:01:01.000Z')
+    const { repo, params } = await leadConcluido({ diagnosticoStatus: 'pendente', diagnosticoSolicitadoEm: '2026-09-30T12:00:00.000Z' })
+    const r = await criarHandlerRegenerar(deps(repo as never, { agora: () => agora }))(post(), params)
+    expect(r.status).toBe(200)
+    expect((await r.json()).status).toBe('pronto')
   })
   it('vale para desligado', async () => {
     const { repo, params } = await leadConcluido({ diagnosticoStatus: 'desligado' })

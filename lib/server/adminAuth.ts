@@ -48,7 +48,12 @@ function lerCookie(req: Request, nome: string): string | undefined {
   for (const parte of bruto.split(';')) {
     const i = parte.indexOf('=')
     if (i < 0) continue
-    if (parte.slice(0, i).trim() === nome) return decodeURIComponent(parte.slice(i + 1).trim())
+    if (parte.slice(0, i).trim() !== nome) continue
+    try {
+      return decodeURIComponent(parte.slice(i + 1).trim())
+    } catch {
+      return undefined // cookie malformado: trata como ausente (falha fechada)
+    }
   }
   return undefined
 }

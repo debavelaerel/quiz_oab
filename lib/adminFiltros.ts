@@ -11,6 +11,9 @@ export type FiltrosAdmin = {
   pagina: number
 }
 
+// Teto pra um número enorme nunca chegar ao `range` do PostgREST.
+const PAGINA_MAX = 10_000
+
 type Entrada = URLSearchParams | Record<string, string | string[] | undefined>
 
 function pegar(e: Entrada, k: string): string | undefined {
@@ -29,7 +32,7 @@ export function lerFiltros(e: Entrada): FiltrosAdmin {
     tipo: tipo && Object.hasOwn(ROTULO_TIPO, tipo) ? tipo : undefined,
     exame: exame && EXAMES.some((x) => x.id === exame) ? exame : undefined,
     status: status && Object.hasOwn(ROTULO_STATUS, status) ? (status as StatusSessao) : undefined,
-    pagina: Number.isFinite(pagina) && pagina >= 1 ? pagina : 1,
+    pagina: Number.isFinite(pagina) && pagina >= 1 ? Math.min(pagina, PAGINA_MAX) : 1,
   }
 }
 

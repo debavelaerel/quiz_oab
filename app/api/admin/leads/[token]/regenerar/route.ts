@@ -12,6 +12,9 @@ export const runtime = 'nodejs'
 export const maxDuration = 60
 
 const REGENERAVEIS: DiagnosticoStatus[] = ['erro', 'pendente', 'desligado']
+// Um `pendente` recém-solicitado provavelmente ainda está sendo gerado (finish
+// ou outro clique): evita rodar a geração duas vezes em paralelo.
+const PENDENTE_RECENTE_MS = 60_000
 
 type Deps = {
   repo: SessionRepo
@@ -30,6 +33,10 @@ export function criarHandlerRegenerar(d: Deps) {
     const atual = statusEfetivo(sessao, agora)
     if (!atual || !REGENERAVEIS.includes(atual)) {
       return responderAcao(req, sessao.diagnosticoToken, 'regenerar-invalido', { erro: 'diagnóstico não pode ser regenerado neste estado', status: atual }, 409)
+    }
+    if (atual === 'pendente' && sessao.diagnosticoSolicitadoEm &&
+        agora.getTime() - new Date(sessao.diagnosticoSolicitadoEm).getTime() < PENDENTE_RECENTE_MS) {
+      return responderAcao(req, sessao.diagnosticoToken, 'regenerar-em-andamento', { erro: 'o diagnóstico já está sendo gerado' }, 409)
     }
     const pendente = await d.repo.atualizar(sessao.id, {
       diagnosticoStatus: 'pendente', diagnosticoSolicitadoEm: agora.toISOString(), diagnosticoPdfErro: null,

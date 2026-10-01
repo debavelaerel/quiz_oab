@@ -10,6 +10,7 @@ describe('adminFiltros', () => {
     expect(lerFiltros({ tipo: 'x', exame: '99', status: 'y', pagina: '-2', busca: '' }))
       .toEqual({ busca: undefined, tipo: undefined, exame: undefined, status: undefined, pagina: 1 })
     expect(lerFiltros({ pagina: 'abc' }).pagina).toBe(1)
+    expect(lerFiltros({ pagina: '99999999999' }).pagina).toBe(10_000)
     expect(lerFiltros({ tipo: 'constructor', status: 'toString' })).toMatchObject({ tipo: undefined, status: undefined })
     expect(lerFiltros({ busca: ['a', 'b'] }).busca).toBe('a')
   })

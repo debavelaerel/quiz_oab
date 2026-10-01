@@ -59,6 +59,9 @@ describe('exigirSessaoAdmin (defesa em profundidade nos handlers)', () => {
     expect(exigirSessaoAdmin(comCookie('x.y'), SEG)?.status).toBe(401)
     expect(exigirSessaoAdmin(comCookie(assinarSessao(SEG)), undefined)?.status).toBe(401)
   })
+  it('cookie malformado (decodeURIComponent lança): 401, sem exceção', () => {
+    expect(exigirSessaoAdmin(comCookie('%E0%A4%A'), SEG)?.status).toBe(401)
+  })
   it('cookie válido: null (segue)', () => {
     expect(exigirSessaoAdmin(comCookie(assinarSessao(SEG)), SEG)).toBeNull()
   })

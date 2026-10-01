@@ -2,18 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-
-// `?proximo=` vem da URL, então é entrada não-confiável. Só aceita um path
-// interno (começa com uma única "/", nunca "//" — que o navegador trata como
-// protocol-relative pra outro host — nem barra invertida). Sem essa checagem,
-// um link tipo /admin/login?proximo=https://look-alike.com te loga de
-// verdade e manda pra uma cópia phishing pedindo a senha nesse outro host
-// (open redirect).
-export function destinoSeguro(proximo: string | null): string {
-  if (!proximo) return '/admin/leads'
-  if (!proximo.startsWith('/') || proximo.startsWith('//') || proximo.includes('\\')) return '/admin/leads'
-  return proximo
-}
+import { destinoSeguro } from '@/lib/adminRedirect'
 
 function FormularioLogin() {
   const router = useRouter()
