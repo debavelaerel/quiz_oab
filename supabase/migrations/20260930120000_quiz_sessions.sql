@@ -45,7 +45,11 @@ create index quiz_sessions_whatsapp_norm_idx on quiz_sessions (whatsapp_normaliz
 create index quiz_sessions_started_at_idx on quiz_sessions (started_at desc);
 create index quiz_sessions_tipo_exame_idx on quiz_sessions (tipo, exame);
 
-create function quiz_sessions_set_updated_at() returns trigger language plpgsql as $$
+-- search_path vazio: a função não resolve nomes por um search_path que alguém
+-- possa manipular (lint "function_search_path_mutable" do Supabase). now() é do
+-- pg_catalog, sempre visível.
+create function quiz_sessions_set_updated_at() returns trigger language plpgsql
+set search_path = '' as $$
 begin new.updated_at = now(); return new; end $$;
 create trigger quiz_sessions_updated_at before update on quiz_sessions
   for each row execute function quiz_sessions_set_updated_at();
