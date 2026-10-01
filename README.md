@@ -218,13 +218,17 @@ A fonte única é `reference/qual-a-oab-dev/_build/data.json`:
 
 **Quando o VDE envia um zip novo** (em vez de editar o `data.json`): descompactar sobre
 `reference/qual-a-oab-dev` (apagando o que sumiu do pacote), rodar `npm run sync:oab`, rodar
-`npx vitest run` + `pytest` do serviço e reconstruir as **duas** imagens.
+`npx vitest run` + `pytest` do serviço e reconstruir as **duas** imagens. Um container `diagnostico-pdf` já rodando, construído **antes**
+da troca do `data.json`, responde `409` na checagem do hash (ver o passo 4 acima): os novos
+diagnósticos ficam `erro` até o container ser **recriado** a partir da imagem nova (local:
+`docker compose -p quiz-oab --env-file .env.local up -d --build diagnostico-pdf`).
 
 ### Fluxo do quiz (v3)
 
 - **Nome primeiro:** a tela "Como podemos te chamar?" vem logo após a intro; o nome é gravado no
-  `answer` (e, como fallback, também é aceito no corpo do `finish`) e aparece nos títulos das
-  perguntas e no resultado.
+  `answer`; se o corpo do `finish` trouxer um nome válido, ele prevalece sobre o da sessão (o
+  `finish` reenvia respostas e teste do cliente pelo mesmo motivo); sem nome no corpo, vale o da
+  sessão. O nome aparece nos títulos das perguntas e no resultado.
 - **Formulário final enxuto:** só WhatsApp e e-mail. `nome_completo` fica nulo nas sessões novas
   (a coluna foi mantida); o `/admin` mostra e exporta o `nome`.
 - **Datas de turma:** turma sem data aparece como "Data a confirmar" e há dois cronogramas.
