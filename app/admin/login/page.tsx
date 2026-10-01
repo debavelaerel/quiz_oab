@@ -65,6 +65,7 @@ function FormularioLogin() {
             id="admin-senha"
             type="password"
             autoFocus
+            autoComplete="current-password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             placeholder="••••••••"
