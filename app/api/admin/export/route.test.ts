@@ -26,12 +26,27 @@ describe('GET /api/admin/export', () => {
     const colunas = cab.split(',')
     expect(colunas.slice(0, 15)).toEqual(['ref_curta', 'status', 'tipo', 'exame', 'turma', 'nome_completo', 'email', 'whatsapp',
       'diagnostico_status', 'whatsapp_clicado_em', 'utm_source', 'utm_medium', 'utm_campaign', 'started_at', 'completed_at'])
-    expect(colunas.slice(15)).toEqual(data.campos)
+    expect(colunas.slice(15, 21)).toEqual(['utm_content', 'utm_term', 'saida_tipo', 'ultima_pergunta', 'diagnostico_pdf_erro', 'email_erro'])
+    expect(colunas.slice(21)).toEqual(data.campos)
     expect(linhas).toHaveLength(1)
     expect(linhas[0]).toContain(`"'=HYPERLINK(""x"")"`)
     expect(linhas[0]).toContain(',Já me formei,')
     expect(linhas[0]).toContain('Cuido de filhos; Cuido da casa')
     expect(linhas[0]).toContain(',CB,')
+  })
+  it('exporta utm_content, utm_term, saída, última pergunta e erros de PDF/e-mail', async () => {
+    const repo = criarMemorySessionRepo()
+    const a = await repo.criar({ hoje: '2026-09-30', utm: { ...UTM_VAZIO, utmContent: 'criativo-7', utmTerm: 'oab 2027' } })
+    await repo.atualizar(a.id, { saidaTipo: 'f2', ultimaPergunta: 'situacao', diagnosticoPdfErro: 'pdf 504', emailErro: 'smtp fora' })
+    const r = await criarHandlerExport({ repo, segredo: SEGREDO_TESTE })(reqAdmin('http://x/api/admin/export'))
+    const [cab, linha] = linhasCsv(await r.text())
+    const valor = (col: string) => linha.split(',')[cab.split(',').indexOf(col)]
+    expect(valor('utm_content')).toBe('criativo-7')
+    expect(valor('utm_term')).toBe('oab 2027')
+    expect(valor('saida_tipo')).toBe('f2')
+    expect(valor('ultima_pergunta')).toBe('situacao')
+    expect(valor('diagnostico_pdf_erro')).toBe('pdf 504')
+    expect(valor('email_erro')).toBe('smtp fora')
   })
   it('percorre repo.listar em páginas de 500', async () => {
     const repo = criarMemorySessionRepo()
