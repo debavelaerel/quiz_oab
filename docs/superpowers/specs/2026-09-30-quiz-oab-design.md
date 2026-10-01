@@ -1,6 +1,6 @@
 # Quiz OAB (Método VDE) — design
 
-Data: 2026-09-30 · Status: aguardando revisão (v2, incorpora revisão independente)
+Data: 2026-09-30 · Status: v2 implementada; **v3 (§10, 2026-10-01) aguardando revisão**
 
 ## 1. Objetivo
 
@@ -250,3 +250,63 @@ diagnóstico. Falha de envio vai para `email_erro` e nunca quebra o fluxo; o adm
 - **O que a mensagem limpa deixa de mandar ao comercial:** rotina, trava, motivo, teste e
   investimento, que o original enviava no texto. Agora estão só no admin; o VDE precisa
   aprovar.
+
+## 10. Revisão v3 (2026-10-01) — nome primeiro, formulário enxuto, novo pacote do VDE
+
+Esta seção **substitui** o que contradiz as seções anteriores (§3.3 tela `dados`, §4 colunas de nome, §5.3 corpo do
+`finish`, §6 validação de nome). O resto continua valendo.
+
+### 10.1 Nome é a primeira informação
+- Nova tela **"Como podemos te chamar?"** logo depois do botão da intro e antes da primeira pergunta: selo "Antes de
+  começar", título, uma linha de apoio ("Assim a gente deixa o quiz com a sua cara."), **um** campo e o botão "Começar o quiz →".
+- O campo é o **primeiro nome ou apelido**: aparado, 2 a 80 caracteres, ao menos 2 letras. **Não** exige sobrenome.
+- O nome vai no **snapshot** do `answer` (`nome`, junto de `respostas` e `teste`) e é gravado em `quiz_sessions.nome`
+  desde o início. O `start` devolve `nome` quando retoma a sessão. `nome_completo` deixa de ser coletado: a coluna fica
+  (sem migration) e fica `null` nas sessões novas; o admin e o CSV mostram `nome`.
+- O `finish` passa a receber `contato: { email, whatsapp }` + `consentimento`; o nome vem da sessão. Sem nome na sessão
+  → 422 com `campos: ['nome']`. A tela volta ao passo do nome com o que já foi digitado.
+- O diagnóstico em PDF, a mensagem do WhatsApp (`montarMensagemWhatsApp`), o admin e o e-mail usam esse `nome`.
+
+### 10.2 O nome aparece em 5 pontos do quiz
+A fonte de verdade das perguntas continua sendo o `data.json` copiado da referência (não editado). As variações com o
+nome vivem numa tabela de **substituições de título na camada de UI** (`components/quiz/copy.ts`), por id de pergunta; se
+não houver nome, vale o título original.
+1. `situacao`: "Pra começar, {nome}: como está a sua faculdade de Direito hoje?"
+2. `nivel`: "{nome}, com sinceridade: como está a sua base pra prova da OAB?"
+3. `motivo`: "E agora a mais importante, {nome}: por que você quer passar na OAB?"
+4. `compromisso`: "{nome}, o quanto você topa mudar na sua rotina pra passar?"
+5. Tela final (contato): "{nome}, deixe seu e-mail e WhatsApp pra receber o seu resultado"
+O nome é sempre exibido como texto (React escapa); nunca como HTML.
+
+### 10.3 Formulários no estilo do `vicio_quiz` (cores do OAB)
+Vale para a tela do nome e para a tela final de contato; o resto do quiz continua fiel ao original.
+- Campo: padding 12px 14px, borda 1px (`--lil2`), raio 12px, fonte 14.5px, foco com borda `--roxo` e anel de 3px a 8%.
+- **Sem rótulo visível**: só placeholder; o `<label>` continua no HTML como `sr-only`.
+- Espaço: título → primeiro campo 24px (28px na tela do nome, com um campo); entre campos 10px; campo → botão 20px;
+  erro 12.5px, 6px abaixo do campo; botão amarelo e texto de privacidade como hoje.
+- Tela de contato: **WhatsApp primeiro, e-mail depois**. Placeholders `(11) 91234-5678` e `Seu melhor e-mail`. Teclado
+  `tel` e `email`. Máscara `formatarWhatsapp` só de exibição (o estado guarda dígitos). Erros só depois do blur
+  ("WhatsApp inválido. Use o formato (11) 91234-5678." / "E-mail inválido."). Botão desabilitado até os dois serem válidos.
+- Fora do escopo agora: **gravação antecipada do contato** ao sair do campo (o Tribunais faz); o lead continua só sendo
+  concluído no clique final. Fica como possível melhoria, decisão do comercial.
+
+### 10.4 Novo pacote de referência do VDE (zip de 30/09/2026)
+Conteúdo atualizado, **sem mudança na regra**: `logic.js` e `logic.py` idênticos. Mudaram `data.json` (datas das turmas
+confirmadas em 30/09; `inicio2`; flags `aConfirmar` e `fimVendasAConfirmar`), `diagnosis/report.py`, `_build/index.src.html`
+(uma linha do cartão do resultado), `casos-de-teste.json` (13 dos 104 casos com resultado diferente), `README.md`,
+`ENTREGA-DEV.md` e os exemplos/HTML gerados.
+- A pasta `reference/qual-a-oab-dev` é **substituída pela nova entrega** (é a fonte de verdade do VDE; a regra "não editar"
+  vale para nós). Depois `npm run sync:oab` atualiza `lib/oab/data.json`, o hash, e a cópia do pacote Python do serviço.
+- Regras de exibição (do `report.py` / `index.src.html`): turma com `aConfirmar` **nunca** mostra data ("Data a
+  confirmar" / "início: data a confirmar"); turma com `inicio2` mostra "DD/MM ou DD/MM"; `fimVendasAConfirmar` mostra "a
+  partir de DD/MM". As datas internas dessas turmas servem só para a lógica decidir se há matrícula e **não podem
+  vazar** para o lead. Portar a mesma regra para `components/quiz/resultado.ts` e `telas/Previa.tsx`.
+- Os 104 casos de teste, os testes de hash e o pytest do serviço (80 diagnósticos + 5 exemplos byte a byte) passam a
+  usar os arquivos novos; quem divergir é o sinal de que algo ficou para trás.
+
+### 10.5 Testes e verificação desta revisão
+- Vitest: `copy.ts` (substituição com e sem nome), validação do nome, `finish` sem `nome_completo` (422 sem nome na
+  sessão), snapshot com `nome`, regras de exibição de data (a confirmar / dois cronogramas / a partir de).
+- Playwright e2e atualizado: tela do nome → perguntas com o nome → contato (WhatsApp, e-mail) → resultado.
+- Verificação manual no navegador: tela do nome, uma pergunta com o nome, formulário final (mobile 390px e desktop),
+  comparando com a maquete aprovada; sem regressão visual no resto do quiz.
