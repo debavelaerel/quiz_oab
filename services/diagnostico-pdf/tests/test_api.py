@@ -155,3 +155,11 @@ def test_html_exige_segredo_e_valida_hash_codigo_e_recomendacao(client):
     assert client.post("/diagnostico/html", json=corpo(data_hash="0" * 64), headers=H).status_code == 409
     assert client.post("/diagnostico/html", json=corpo(codigo="lixo"), headers=H).status_code == 422
     assert client.post("/diagnostico/html", json=corpo(recomendacao={"tipo": "ok", "exame": "99", "turma": 1}), headers=H).status_code == 409
+
+
+def test_html_escapa_o_nome_do_lead(client):
+    """O HTML chega ao navegador do admin: nome com tag NUNCA pode virar tag."""
+    r = client.post("/diagnostico/html", json=corpo(nome="<img src=x onerror=alert(1)>"), headers=H)
+    assert r.status_code == 200
+    assert "&lt;img" in r.text
+    assert "<img src=x" not in r.text

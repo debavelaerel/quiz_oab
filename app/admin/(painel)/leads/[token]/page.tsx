@@ -9,6 +9,7 @@ import { acertosDaSessao, TOTAL_TESTE } from '@/lib/adminAnalytics'
 import {
   formatarData, mensagemAviso, rotuloDiagnostico, rotuloExame, rotuloResposta, rotuloStatus, rotuloTipo, rotuloTurma, tituloPergunta,
 } from '@/lib/adminLabels'
+import { urlBase } from '@/lib/adminUrl'
 import { linkWhatsappLead } from '@/lib/adminWhatsapp'
 import CampoCopiavel from '@/components/admin/CampoCopiavel'
 import DiagnosticoEmbutido from '@/components/admin/DiagnosticoEmbutido'
@@ -38,12 +39,6 @@ function Linha({ rotulo, children }: { rotulo: string; children: ReactNode }) {
 
 const titulo = (campo: string) => tituloPergunta(campo).replace(/\{[^}]+\}/g, '…')
 
-/** http para localhost, https no resto: o link vai ser colado fora do admin (WhatsApp, CRM). */
-function baseUrl(host: string | null): string {
-  if (!host) return ''
-  return `${/^(localhost|127\.|\[::1\])/.test(host) ? 'http' : 'https'}://${host}`
-}
-
 export default async function LeadDetalhePage({
   params, searchParams,
 }: { params: Promise<{ token: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -62,7 +57,7 @@ export default async function LeadDetalhePage({
   const respostas = s.respostas as Record<string, string | undefined>
   const rec = s.recomendacao
   const nome = (s.nomeCompleto ?? s.nome) ?? null
-  const base = baseUrl((await headers()).get('host'))
+  const base = urlBase(process.env.APP_URL, (await headers()).get('host'))
   const linkPdf = base ? `${base}/api/diagnostico/${s.diagnosticoToken}` : null
   const temUtm = s.utmSource || s.utmMedium || s.utmCampaign || s.utmContent || s.utmTerm
   const acertos = acertosDaSessao(s)
@@ -164,7 +159,7 @@ export default async function LeadDetalhePage({
                 const acertou = letra === q.gabarito
                 return (
                   <div key={q.id} className="flex items-start gap-3 border-b border-brand-line py-2.5 last:border-0">
-                    <span className={`flex h-6 w-6 flex-none items-center justify-center rounded-full text-white ${acertou ? 'bg-brand-green' : 'bg-brand-red'}`} aria-label={acertou ? 'acertou' : 'errou'}>
+                    <span role="img" className={`flex h-6 w-6 flex-none items-center justify-center rounded-full text-white ${acertou ? 'bg-brand-green' : 'bg-brand-red'}`} aria-label={acertou ? 'acertou' : 'errou'}>
                       {acertou ? <Check size={13} strokeWidth={3} /> : <X size={13} strokeWidth={3} />}
                     </span>
                     <div>
@@ -228,7 +223,11 @@ export default async function LeadDetalhePage({
       ) : (
         <Cartao titulo="Diagnóstico completo" className="mt-4">
           <p className="text-[13px] text-brand-ink-soft">
-            {s.status !== 'concluido' ? 'O lead ainda não concluiu o quiz, então não há diagnóstico.' : 'Este lead não recebe diagnóstico (' + rotuloTipo(s.tipo).toLowerCase() + ').'}
+            {s.status !== 'concluido'
+              ? 'O lead ainda não concluiu o quiz, então não há diagnóstico.'
+              : s.diagnosticoStatus === 'nao_se_aplica'
+                ? 'Este lead não recebe diagnóstico (' + rotuloTipo(s.tipo).toLowerCase() + ').'
+                : 'Este lead concluiu o quiz, mas não há dados para montar o diagnóstico.'}
           </p>
         </Cartao>
       )}

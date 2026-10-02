@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic'
 const LIMITE = 5000
 const PERIODOS: { v: Periodo; rotulo: string }[] = [{ v: 'tudo', rotulo: 'Tudo' }, { v: '30', rotulo: '30 dias' }, { v: '7', rotulo: '7 dias' }]
 // Perguntas do perfil (as de múltipla escolha guardam "a+b").
-const PERFIL = ['situacao', 'regime', 'periodo', 'tentativa', 'nivel', 'horas', 'trabalho', 'vde', 'rotina', 'trava', 'motivo', 'compromisso', 'investir', 'parcela']
+const PERFIL = ['situacao', 'regime', 'periodo', 'tentativa', 'nivel', 'metodo', 'horas', 'trabalho', 'vde', 'rotina', 'trava', 'motivo', 'compromisso', 'investir', 'parcela']
 const MULTI = new Set(['rotina', 'trava', 'motivo'])
 const ROTULOS_SAIDA = { cedo: 'Cedo demais para a OAB', f2: 'Já passou na 1ª fase' }
 

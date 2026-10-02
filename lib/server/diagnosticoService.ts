@@ -58,7 +58,7 @@ export async function buscarDiagnosticoHtml(
       body: corpo,
       signal: AbortSignal.timeout(TIMEOUT_HTML_MS),
     })
-    if (r.status === 409) return { erro: 'o serviço de PDF está com uma versão diferente dos dados (recrie o container do serviço)' }
+    if (r.status === 409) return { erro: 'o serviço de PDF recusou os dados do lead (versão dos dados ou recomendação divergente)' }
     if (!r.ok) return { erro: `o serviço de PDF respondeu ${r.status}` }
     return { html: await r.text() }
   } catch (e) {

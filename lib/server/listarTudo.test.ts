@@ -19,3 +19,17 @@ describe('listarTudo', () => {
     expect(await listarTudo(criarMemorySessionRepo(), {})).toEqual({ sessoes: [], total: 0 })
   })
 })
+
+describe('listarTudo: sessões novas durante a leitura', () => {
+  it('não conta duas vezes uma linha que "desceu" de página', async () => {
+    const linha = (id: number) => ({ id }) as never
+    const paginas = [
+      Array.from({ length: 500 }, (_, i) => linha(i + 1)),
+      [linha(500), ...Array.from({ length: 99 }, (_, i) => linha(501 + i))], // a 500 repetiu na página 2
+    ]
+    const repo = { listar: async ({ pagina }: { pagina: number }) => ({ sessoes: paginas[pagina - 1] ?? [], total: 599 }) } as never
+    const r = await listarTudo(repo, {})
+    expect(r.sessoes).toHaveLength(599)
+    expect(new Set(r.sessoes.map((s) => s.id)).size).toBe(599)
+  })
+})

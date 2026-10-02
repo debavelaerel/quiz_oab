@@ -71,6 +71,7 @@ describe('buscarDiagnosticoHtml', () => {
       const r = await buscarDiagnosticoHtml(sessao, { fetch: f as never })
       expect('erro' in r && r.erro).toBeTruthy()
       expect(JSON.stringify(r)).not.toContain('seg')
+      expect(JSON.stringify(r)).not.toMatch(/recrie o container/) // 409 também ocorre quando só a recomendação diverge
     }
     delete process.env.DIAGNOSTICO_SERVICE_URL
     expect('erro' in (await buscarDiagnosticoHtml(sessao, { fetch: vi.fn() as never }))).toBe(true)

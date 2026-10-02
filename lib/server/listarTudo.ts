@@ -13,12 +13,14 @@ export async function listarTudo(
   limite = 5000,
 ): Promise<{ sessoes: QuizSession[]; total: number }> {
   const sessoes: QuizSession[] = []
+  const vistos = new Set<number>()
   let total = 0
   for (let pagina = 1; sessoes.length < limite; pagina++) {
     const r = await repo.listar({ ...filtro, pagina, porPagina: POR_PAGINA })
     total = r.total
-    sessoes.push(...r.sessoes)
-    if (r.sessoes.length < POR_PAGINA || sessoes.length >= total) break
+    // Sessões novas empurram linhas para a página seguinte: sem isso a mesma sessão seria contada duas vezes.
+    for (const s of r.sessoes) if (!vistos.has(s.id)) { vistos.add(s.id); sessoes.push(s) }
+    if (r.sessoes.length < POR_PAGINA || vistos.size >= total) break
   }
   return { sessoes: sessoes.slice(0, limite), total }
 }
