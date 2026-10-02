@@ -4,7 +4,6 @@ import { L, opcoesValidas, type Campo, type Resp } from '@/lib/oab/fluxo'
 
 export const CONFIG = {
   quizName: 'Qual a OAB da sua aprovação em 2027?',
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP || '5500000000000',
   instagram: 'https://www.instagram.com/metodovde/',
   instagramHandle: '@metodovde',
   privacidadeTxt: 'Ao continuar, você concorda em receber contato do Método VDE pelo WhatsApp e por e-mail.',

@@ -3,7 +3,6 @@
 import data from '@/lib/oab/data.json'
 import { L, type Resp } from '@/lib/oab/fluxo'
 import type { Recomendacao } from '@/lib/oab/logic'
-import { montarMensagemWhatsApp } from '@/lib/oab/whatsapp'
 import { br } from './copy'
 
 export const TESTE = data.teste
@@ -14,11 +13,6 @@ export const brc = (s: string) => { const [, m, d] = s.split('-'); return `${d}/
 
 /** Quantas questões do teste bateram com o gabarito ("X" = não sabia). */
 export const acertos = (teste: readonly string[]) => TESTE.filter((q, i) => teste[i] === q.gabarito).length
-
-/** Link do botão do WhatsApp: número do time + mensagem pronta (sem o código QO1). */
-export function linkWhatsApp(numero: string, p: { nome: string; rec: Recomendacao; ref: string }): string {
-  return `https://wa.me/${numero}?text=${encodeURIComponent(montarMensagemWhatsApp(p))}`
-}
 
 /** telaCedo(): o ano da primeira OAB possível e o mínimo do edital no regime da pessoa. */
 export function quandoCedo(A: Resp, hoje: string): { ano: number; minimo: string } {

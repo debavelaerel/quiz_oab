@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import data from '@/lib/oab/data.json'
-import { acertos, brc, diasAteProva, inicioTxt, itensDiagnostico, linkWhatsApp, outrosExames, previaDe, quandoCedo, TESTE } from './resultado'
+import { acertos, brc, diasAteProva, inicioTxt, itensDiagnostico, outrosExames, previaDe, quandoCedo, TESTE } from './resultado'
 
 const GAB = TESTE.map((q) => q.gabarito)
 
@@ -9,19 +9,6 @@ describe('acertos', () => {
     expect(acertos(GAB)).toBe(GAB.length)
     expect(acertos([])).toBe(0)
     expect(acertos(['X', GAB[1], 'X', 'X', 'X'])).toBe(1)
-  })
-})
-
-describe('linkWhatsApp', () => {
-  it('wa.me do número + mensagem codificada com #ref e sem QO1', () => {
-    const h = linkWhatsApp('5511999990000', { nome: 'Maria', rec: { tipo: 'ok', exame: '48', turma: 90 }, ref: 'K7F2' })
-    expect(h.startsWith('https://wa.me/5511999990000?text=')).toBe(true)
-    const msg = decodeURIComponent(h.split('?text=')[1])
-    expect(msg).toContain('OAB 48')
-    expect(msg).toContain('90 dias')
-    expect(msg).toContain('#K7F2')
-    expect(msg).not.toContain('QO1')
-    expect(h).not.toMatch(/[ #"]/) // tudo codificado
   })
 })
 

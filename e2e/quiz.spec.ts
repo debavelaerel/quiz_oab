@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test'
 // Caminho feliz completo contra o stack local (Supabase + MinIO + serviço de
 // PDF + Mailpit + `next dev`): intro → nome → formado → nunca fez → demais perguntas
 // (primeira opção; nas de múltipla escolha, uma opção + Continuar) → parte 2 →
-// 5 questões do teste → dados → resultado com o diagnóstico disponível.
+// 5 questões do teste → dados → resultado (sem botões de WhatsApp/download, só o aviso).
 // Usa ?hoje=2026-09-30: exige ALLOW_HOJE_OVERRIDE=1 no .env.local (só local/e2e,
 // NUNCA em produção — o .env.example traz a variável vazia).
 
@@ -21,7 +21,7 @@ async function responderPergunta(page: Page) {
     .not.toBe(antes)
 }
 
-test('caminho feliz: quiz → resultado → diagnóstico disponível', async ({ page }) => {
+test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', async ({ page }) => {
   await page.goto('/?hoje=2026-09-30')
   await page.getByRole('button', { name: 'Descobrir a minha OAB' }).click()
 
@@ -63,13 +63,9 @@ test('caminho feliz: quiz → resultado → diagnóstico disponível', async ({ 
   await expect(page.locator('.big .num')).toHaveText(/^(48|49|50)$/)
   await expect(page.getByText(/^Maria, a OAB da sua aprovação é a/)).toBeVisible()
 
-  // WhatsApp: leva a ref curta (#…, codificada como %23) e não o código QO1.
-  const wa = page.locator('a.cta.wa').first()
-  const href = (await wa.getAttribute('href')) ?? ''
-  expect(href).toContain('wa.me')
-  expect(href).toContain('%23')
-  expect(href).not.toContain('QO1')
-
-  // O PDF é gerado em segundo plano pelo serviço Python e vai pro MinIO.
-  await expect(page.getByRole('link', { name: 'Baixar meu diagnóstico' })).toBeVisible({ timeout: 70_000 })
+  // Sem botão de WhatsApp nem de download: só o aviso de que o time envia o resultado pelo WhatsApp.
+  await expect(page.getByText('Nossa equipe vai te enviar o seu resultado no WhatsApp')).toBeVisible()
+  await expect(page.locator('a.cta.wa')).toHaveCount(0)
+  await expect(page.getByRole('link', { name: /Baixar meu diagnóstico/ })).toHaveCount(0)
+  await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0)
 })

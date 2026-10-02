@@ -1,6 +1,5 @@
 # Imagem do Next (output: 'standalone'). Build:
 #   docker build -t quiz-oab \
-#     --build-arg NEXT_PUBLIC_WHATSAPP=55... \
 #     --build-arg NEXT_PUBLIC_PRIVACIDADE_URL=https://... \
 #     --build-arg NEXT_PUBLIC_VIDEO_PARTE2=https://... .
 # As NEXT_PUBLIC_* são embutidas no bundle do navegador NO BUILD — definir só
@@ -13,11 +12,9 @@ RUN npm ci
 
 FROM node:22-alpine AS build
 WORKDIR /app
-ARG NEXT_PUBLIC_WHATSAPP=""
 ARG NEXT_PUBLIC_PRIVACIDADE_URL=""
 ARG NEXT_PUBLIC_VIDEO_PARTE2=""
-ENV NEXT_PUBLIC_WHATSAPP=$NEXT_PUBLIC_WHATSAPP \
-    NEXT_PUBLIC_PRIVACIDADE_URL=$NEXT_PUBLIC_PRIVACIDADE_URL \
+ENV NEXT_PUBLIC_PRIVACIDADE_URL=$NEXT_PUBLIC_PRIVACIDADE_URL \
     NEXT_PUBLIC_VIDEO_PARTE2=$NEXT_PUBLIC_VIDEO_PARTE2 \
     NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules

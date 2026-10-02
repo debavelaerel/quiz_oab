@@ -4,8 +4,9 @@
 
 Funil de quiz do Método VDE para a 1ª fase da OAB. A pessoa responde o quiz (~2 a 5 min),
 descobre qual prova de 2027 (OAB 48/49/50) e qual turma são ideais para ela, deixa o contato e
-recebe um **diagnóstico em PDF** (link na tela e por e-mail). O lead fica no banco (Supabase),
-o PDF é gerado sozinho em segundo plano e há um painel `/admin` para o comercial.
+vê o resultado na tela (com o diagnóstico desfocado). O time do VDE envia o **diagnóstico em PDF** pelo
+WhatsApp da pessoa. O lead fica no banco (Supabase), o PDF é gerado sozinho em segundo plano e o
+comercial o baixa no painel `/admin`.
 
 A pasta `reference/` é só referência (entrega original estática + CLI Python) e não é editada.
 
@@ -27,7 +28,7 @@ Next.js (Node, container) ── Supabase (Postgres)
    ▼
 services/diagnostico-pdf (FastAPI + Chromium) ── S3 (MinIO local)
    │
-   └─ ao ficar pronto, o Next envia o e-mail (SMTP; Mailpit local)
+   └─ o PDF fica no S3; o time baixa pelo /admin e envia pelo WhatsApp (não há e-mail automático ao lead)
 ```
 
 O link do diagnóstico (`/api/diagnostico/<token>`) responde `302` para uma URL assinada do S3
@@ -103,8 +104,8 @@ E2E_PORT=3100 npm run e2e              # sobe (ou reutiliza) `next dev` na E2E_P
 ```
 
 O e2e percorre intro → nome → formado → nunca fez → demais perguntas → parte 2 → 5 questões → contato
-(WhatsApp e e-mail) → resultado (com o nome), e confere a OAB (48/49/50), o link do WhatsApp (com a ref `#…`, sem `QO1`) e o botão
-"Baixar meu diagnóstico" (até 70 s). Cada execução cria um lead novo (`maria+<timestamp>@exemplo.com`).
+(WhatsApp e e-mail) → resultado (com o nome), e confere a OAB (48/49/50) e a mensagem "Nossa equipe vai te enviar o seu resultado no WhatsApp"
+(a tela não tem botão de WhatsApp nem de download). Cada execução cria um lead novo (`maria+<timestamp>@exemplo.com`).
 
 ### Problemas comuns
 
@@ -119,7 +120,7 @@ O e2e percorre intro → nome → formado → nunca fez → demais perguntas →
   export DOCKER_CONFIG=/tmp/dockercfg
   ```
 - **Porta 3000 ocupada:** `npx next dev -p 3100` e `APP_URL=http://localhost:3100`.
-- **O diagnóstico fica em "Vamos te enviar pelo WhatsApp":** o serviço de PDF está fora do ar
+- **O diagnóstico do lead fica em "Erro" no `/admin`:** o serviço de PDF está fora do ar
   ou com segredo diferente — `docker compose -p quiz-oab logs diagnostico-pdf`; depois
   "Regenerar" no `/admin`.
 
@@ -139,9 +140,9 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 | `S3_ENDPOINT` | Next **e** serviço | `http://localhost:9000` (no compose o serviço usa `http://minio:9000`) | vazio |
 | `S3_PUBLIC_ENDPOINT` | Next | `http://localhost:9000` (o que o navegador enxerga) | vazio |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Next | Mailpit `localhost:1025` | SMTP do provedor; `SMTP_HOST` vazio = não envia (registra `email_erro`) |
-| `APP_URL` | Next | `http://localhost:3000` | URL pública do quiz (base do link no e-mail) |
+| `APP_URL` | Next | `http://localhost:3000` | URL pública do quiz (base do link do e-mail reenviado pelo `/admin`) |
 | `ALLOW_HOJE_OVERRIDE` | Next | `1` no `.env.local` (vazio no `.env.example`) | **nunca** definir |
-| `NEXT_PUBLIC_WHATSAPP`, `NEXT_PUBLIC_PRIVACIDADE_URL`, `NEXT_PUBLIC_VIDEO_PARTE2` | Next (navegador) | — | **build args** da imagem |
+| `NEXT_PUBLIC_PRIVACIDADE_URL`, `NEXT_PUBLIC_VIDEO_PARTE2` | Next (navegador) | — | **build args** da imagem |
 | `MINIO_PORT`, `MINIO_CONSOLE_PORT`, `MAILPIT_SMTP_PORT`, `MAILPIT_UI_PORT`, `DIAGNOSTICO_PDF_PORT` | docker compose | padrões | — |
 | `E2E_PORT` | Playwright | `3100` | — |
 | `PORT` | serviço de PDF | `8000` | opcional |
@@ -153,7 +154,6 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 
   ```bash
   docker build -t quiz-oab \
-    --build-arg NEXT_PUBLIC_WHATSAPP=55XXXXXXXXXXX \
     --build-arg NEXT_PUBLIC_PRIVACIDADE_URL=https://... \
     --build-arg NEXT_PUBLIC_VIDEO_PARTE2=https://... .
   docker build -t quiz-oab-diagnostico-pdf services/diagnostico-pdf
@@ -188,10 +188,12 @@ Todas estão no [`.env.example`](.env.example), com comentários.
   quando está de pé.
 - **Imagem Python:** roda como root e inclui o pytest. Aceitável por ora; endurecer depois
   (usuário não-root, imagem sem dependências de teste).
-- **Analytics:** além dos eventos originais existe `quiz_download` (clique em "Baixar meu
-  diagnóstico").
-- **WhatsApp:** a mensagem não leva mais o código `QO1…`; leva a ref curta (`#ABCD`), e o
-  consultor acha o lead pela ref no `/admin` (pode colar com ou sem o `#`).
+- **Tela final sem botões:** não há botão de WhatsApp nem de download; os eventos `quiz_whatsapp` e
+  `quiz_download` deixaram de existir. O time encontra o lead no `/admin` (busca por nome, ref
+  `#ABCD`, e-mail ou telefone) e baixa o PDF de lá. Os endpoints `/api/quiz/whatsapp` e
+  `/api/quiz/result` continuam no servidor, mas o quiz não os usa mais.
+- **E-mail:** o diagnóstico **não** é mais enviado por e-mail ao lead. O botão "Reenviar e-mail" do
+  `/admin` segue disponível para uso manual do time.
 - **Lista do `/admin`:** mostra **todas** as sessões, inclusive visitas anônimas que nunca
   deixaram contato (aparecem como "sem contato"). Para ver só quem terminou o quiz, use o filtro
   de status **Concluído**.
@@ -236,7 +238,7 @@ diagnósticos ficam `erro` até o container ser **recriado** a partir da imagem 
 
 ## 8. Pendências
 
-- **VDE:** número do WhatsApp, URL da política de privacidade, vídeo da parte 2, remetente e
-  provedor de e-mail (o quiz roda sem eles, com placeholders).
+- **VDE:** URL da política de privacidade e vídeo da parte 2 (o quiz roda sem eles, com
+  placeholders). Não é mais preciso informar o número do WhatsApp: a tela final não o usa.
 - **LGPD:** não há política de retenção/exclusão nem ação de excluir lead no admin; precisa ser
   tratado antes de produção.

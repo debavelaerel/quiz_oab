@@ -311,3 +311,18 @@ confirmadas em 30/09; `inicio2`; flags `aConfirmar` e `fimVendasAConfirmar`), `d
 - Playwright e2e atualizado: tela do nome → perguntas com o nome → contato (WhatsApp, e-mail) → resultado.
 - Verificação manual no navegador: tela do nome, uma pergunta com o nome, formulário final (mobile 390px e desktop),
   comparando com a maquete aprovada; sem regressão visual no resto do quiz.
+
+## 11. Revisão v3.1 (2026-10-01) — tela final sem botões; sem e-mail automático
+
+Substitui o que contradiz §3.3 (tela `resultado`), §5.4-5.7 (mensagem do WhatsApp, e-mail, botão de download) e §2.
+- **Tela final:** mostra o resultado em destaque ("{nome}, a OAB da sua aprovação é a 48", prazo, turma), o box do
+  diagnóstico, a **prévia desfocada** com o cadeado "Chega no seu WhatsApp" (agora um bloco, não um link) e um aviso:
+  "Nossa equipe vai te enviar o seu resultado no WhatsApp". **Não há** botão de WhatsApp nem de download, nem consulta
+  periódica do PDF. Para quem não tem prova possível (`sem_prova`): "Nossa equipe vai te enviar uma orientação para a sua
+  próxima prova no seu WhatsApp".
+- **E-mail:** o diagnóstico **não** é mais enviado por e-mail ao lead (o job de segundo plano só gera e guarda o PDF). O botão
+  "Reenviar e-mail" do admin continua, de uso manual do time. O time baixa o PDF no admin e envia pelo WhatsApp.
+- **Código removido:** `linkWhatsApp`, `montarMensagemWhatsApp`, `consultarDiagnostico`/`vistaDiagnostico`, `api.result` e
+  `api.whatsapp` do cliente, `CONFIG.whatsapp` e `NEXT_PUBLIC_WHATSAPP` (não é mais preciso informar o número do WhatsApp).
+  Os endpoints `/api/quiz/result` e `/api/quiz/whatsapp` permanecem no servidor sem uso pelo quiz.
+- **Eventos de analytics:** `quiz_whatsapp` e `quiz_download` deixam de existir.

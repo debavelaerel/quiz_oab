@@ -2,7 +2,6 @@ import { carregarLead, responderAcao, type CtxToken } from '@/lib/server/adminRo
 import { obterRepo } from '@/lib/server/container'
 import { gerarEArmazenarDiagnostico } from '@/lib/server/diagnosticoBackground'
 import type { gerarDiagnosticoPdf } from '@/lib/server/diagnosticoService'
-import type { enviarDiagnostico } from '@/lib/server/email'
 import { statusEfetivo } from '@/lib/server/quizService'
 import type { SessionRepo } from '@/lib/server/sessionRepo'
 import type { DiagnosticoStatus } from '@/lib/server/types'
@@ -20,7 +19,6 @@ type Deps = {
   repo: SessionRepo
   segredo: string | undefined
   gerar?: typeof gerarDiagnosticoPdf
-  enviar?: typeof enviarDiagnostico
   agora?: () => Date
 }
 
@@ -41,8 +39,8 @@ export function criarHandlerRegenerar(d: Deps) {
     const pendente = await d.repo.atualizar(sessao.id, {
       diagnosticoStatus: 'pendente', diagnosticoSolicitadoEm: agora.toISOString(), diagnosticoPdfErro: null,
     })
-    // Nunca lança: falhas ficam em diagnostico_pdf_erro / email_erro.
-    await gerarEArmazenarDiagnostico(d.repo, pendente, { gerar: d.gerar, enviar: d.enviar })
+    // Nunca lança: falhas ficam em diagnostico_pdf_erro.
+    await gerarEArmazenarDiagnostico(d.repo, pendente, { gerar: d.gerar })
     const depois = await d.repo.buscarPorDiagnosticoToken(sessao.diagnosticoToken)
     const status = depois?.diagnosticoStatus ?? 'erro'
     return responderAcao(req, sessao.diagnosticoToken, `regenerar-${status}`, { status }, 200)

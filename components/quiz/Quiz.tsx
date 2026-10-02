@@ -136,6 +136,6 @@ export function Quiz() {
     if (tela === 'cedo') return <Cedo A={vista.A} hoje={hoje} />
     if (tela === 'f2') return <F2 />
     // resultado: só se chega aqui depois de um finish aceito
-    return resultado ? <Resultado inicial={resultado} A={s.A} teste={s.teste} token={s.token()} /> : null
+    return resultado ? <Resultado inicial={resultado} A={s.A} teste={s.teste} /> : null
   }
 }

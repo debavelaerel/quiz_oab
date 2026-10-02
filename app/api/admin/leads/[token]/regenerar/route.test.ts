@@ -5,20 +5,19 @@ import { criarHandlerRegenerar } from './route'
 
 const post = (o: { logado?: boolean; form?: boolean } = {}) => reqAdmin('http://x', { method: 'POST', ...o })
 const deps = (repo: never, extra: object = {}) => ({
-  repo, segredo: SEGREDO_TESTE, gerar: async () => ({ s3Key: 'k.pdf' }), enviar: async () => ({ enviado: true }), ...extra,
+  repo, segredo: SEGREDO_TESTE, gerar: async () => ({ s3Key: 'k.pdf' }), ...extra,
 })
 
 describe('POST /api/admin/leads/[token]/regenerar', () => {
-  it('regenera a partir de erro e termina em pronto (e reenvia o e-mail)', async () => {
+  it('regenera a partir de erro e termina em pronto (sem enviar e-mail)', async () => {
     const { repo, s, params } = await leadConcluido()
-    const enviar = vi.fn(async () => ({ enviado: true }))
-    const r = await criarHandlerRegenerar(deps(repo as never, { enviar }))(post(), params)
+    const r = await criarHandlerRegenerar(deps(repo as never))(post(), params)
     expect(r.status).toBe(200)
     expect((await r.json()).status).toBe('pronto')
     const depois = (await repo.buscarPorDiagnosticoToken(s.diagnosticoToken))!
     expect(depois.diagnosticoPdfS3Key).toBe('k.pdf')
     expect(depois.diagnosticoPdfErro).toBeNull()
-    expect(enviar).toHaveBeenCalledTimes(1)
+    expect(depois.emailEnviadoEm).toBeNull()
   })
   it('serviço de PDF fora do ar: termina em erro, sem lançar (200 com status erro)', async () => {
     const { repo, params } = await leadConcluido({ diagnosticoStatus: 'erro' })
