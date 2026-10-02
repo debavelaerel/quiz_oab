@@ -13,7 +13,7 @@ export default function DiagnosticoEmbutido({ html, erro }: { html?: string; err
           title="Diagnóstico completo"
           sandbox=""
           srcDoc={html}
-          className="h-[1100px] w-full rounded-xl border border-brand-line bg-white"
+          className="h-[85vh] min-h-[720px] w-full rounded-xl border border-brand-line bg-white"
         />
       ) : (
         <Alerta tom="erro">Não foi possível carregar o diagnóstico: {erro ?? 'serviço indisponível'}. O resto da página segue funcionando.</Alerta>

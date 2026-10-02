@@ -40,7 +40,7 @@ function FormularioLogin() {
   return (
     <div className="flex min-h-screen items-start justify-center px-6 py-14 sm:items-center sm:py-0">
       <div className="w-full max-w-sm text-center">
-        <Image src="/brand/logo-cor.png" alt="Método VDE" width={141} height={40} priority className="mx-auto h-10 w-auto" />
+        <Image src="/brand/logo-cor.png" alt="Método VDE" width={141} height={40} priority className="mx-auto h-10 w-[141px]" />
         <span className="mt-7 inline-block rounded-full bg-brand-yel px-3 py-1 text-[12px] font-semibold text-brand-roxo-2">Área restrita</span>
         <h1 className="mt-3 text-2xl font-bold leading-tight tracking-[-0.01em]">Painel do Quiz OAB</h1>
         <p className="mt-2 text-[14.5px] text-brand-ink-soft">Entre com a senha do time para ver os leads.</p>

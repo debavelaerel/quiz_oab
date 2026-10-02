@@ -28,7 +28,7 @@ export default function AdminNav() {
     <header className="bg-brand-roxo-2">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 sm:px-6">
         <Link href="/admin/leads" className={`flex items-center gap-3 rounded-lg ${FOCO} focus-visible:ring-white/40`} aria-label="Método VDE, painel do Quiz OAB">
-          <Image src="/brand/logo-branco.png" alt="Método VDE" width={118} height={34} priority className="h-[34px] w-auto" />
+          <Image src="/brand/logo-branco.png" alt="Método VDE" width={118} height={34} priority className="h-[34px] w-[120px]" />
           <span className="hidden rounded-full bg-brand-yel px-3 py-1 text-[12px] font-semibold text-brand-roxo-2 sm:inline-block">Painel</span>
         </Link>
         <nav className="flex flex-1 gap-1" aria-label="Principal">

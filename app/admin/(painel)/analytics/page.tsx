@@ -141,7 +141,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
           <Cartao titulo="Teste de nível">
             <div className="grid gap-8 sm:grid-cols-2">
               <RankedBars titulo={`Acertos (de ${TOTAL_TESTE})`} dados={acertos.map((c, n) => ({ valor: `${n} ${n === 1 ? 'acerto' : 'acertos'}`, contagem: c, pct: pct(c, totalTestes) })).filter((d) => d.contagem > 0)} vazio="Ninguém terminou o teste neste período." />
-              <RankedBars titulo="Questões mais erradas" dados={questoesMaisErradas(sessoes).slice(0, 5).map((q) => ({ valor: `${q.id} · ${q.disciplina}`, contagem: q.erros, pct: q.pct }))} vazio="Ninguém terminou o teste neste período." />
+              <RankedBars titulo="Questões mais erradas" dados={questoesMaisErradas(sessoes).slice(0, 5).map((q) => ({ valor: q.disciplina, contagem: q.erros, pct: q.pct }))} vazio="Ninguém terminou o teste neste período." />
             </div>
           </Cartao>
 

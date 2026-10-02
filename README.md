@@ -207,6 +207,17 @@ O design (cores, tipografia, raios, sombras, estados e regras) está em [`DESIGN
 gerado do original (`app/(quiz)/quiz.css`); o painel `/admin` usa os mesmos valores como tokens em
 `app/globals.css` e os componentes de `components/admin/ui.tsx`. Tela nova do admin parte desses componentes.
 
+## Painel `/admin`
+
+- **Leads:** busca (ref, nome, e-mail, WhatsApp), filtros de tipo, prova, status e diagnóstico, CSV, colunas de resultado, teste (X de 5) e origem.
+- **Detalhe do lead:** contato, origem (UTM), resultado, perfil, teste questão a questão, links copiáveis para o CRM, outras tentativas, e o
+  **diagnóstico completo formatado** (o mesmo HTML que vira PDF, num `iframe` com `sandbox`). Ações: Baixar PDF, **Abrir no WhatsApp** (conversa
+  com o lead, mensagem pronta e link do PDF), Regenerar e Reenviar e-mail.
+- **Analytics (`/admin/analytics`):** período (tudo/30/7 dias), indicadores, sessões por dia, funil, onde as pessoas desistem, resultados, perfil
+  das respostas, teste de nível, origem do tráfego e prioridade comercial. Lê até 5000 sessões.
+- O diagnóstico embutido vem do serviço de PDF (`POST /diagnostico/html`, mesma autenticação e validações de `/diagnostico`). Se o serviço
+  estiver fora do ar, a página do lead abre com um aviso e o resto continua funcionando.
+
 ## 6. Banco
 
 Uma tabela (`quiz_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`
