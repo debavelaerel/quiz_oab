@@ -269,6 +269,28 @@ describe('nome (v3)', () => {
     const { sessao } = await concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: CONTATO, consentimento: true, nome: '1' })
     expect(sessao.nome).toBe('Maria')
   })
+  describe('compatibilidade: contato.nome_completo (cliente anterior à v3)', () => {
+    const LEGADO = { ...CONTATO, nome_completo: 'Maria Souza' }
+    const base = (token: string) => ({ sessionToken: token, respostas: RESP, teste: TESTE, consentimento: true })
+    it('sem nome no corpo e na sessão: usa a primeira palavra', async () => {
+      const s = await nova(null)
+      const { sessao } = await concluirSessao(repo, { ...base(s.sessionToken), contato: LEGADO })
+      expect(sessao.status).toBe('concluido')
+      expect(sessao.nome).toBe('Maria')
+    })
+    it('nome do corpo e nome da sessão vencem o campo legado', async () => {
+      const a = await nova(null)
+      expect((await concluirSessao(repo, { ...base(a.sessionToken), contato: LEGADO, nome: 'Ana' })).sessao.nome).toBe('Ana')
+      const b = await nova('Bia')
+      expect((await concluirSessao(repo, { ...base(b.sessionToken), contato: LEGADO })).sessao.nome).toBe('Bia')
+    })
+    it('primeira palavra inválida e nada mais: 422 com campos [nome]', async () => {
+      const s = await nova(null)
+      const e = await concluirSessao(repo, { ...base(s.sessionToken), contato: { ...CONTATO, nome_completo: '1 Silva' } }).catch((x) => x)
+      expect(e).toBeInstanceOf(EntradaInvalidaError)
+      expect((e as EntradaInvalidaError).campos).toEqual(['nome'])
+    })
+  })
   it('contato só com e-mail e WhatsApp é válido; sem e-mail é 422', async () => {
     const s = await nova()
     await expect(concluirSessao(repo, { sessionToken: s.sessionToken, respostas: RESP, teste: TESTE, contato: { whatsapp: CONTATO.whatsapp } as never, consentimento: true })).rejects.toBeInstanceOf(EntradaInvalidaError)

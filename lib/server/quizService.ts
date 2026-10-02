@@ -60,7 +60,12 @@ export async function registrarSnapshot(
   return { aceito: false, status: atual?.status ?? s.status, etapa: atual?.ultimaPergunta ?? etapa }
 }
 
-export type Contato = { email: unknown; whatsapp: unknown }
+export type Contato = {
+  email: unknown
+  whatsapp: unknown
+  /** legado: cliente anterior à v3 */
+  nome_completo?: unknown
+}
 
 function validarContato(c: Contato) {
   if (!c || typeof c !== 'object') throw new EntradaInvalidaError('contato inválido', ['email', 'whatsapp'])
@@ -74,9 +79,13 @@ function validarContato(c: Contato) {
 }
 
 /** Nome efetivo do lead: o do corpo do finish (sessão nova depois de um 404) ou o já gravado. */
-function resolverNome(doCorpo: unknown, daSessao: string | null): string | null {
+function resolverNome(doCorpo: unknown, daSessao: string | null, contato: Contato): string | null {
   if (typeof doCorpo === 'string' && nomeCurtoValido(doCorpo)) return doCorpo.trim()
-  return daSessao && nomeCurtoValido(daSessao) ? daSessao : null
+  if (daSessao && nomeCurtoValido(daSessao)) return daSessao
+  // Último recurso (compatibilidade temporária): cliente anterior à v3 manda só contato.nome_completo.
+  const legado = contato.nome_completo
+  const primeira = typeof legado === 'string' ? legado.trim().split(/\s+/)[0] ?? '' : ''
+  return nomeCurtoValido(primeira) ? primeira : null
 }
 
 export async function concluirSessao(
@@ -89,7 +98,7 @@ export async function concluirSessao(
 
   if (p.consentimento !== true) throw new EntradaInvalidaError('consentimento obrigatório', ['consentimento'])
   const contato = validarContato(p.contato)
-  const nome = resolverNome(p.nome, s.nome)
+  const nome = resolverNome(p.nome, s.nome, p.contato)
   if (!nome) throw new EntradaInvalidaError('nome obrigatório', ['nome'])
   const respostas = comoEntradaInvalida(() => sanear(p.respostas, s.hoje))
   if (!completo(respostas, s.hoje)) throw new EntradaInvalidaError('respostas incompletas ou com saída antecipada', ['respostas'])

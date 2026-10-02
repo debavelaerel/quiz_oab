@@ -46,6 +46,14 @@ describe('POST /api/quiz/finish', () => {
     expect(agendar).not.toHaveBeenCalled()
     expect((await repo.buscarPorToken(sessao.sessionToken))!.status).toBe('em_andamento')
   })
+  it('payload legado (contato.nome_completo, sem nome): 200 e grava o primeiro nome', async () => {
+    const repo = criarMemorySessionRepo()
+    const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
+    const { nome: _n, contato, ...resto } = corpo(sessao.sessionToken)
+    const r = await criarHandlerFinish({ repo, agendar: vi.fn() })(post('4.4.4.8', { ...resto, contato: { ...contato, nome_completo: 'Maria Souza' } }))
+    expect(r.status).toBe(200)
+    expect((await repo.buscarPorToken(sessao.sessionToken))!.nome).toBe('Maria')
+  })
   it('agenda exatamente uma vez numa conclusão simples e não vaza PII na resposta', async () => {
     const repo = criarMemorySessionRepo()
     const { sessao } = await iniciarSessao(repo, { utm: UTM, hoje: '2026-09-30' })
