@@ -54,6 +54,7 @@ export function criarMemorySessionRepo(): SessionRepo & { todas(): QuizSession[]
       const filtradas = linhas
         .filter((l) => !f.tipo || l.tipo === f.tipo)
         .filter((l) => !f.exame || l.exame === f.exame)
+        .filter((l) => !f.diagnostico || l.diagnosticoStatus === f.diagnostico)
         .filter((l) => !f.status || l.status === f.status)
         .filter((l) => !b || [l.refCurta, l.nome, l.nomeCompleto, l.email, l.whatsapp].some((c) => c?.toLowerCase().includes(b)) ||
           (digitos.length >= 4 && !!l.whatsappNormalizado?.includes(digitos)))

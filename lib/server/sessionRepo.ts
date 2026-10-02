@@ -1,4 +1,4 @@
-import type { QuizSession, Utm } from './types'
+import type { DiagnosticoStatus, QuizSession, Utm } from './types'
 
 export type NovaSessao = { hoje: string; utm: Utm }
 
@@ -7,6 +7,7 @@ export type FiltroListagem = {
   tipo?: string
   exame?: string
   status?: QuizSession['status']
+  diagnostico?: DiagnosticoStatus
   pagina: number
   porPagina: number
 }

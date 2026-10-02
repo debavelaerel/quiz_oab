@@ -39,3 +39,14 @@ describe('adminFiltros', () => {
     expect(queryFiltros({ pagina: 1 })).toBe('')
   })
 })
+
+describe('filtro de diagnóstico', () => {
+  it('aceita um status válido e ignora lixo (inclusive chaves herdadas)', () => {
+    expect(lerFiltros({ diagnostico: 'erro' }).diagnostico).toBe('erro')
+    expect(lerFiltros({ diagnostico: 'constructor' }).diagnostico).toBeUndefined()
+    expect(lerFiltros({ diagnostico: 'x' }).diagnostico).toBeUndefined()
+  })
+  it('entra na query (paginação e CSV repassam)', () => {
+    expect(queryFiltros({ diagnostico: 'erro', pagina: 1 })).toBe('?diagnostico=erro')
+  })
+})

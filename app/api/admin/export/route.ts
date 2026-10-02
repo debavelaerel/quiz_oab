@@ -33,11 +33,11 @@ export function criarHandlerExport(d: { repo: SessionRepo; segredo: string | und
   return async function handler(req: Request): Promise<Response> {
     const negado = exigirSessaoAdmin(req, d.segredo)
     if (negado) return negado
-    const { busca, tipo, exame, status } = lerFiltros(new URL(req.url).searchParams)
+    const { busca, tipo, exame, status, diagnostico } = lerFiltros(new URL(req.url).searchParams)
     const agora = new Date()
     const linhas: unknown[][] = []
     for (let pagina = 1; ; pagina++) {
-      const { sessoes } = await d.repo.listar({ busca, tipo, exame, status, pagina, porPagina: POR_PAGINA })
+      const { sessoes } = await d.repo.listar({ busca, tipo, exame, status, diagnostico, pagina, porPagina: POR_PAGINA })
       for (const s of sessoes) linhas.push(linha(s, agora))
       if (sessoes.length < POR_PAGINA) break
     }

@@ -46,6 +46,7 @@ export function criarSupabaseSessionRepo(db: SupabaseClient): SessionRepo {
       let q = db.from(TABELA).select('*', { count: 'exact' })
       if (f.tipo) q = q.eq('tipo', f.tipo)
       if (f.exame) q = q.eq('exame', f.exame)
+      if (f.diagnostico) q = q.eq('diagnostico_status', f.diagnostico)
       if (f.status) q = q.eq('status', f.status)
       if (f.busca) {
         const b = f.busca.replace(/[%,()*"\\]/g, ' ').trim()

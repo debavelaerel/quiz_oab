@@ -59,3 +59,17 @@ describe('memorySessionRepo', () => {
     expect((await r.buscarPorToken(s.sessionToken))?.respostas).toEqual({ situacao: 'formado' })
   })
 })
+
+describe('listar por status do diagnóstico', () => {
+  it('devolve só os leads com aquele status', async () => {
+    const r = criarMemorySessionRepo()
+    const utm = { utmSource: null, utmMedium: null, utmCampaign: null, utmContent: null, utmTerm: null }
+    const a = await r.criar({ hoje: '2026-09-30', utm })
+    const b = await r.criar({ hoje: '2026-09-30', utm })
+    await r.atualizar(a.id, { diagnosticoStatus: 'pronto' })
+    await r.atualizar(b.id, { diagnosticoStatus: 'erro' })
+    const out = await r.listar({ diagnostico: 'erro', pagina: 1, porPagina: 25 })
+    expect(out.sessoes.map((s) => s.id)).toEqual([b.id])
+    expect(out.total).toBe(1)
+  })
+})

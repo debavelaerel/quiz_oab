@@ -1,14 +1,15 @@
 // Filtros da lista de leads do admin: leitura/validação a partir da URL e
 // montagem da query (paginação e "Exportar CSV" repassam os mesmos filtros).
-import { EXAMES, ROTULO_STATUS, ROTULO_TIPO } from './adminLabels'
+import { EXAMES, ROTULO_DIAGNOSTICO, ROTULO_STATUS, ROTULO_TIPO } from './adminLabels'
 import { ALFABETO_REF } from './server/refCurta'
-import type { StatusSessao } from './server/types'
+import type { DiagnosticoStatus, StatusSessao } from './server/types'
 
 export type FiltrosAdmin = {
   busca?: string
   tipo?: string
   exame?: string
   status?: StatusSessao
+  diagnostico?: DiagnosticoStatus
   pagina: number
 }
 
@@ -38,12 +39,14 @@ export function lerFiltros(e: Entrada): FiltrosAdmin {
   const tipo = pegar(e, 'tipo')
   const exame = pegar(e, 'exame')
   const status = pegar(e, 'status')
+  const diagnostico = pegar(e, 'diagnostico')
   const pagina = Number.parseInt(pegar(e, 'pagina') ?? '', 10)
   return {
     busca,
     tipo: tipo && Object.hasOwn(ROTULO_TIPO, tipo) ? tipo : undefined,
     exame: exame && EXAMES.some((x) => x.id === exame) ? exame : undefined,
     status: status && Object.hasOwn(ROTULO_STATUS, status) ? (status as StatusSessao) : undefined,
+    diagnostico: diagnostico && Object.hasOwn(ROTULO_DIAGNOSTICO, diagnostico) ? (diagnostico as DiagnosticoStatus) : undefined,
     pagina: Number.isFinite(pagina) && pagina >= 1 ? Math.min(pagina, PAGINA_MAX) : 1,
   }
 }
@@ -54,6 +57,7 @@ export function queryFiltros(f: FiltrosAdmin, op: { pagina?: number; semPagina?:
   if (f.tipo) q.set('tipo', f.tipo)
   if (f.exame) q.set('exame', f.exame)
   if (f.status) q.set('status', f.status)
+  if (f.diagnostico) q.set('diagnostico', f.diagnostico)
   const pagina = op.pagina ?? f.pagina
   if (!op.semPagina && pagina > 1) q.set('pagina', String(pagina))
   const s = q.toString()
