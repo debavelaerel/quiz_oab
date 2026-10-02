@@ -69,3 +69,13 @@ export const mensagemAviso = (aviso: string | undefined): Aviso | null =>
 
 const FMT_DATA = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' })
 export const formatarData = (iso: string | null | undefined): string => (iso ? FMT_DATA.format(new Date(iso)) : VAZIO)
+
+/** Etapa do quiz em que o lead parou (`ultima_pergunta`): pergunta, teste, contato ou saída antecipada. */
+export function rotuloEtapa(id: string): string {
+  if (/^t\d$/.test(id)) return `Teste — questão ${Number(id.slice(1)) + 1}`
+  if (id === 'dados') return 'Formulário de contato'
+  if (id === 'cedo') return 'Saiu: ainda é cedo para a OAB'
+  if (id === 'f2') return 'Saiu: já passou na 1ª fase'
+  if (id === 'resultado') return 'Resultado'
+  return PERGUNTAS[id] ? tituloPergunta(id).replace(/\{[^}]+\}/g, '…') : id
+}

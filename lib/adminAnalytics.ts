@@ -12,6 +12,10 @@ const pct = (parte: number, todo: number) => (todo > 0 ? Math.round((parte / tod
 const testeCompleto = (s: QuizSession) => s.teste.length === TESTE.length
 const acertosDe = (s: QuizSession) => s.teste.filter((l, i) => l === TESTE[i].gabarito).length
 
+/** Acertos do teste da sessão (null se o teste não foi concluído) e o total de questões. */
+export const TOTAL_TESTE = TESTE.length
+export const acertosDaSessao = (s: QuizSession): number | null => (testeCompleto(s) ? acertosDe(s) : null)
+
 // ---- período
 export type Periodo = 'tudo' | '30' | '7'
 export const lerPeriodo = (v: string | undefined): Periodo => (v === '7' || v === '30' ? v : 'tudo')

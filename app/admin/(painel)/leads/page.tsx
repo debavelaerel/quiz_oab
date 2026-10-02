@@ -1,14 +1,17 @@
 import Link from 'next/link'
 import { lerFiltros, queryFiltros } from '@/lib/adminFiltros'
-import { EXAMES, ROTULO_STATUS, ROTULO_TIPO, formatarData, rotuloDiagnostico, rotuloExame, rotuloStatus, rotuloTipo } from '@/lib/adminLabels'
+import { acertosDaSessao, TOTAL_TESTE } from '@/lib/adminAnalytics'
+import { EXAMES, ROTULO_DIAGNOSTICO, ROTULO_STATUS, ROTULO_TIPO, formatarData, rotuloDiagnostico, rotuloExame, rotuloStatus, rotuloTipo } from '@/lib/adminLabels'
 import { obterRepo } from '@/lib/server/container'
 import { statusEfetivo } from '@/lib/server/quizService'
 import type { DiagnosticoStatus } from '@/lib/server/types'
-import { BTN_CONTORNO, BTN_NEUTRO, BTN_PRIMARIO, Badge, CAMPO, CARTAO, LINK, type Tom } from '@/components/admin/ui'
+import { BTN_CONTORNO, BTN_NEUTRO, BTN_PRIMARIO, CAMPO, CARTAO, LINK, Pill, type Tom } from '@/components/admin/ui'
 
 export const runtime = 'nodejs'
 
 const POR_PAGINA = 25
+
+const TOM_STATUS: Record<'em_andamento' | 'concluido' | 'saiu', Tom> = { concluido: 'ok', em_andamento: 'neutro', saiu: 'aviso' }
 
 const TOM_DIAG: Record<DiagnosticoStatus, Tom> = {
   pronto: 'ok',
@@ -22,8 +25,8 @@ type SP = Record<string, string | string[] | undefined>
 
 export default async function LeadsPage({ searchParams }: { searchParams: Promise<SP> }) {
   const filtros = lerFiltros(await searchParams)
-  const { busca, tipo, exame, status, pagina } = filtros
-  const { sessoes, total } = await obterRepo().listar({ busca, tipo, exame, status, pagina, porPagina: POR_PAGINA })
+  const { busca, tipo, exame, status, diagnostico, pagina } = filtros
+  const { sessoes, total } = await obterRepo().listar({ busca, tipo, exame, status, diagnostico, pagina, porPagina: POR_PAGINA })
   const totalPaginas = Math.max(1, Math.ceil(total / POR_PAGINA))
   const agora = new Date()
 
@@ -53,21 +56,25 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           <option value="">Todos os status</option>
           {Object.entries(ROTULO_STATUS).map(([v, r]) => <option key={v} value={v}>{r}</option>)}
         </select>
+        <select name="diagnostico" defaultValue={diagnostico ?? ''} aria-label="Diagnóstico" className={`${CAMPO} sm:w-auto`}>
+          <option value="">Todos os diagnósticos</option>
+          {Object.entries(ROTULO_DIAGNOSTICO).map(([v, r]) => <option key={v} value={v}>{r}</option>)}
+        </select>
         <button type="submit" className={BTN_NEUTRO}>Filtrar</button>
-        {(busca || tipo || exame || status) && <Link href="/admin/leads" className={`${LINK} px-1`}>Limpar</Link>}
+        {(busca || tipo || exame || status || diagnostico) && <Link href="/admin/leads" className={`${LINK} px-1`}>Limpar</Link>}
       </form>
 
       <div className={`${CARTAO} mt-4 hidden overflow-x-auto sm:block`}>
-        <table className="w-full min-w-[760px] text-left text-[14.5px]">
+        <table className="w-full min-w-[900px] text-left text-[14.5px]">
           <thead className="bg-brand-tint text-[12.5px] font-semibold uppercase tracking-wide text-brand-ink-soft">
             <tr>
               <th className="px-4 py-3">Ref</th><th className="px-4 py-3">Nome</th><th className="px-4 py-3">Resultado</th>
-              <th className="px-4 py-3">Status</th><th className="px-4 py-3">Diagnóstico</th><th className="px-4 py-3">Início</th>
+              <th className="px-4 py-3">Teste</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Diagnóstico</th><th className="px-4 py-3">Origem</th><th className="px-4 py-3">Início</th>
             </tr>
           </thead>
           <tbody>
             {sessoes.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-10 text-center text-brand-ink-soft">Nenhum lead encontrado.</td></tr>
+              <tr><td colSpan={8} className="px-4 py-10 text-center text-brand-ink-soft">Nenhum lead encontrado.</td></tr>
             )}
             {sessoes.map((s) => {
               const diag = statusEfetivo(s, agora)
@@ -84,10 +91,12 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     {rotuloTipo(s.tipo)}
                     {s.exame && <div className="text-[12.5px] text-brand-ink-soft">{rotuloExame(s.exame)}{s.turma ? ` · ${s.turma} dias` : ''}</div>}
                   </td>
-                  <td className="px-4 py-3">{rotuloStatus(s.status)}</td>
+                  <td className="px-4 py-3 tabular-nums">{acertosDaSessao(s) !== null ? `${acertosDaSessao(s)} / ${TOTAL_TESTE}` : '—'}</td>
+                  <td className="px-4 py-3"><Pill tom={TOM_STATUS[s.status]}>{rotuloStatus(s.status)}</Pill></td>
                   <td className="px-4 py-3">
-                    {diag ? <Badge tom={TOM_DIAG[diag]}>{rotuloDiagnostico(diag)}</Badge> : '—'}
+                    {diag ? <Pill tom={TOM_DIAG[diag]}>{rotuloDiagnostico(diag)}</Pill> : '—'}
                   </td>
+                  <td className="px-4 py-3 text-brand-ink-soft" title={s.utmCampaign ?? undefined}>{s.utmSource ?? '—'}</td>
                   <td className="whitespace-nowrap px-4 py-3 text-brand-ink-soft">{formatarData(s.startedAt)}</td>
                 </tr>
               )
@@ -115,8 +124,9 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                   {s.exame && <span className="text-[12.5px] text-brand-ink-soft"> · {rotuloExame(s.exame)}{s.turma ? ` · ${s.turma} dias` : ''}</span>}
                 </div>
                 <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[12.5px] text-brand-ink-soft">
-                  {diag ? <Badge tom={TOM_DIAG[diag]}>{rotuloDiagnostico(diag)}</Badge> : null}
-                  <span>{rotuloStatus(s.status)}</span>
+                  {diag ? <Pill tom={TOM_DIAG[diag]}>{rotuloDiagnostico(diag)}</Pill> : null}
+                  <Pill tom={TOM_STATUS[s.status]}>{rotuloStatus(s.status)}</Pill>
+                  {acertosDaSessao(s) !== null && <span>teste {acertosDaSessao(s)}/{TOTAL_TESTE}</span>}
                   <span>{formatarData(s.startedAt)}</span>
                 </div>
               </Link>

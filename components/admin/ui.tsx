@@ -58,3 +58,21 @@ export function Alerta({ tom, children, className = '' }: { tom: 'ok' | 'erro'; 
     </p>
   )
 }
+
+const TOM_PILL: Record<Tom, { caixa: string; ponto: string }> = {
+  ok: { caixa: 'bg-brand-green-tint text-brand-green', ponto: 'bg-brand-green' },
+  aviso: { caixa: 'bg-brand-yel-tint text-brand-yel-text', ponto: 'bg-brand-yel-text' },
+  erro: { caixa: 'bg-brand-red-tint text-brand-red', ponto: 'bg-brand-red' },
+  neutro: { caixa: 'bg-brand-tint text-brand-roxo', ponto: 'bg-brand-roxo' },
+}
+
+/** Selo de estado com bolinha (lista e detalhe). */
+export function Pill({ tom, children }: { tom: Tom; children: ReactNode }) {
+  const t = TOM_PILL[tom]
+  return (
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[12px] font-semibold ${t.caixa}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${t.ponto}`} />
+      {children}
+    </span>
+  )
+}

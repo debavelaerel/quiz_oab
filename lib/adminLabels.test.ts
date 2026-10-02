@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { rotuloDiagnostico, rotuloExame, rotuloResposta, rotuloStatus, rotuloTeste, rotuloTipo, rotuloTurma } from './adminLabels'
+import { rotuloDiagnostico, rotuloEtapa, rotuloExame, rotuloResposta, rotuloStatus, rotuloTeste, rotuloTipo, rotuloTurma } from './adminLabels'
 
 describe('adminLabels', () => {
   it('rotuloResposta: opção única vira o texto da opção', () => {
@@ -48,5 +48,18 @@ describe('avisos e datas', async () => {
   it('formatarData em horário de Brasília', () => {
     expect(formatarData('2026-09-30T15:05:00.000Z')).toBe('30/09/2026, 12:05')
     expect(formatarData(null)).toBe('—')
+  })
+})
+
+describe('rotuloEtapa (onde o lead parou)', () => {
+  it('perguntas pelo título, teste, contato e saídas em português', () => {
+    expect(rotuloEtapa('t0')).toBe('Teste — questão 1')
+    expect(rotuloEtapa('t4')).toBe('Teste — questão 5')
+    expect(rotuloEtapa('dados')).toBe('Formulário de contato')
+    expect(rotuloEtapa('cedo')).toContain('cedo')
+    expect(rotuloEtapa('f2')).toContain('1ª fase')
+    expect(rotuloEtapa('(sem etapa)')).toBe('(sem etapa)')
+    expect(rotuloEtapa('horas')).toMatch(/tempo/i)
+    expect(rotuloEtapa('periodo')).not.toContain('{')
   })
 })

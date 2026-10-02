@@ -2,10 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { PieChart, Users } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { FOCO } from './ui'
 
-const ITENS = [{ href: '/admin/leads', label: 'Leads' }]
+const ITENS = [
+  { href: '/admin/leads', label: 'Leads', Icone: Users },
+  { href: '/admin/analytics', label: 'Analytics', Icone: PieChart },
+]
 
 /** Barra de topo no roxo profundo do quiz, com o logotipo branco. */
 export default function AdminNav() {
@@ -28,15 +32,16 @@ export default function AdminNav() {
           <span className="hidden rounded-full bg-brand-yel px-3 py-1 text-[12px] font-semibold text-brand-roxo-2 sm:inline-block">Painel</span>
         </Link>
         <nav className="flex flex-1 gap-1" aria-label="Principal">
-          {ITENS.map(({ href, label }) => {
+          {ITENS.map(({ href, label, Icone }) => {
             const ativo = pathname === href || pathname.startsWith(href + '/')
             return (
               <Link
                 key={href}
                 href={href}
                 aria-current={ativo ? 'page' : undefined}
-                className={`${item} ${ativo ? 'bg-white/15 text-white' : 'text-brand-line hover:bg-white/10 hover:text-white'}`}
+                className={`${item} inline-flex items-center gap-2 ${ativo ? 'bg-white/15 text-white' : 'text-brand-line hover:bg-white/10 hover:text-white'}`}
               >
+                <Icone size={16} strokeWidth={2.25} aria-hidden />
                 {label}
               </Link>
             )
