@@ -265,6 +265,7 @@ Esta seção **substitui** o que contradiz as seções anteriores (§3.3 tela `d
   (sem migration) e fica `null` nas sessões novas; o admin e o CSV mostram `nome`.
 - O `finish` passa a receber `contato: { email, whatsapp }` + `consentimento`; o nome vem da sessão. Sem nome na sessão
   → 422 com `campos: ['nome']`. O corpo do `finish` também pode trazer `nome`; quando válido, vale sobre o já gravado na sessão (o `finish` reenvia respostas e teste do cliente pelo mesmo motivo); sem nome no corpo, vale o da sessão. A tela volta ao passo do nome com o que já foi digitado.
+- Compatibilidade temporária: cliente anterior à v3 que envia `contato.nome_completo`; pode ser removida depois do deploy (precedência: `nome` do corpo válido > nome da sessão > primeira palavra de `contato.nome_completo` > 422 `['nome']`).
 - O diagnóstico em PDF, a mensagem do WhatsApp (`montarMensagemWhatsApp`), o admin e o e-mail usam esse `nome`.
 
 ### 10.2 O nome aparece em 5 pontos do quiz
@@ -285,7 +286,7 @@ Vale para a tela do nome e para a tela final de contato; o resto do quiz continu
 - Espaço: título → primeiro campo 24px (28px na tela do nome, com um campo); entre campos 10px; campo → botão 20px;
   erro 12.5px, 6px abaixo do campo; botão amarelo e texto de privacidade como hoje.
 - Tela de contato: **WhatsApp primeiro, e-mail depois**. Placeholders `(11) 91234-5678` e `Seu melhor e-mail`. Teclado
-  `tel` e `email`. Máscara `formatarWhatsapp` só de exibição (o estado guarda dígitos). Erros só depois do blur
+  `tel` e `email`. Máscara `formatarWhatsapp`: o campo guarda e envia o texto mascarado; o servidor valida (só dígitos contam) e normaliza para `whatsapp_normalizado`, como antes da v3. Erros só depois do blur
   ("WhatsApp inválido. Use o formato (11) 91234-5678." / "E-mail inválido."). Botão desabilitado até os dois serem válidos.
 - Fora do escopo agora: **gravação antecipada do contato** ao sair do campo (o Tribunais faz); o lead continua só sendo
   concluído no clique final. Fica como possível melhoria, decisão do comercial.
@@ -306,7 +307,7 @@ confirmadas em 30/09; `inicio2`; flags `aConfirmar` e `fimVendasAConfirmar`), `d
 
 ### 10.5 Testes e verificação desta revisão
 - Vitest: `copy.ts` (substituição com e sem nome), validação do nome, `finish` sem `nome_completo` (422 sem nome na
-  sessão), snapshot com `nome`, regras de exibição de data (a confirmar / dois cronogramas / a partir de).
+  sessão), snapshot com `nome`, regras de exibição de data (a confirmar / dois cronogramas; "a partir de" vale só para o PDF, no `report.py` do VDE, que o quiz não renderiza).
 - Playwright e2e atualizado: tela do nome → perguntas com o nome → contato (WhatsApp, e-mail) → resultado.
 - Verificação manual no navegador: tela do nome, uma pergunta com o nome, formulário final (mobile 390px e desktop),
   comparando com a maquete aprovada; sem regressão visual no resto do quiz.
