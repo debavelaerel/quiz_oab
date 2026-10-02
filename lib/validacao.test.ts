@@ -1,30 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { nomeValido, nomeCurtoValido, emailValido, whatsappValido } from './validacao'
-
-describe('nomeValido', () => {
-  it('nome e sobrenome: válido', () => {
-    expect(nomeValido('Maria Silva')).toBe(true)
-    expect(nomeValido('  Maria   Silva  ')).toBe(true)
-  })
-  it('nome de três ou mais palavras: válido', () => {
-    expect(nomeValido('Maria da Silva')).toBe(true)
-  })
-  it('só um nome: inválido', () => {
-    expect(nomeValido('Maria')).toBe(false)
-  })
-  it('vazio ou só espaço: inválido', () => {
-    expect(nomeValido('')).toBe(false)
-    expect(nomeValido('   ')).toBe(false)
-  })
-  it('nome gigante (>200 chars): inválido', () => {
-    expect(nomeValido(`${'A '.repeat(150)}B`)).toBe(false)
-  })
-  it('nome de exatamente 200 chars: ainda válido', () => {
-    const nome = `Maria ${'A'.repeat(200 - 'Maria '.length)}`
-    expect(nome).toHaveLength(200)
-    expect(nomeValido(nome)).toBe(true)
-  })
-})
+import { nomeCurtoValido, emailValido, whatsappValido } from './validacao'
 
 describe('emailValido', () => {
   it('formato padrão: válido', () => {

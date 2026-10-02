@@ -41,11 +41,14 @@ describe('finalizar', () => {
     const d = { ...base(), enviar }
     expect(await finalizar(d)).toEqual({ tipo: 'ok', resultado: { ok: 2 } })
     expect(enviar).toHaveBeenNthCalledWith(2, 't2')
+    expect(enviar.mock.calls).toEqual([['t1'], ['t2']])
   })
   it('404 duas vezes → falha, sem terceira tentativa', async () => {
     const enviar = vi.fn().mockRejectedValue(erro(404))
-    expect(await finalizar({ ...base(), enviar })).toEqual({ tipo: 'falha' })
+    const d = { ...base(), enviar }
+    expect(await finalizar(d)).toEqual({ tipo: 'falha' })
     expect(enviar).toHaveBeenCalledTimes(2)
+    expect(d.novaSessao).toHaveBeenCalledTimes(1)
   })
   it('sem token (start falhou) → abre sessão e envia uma vez', async () => {
     const d = { ...base(), token: '' }
@@ -57,7 +60,11 @@ describe('finalizar', () => {
     expect(await finalizar(d)).toEqual({ tipo: 'falha' })
   })
   it('500 e erro de rede → falha (tentar de novo)', async () => {
-    expect(await finalizar({ ...base(), enviar: vi.fn().mockRejectedValue(erro(500)) })).toEqual({ tipo: 'falha' })
-    expect(await finalizar({ ...base(), enviar: vi.fn().mockRejectedValue(new Error('rede')) })).toEqual({ tipo: 'falha' })
+    const a = { ...base(), enviar: vi.fn().mockRejectedValue(erro(500)) }
+    expect(await finalizar(a)).toEqual({ tipo: 'falha' })
+    expect(a.novaSessao).not.toHaveBeenCalled()
+    const b = { ...base(), enviar: vi.fn().mockRejectedValue(new Error('rede')) }
+    expect(await finalizar(b)).toEqual({ tipo: 'falha' })
+    expect(b.novaSessao).not.toHaveBeenCalled()
   })
 })

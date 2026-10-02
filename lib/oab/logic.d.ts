@@ -7,7 +7,7 @@ export type Recomendacao =
   | { tipo: 'f2' }
   | { tipo: 'cedo'; quando: Quando }
 export type Atalho = { exame: string; turma: number; horas: number } | null
-export type Turma = { exame: string; dias: number; vendasIni: string; vendasFim: string; inicio: string }
+export type Turma = { exame: string; dias: number; vendasIni: string; vendasFim: string; inicio: string; inicio2?: string; aConfirmar?: boolean; fimVendasAConfirmar?: boolean }
 export type StatusExame = 'passou' | 'nao_libera' | 'sem_inscricao' | 'ok'
 export interface Logic {
   primeiraVez(A: Respostas, hoje: string): Quando

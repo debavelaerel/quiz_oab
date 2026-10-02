@@ -23,12 +23,14 @@ export function Nome({ inicial, onContinuar }: Props) {
       <form onSubmit={enviar} noValidate>
         <div className="campos um">
           <label htmlFor="f-nome" className="sro">Seu nome</label>
-          <input
-            ref={ref} id="f-nome" className="field2" autoComplete="given-name" maxLength={80}
-            placeholder="Seu primeiro nome" value={nome} onChange={(e) => setNome(e.target.value)}
-            onBlur={() => setTocado(true)} aria-invalid={tocado && !valido ? true : undefined}
-          />
-          {tocado && !valido ? <p className="msg-campo" role="alert">{MSG_NOME}</p> : null}
+          <div>
+            <input
+              ref={ref} id="f-nome" className="field2" autoComplete="given-name" maxLength={80}
+              placeholder="Seu primeiro nome" value={nome} onChange={(e) => setNome(e.target.value)}
+              onBlur={() => setTocado(true)} aria-invalid={tocado && !valido ? true : undefined}
+            />
+            {tocado && !valido ? <p className="msg-campo" role="alert">{MSG_NOME}</p> : null}
+          </div>
         </div>
         <button className="cta yel" type="submit" disabled={!valido}>Começar o quiz →</button>
       </form>

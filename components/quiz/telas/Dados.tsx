@@ -4,7 +4,7 @@ import { formatarWhatsapp } from '@/lib/mascara'
 import { emailValido, whatsappValido } from '@/lib/validacao'
 import { CONFIG, tituloContato } from '../copy'
 import {
-  camposInvalidos, MSG_EMAIL, MSG_FALHA, MSG_WHATSAPP, type CampoForm, type Form, type ResultadoFinalizar,
+  camposInvalidos, MSG_CONFERE, MSG_EMAIL, MSG_FALHA, MSG_WHATSAPP, type CampoForm, type Form, type ResultadoFinalizar,
 } from '../finalizar'
 
 type Props<R> = {
@@ -39,7 +39,7 @@ export function Dados<R>({ nome, enviar, onPronto, onFaltaNome }: Props<R>) {
     emVoo.current = false; setEnviando(false)
     if (r.tipo === 'ok') { onPronto(r.resultado); return }
     if (r.tipo === 'nome') { onFaltaNome(); return }
-    if (r.tipo === 'campos') { setTocados((t) => [...new Set([...t, ...r.campos])]); setFalhou(false); return }
+    if (r.tipo === 'campos') { setTocados((t) => [...new Set([...t, ...r.campos])]); setFalhou(false); if (camposInvalidos(f).length === 0) setErro(MSG_CONFERE); return }
     setErro(MSG_FALHA); setFalhou(true)
   }
 

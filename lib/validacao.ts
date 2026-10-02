@@ -3,19 +3,6 @@
 // requisição) e no servidor (fonte de verdade — nunca confia só no
 // cliente), pra nunca ficarem dessincronizadas.
 
-// Achado num teste de segurança: sem teto nenhum, um nome de centenas de KB
-// passava de boa (rate-limit já existe, mas não é motivo pra aceitar
-// qualquer tamanho). 200 é folgado pra qualquer nome de verdade, mesmo
-// composto — não é um limite pensado pra apertar, só pra não aceitar lixo.
-const TAMANHO_MAXIMO_NOME = 200
-
-// Nome e sobrenome: pelo menos duas palavras não-vazias.
-export function nomeValido(nome: string): boolean {
-  const aparado = nome.trim()
-  if (aparado.length > TAMANHO_MAXIMO_NOME) return false
-  return aparado.split(/\s+/).filter(Boolean).length >= 2
-}
-
 /** Primeiro nome ou apelido (tela "Como podemos te chamar?"): 2 a 80 caracteres, ao menos 2 letras. */
 export function nomeCurtoValido(nome: string): boolean {
   const aparado = nome.trim()
