@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { DATA_HASH } from '@/lib/oab/dataHash'
-import { DiagnosticoIndisponivel, gerarDiagnosticoPdf } from './diagnosticoService'
+import { buscarDiagnosticoHtml, DiagnosticoIndisponivel, gerarDiagnosticoPdf } from './diagnosticoService'
 
 const sessao = {
   codigo: 'QO1.x', nome: 'Maria', diagnosticoToken: 'tok',
@@ -40,5 +40,39 @@ describe('gerarDiagnosticoPdf', () => {
     env()
     const f = vi.fn(async () => { throw new Error('ECONNREFUSED') })
     await expect(gerarDiagnosticoPdf(sessao, { fetch: f as never })).rejects.toBeInstanceOf(DiagnosticoIndisponivel)
+  })
+})
+
+describe('buscarDiagnosticoHtml', () => {
+  it('chama /diagnostico/html com segredo, hash e recomendação e devolve o html', async () => {
+    env()
+    const f = vi.fn(async () => new Response('<html>ok</html>', { status: 200, headers: { 'content-type': 'text/html' } }))
+    const r = await buscarDiagnosticoHtml(sessao, { fetch: f as never })
+    expect(r).toEqual({ html: '<html>ok</html>' })
+    const [url, init] = f.mock.calls[0] as unknown as [string, RequestInit]
+    expect(url).toBe('http://py/diagnostico/html')
+    expect((init.headers as Record<string, string>)['X-Diagnostico-Secret']).toBe('seg')
+    expect(JSON.parse(init.body as string)).toMatchObject({ codigo: 'QO1.x', data_hash: DATA_HASH, recomendacao: { tipo: 'ok', exame: '48', turma: 90 } })
+  })
+  it('sessão sem código ou recomendação: erro sem chamar o serviço', async () => {
+    env()
+    const f = vi.fn()
+    const r = await buscarDiagnosticoHtml({ ...(sessao as object), codigo: null } as never, { fetch: f as never })
+    expect('erro' in r).toBe(true)
+    expect(f).not.toHaveBeenCalled()
+  })
+  it('409, 500, rede e URL ausente viram { erro } sem vazar o segredo', async () => {
+    env()
+    for (const f of [
+      vi.fn(async () => new Response('hash', { status: 409 })),
+      vi.fn(async () => new Response('x', { status: 500 })),
+      vi.fn(async () => { throw new Error('ECONNREFUSED') }),
+    ]) {
+      const r = await buscarDiagnosticoHtml(sessao, { fetch: f as never })
+      expect('erro' in r && r.erro).toBeTruthy()
+      expect(JSON.stringify(r)).not.toContain('seg')
+    }
+    delete process.env.DIAGNOSTICO_SERVICE_URL
+    expect('erro' in (await buscarDiagnosticoHtml(sessao, { fetch: vi.fn() as never }))).toBe(true)
   })
 })
