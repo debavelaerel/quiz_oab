@@ -13,9 +13,9 @@ export default async function PainelLayout({ children }: { children: ReactNode }
   const cookie = (await cookies()).get(NOME_COOKIE_ADMIN)?.value
   if (!segredo || !verificarSessao(cookie, segredo)) redirect('/admin/login')
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <>
       <AdminNav />
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-6 sm:px-6">{children}</main>
-    </div>
+      <main className="mx-auto max-w-6xl px-4 pb-16 pt-7 sm:px-6">{children}</main>
+    </>
   )
 }

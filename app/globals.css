@@ -1,1 +1,25 @@
 @import 'tailwindcss';
+
+/* Tokens do design (ver DESIGN.md). O quiz usa o próprio CSS gerado em app/(quiz)/quiz.css;
+   o painel /admin usa estes tokens como utilitários (bg-brand-roxo, text-brand-ink, ...). */
+@theme {
+  --font-brand: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-brand-bg: #faf7fd;
+  --color-brand-card: #ffffff;
+  --color-brand-ink: #2d2733;
+  --color-brand-ink-soft: #4f4f4f;
+  --color-brand-ink-dim: #8d7f9b;
+  --color-brand-line: #e7d8f6;
+  --color-brand-line-strong: #c9a0ee;
+  --color-brand-tint: #f5eefc;
+  --color-brand-roxo: #5a009f;
+  --color-brand-roxo-2: #3b0069;
+  --color-brand-yel: #f5c518;
+  --color-brand-yel-tint: #fff6d1;
+  --color-brand-yel-text: #7a5c00;
+  --color-brand-green: #1f9d63;
+  --color-brand-green-tint: #e6f6ee;
+  --color-brand-red: #b42318;
+  --color-brand-red-tint: #fdecea;
+}

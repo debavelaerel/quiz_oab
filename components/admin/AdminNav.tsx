@@ -1,9 +1,13 @@
 'use client'
 
+import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { FOCO } from './ui'
 
 const ITENS = [{ href: '/admin/leads', label: 'Leads' }]
 
+/** Barra de topo no roxo profundo do quiz, com o logotipo branco. */
 export default function AdminNav() {
   const pathname = usePathname()
   const router = useRouter()
@@ -14,25 +18,31 @@ export default function AdminNav() {
     router.refresh()
   }
 
+  const item = `rounded-2xl px-3.5 py-2 text-[14.5px] font-medium transition-colors ${FOCO} focus-visible:ring-white/40`
+
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3 sm:px-6">
-        <span className="text-[13px] font-semibold uppercase tracking-[0.14em] text-amber-700">Quiz OAB · Admin</span>
-        <nav className="flex flex-1 gap-1">
+    <header className="bg-brand-roxo-2">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 sm:px-6">
+        <Link href="/admin/leads" className={`flex items-center gap-3 rounded-lg ${FOCO} focus-visible:ring-white/40`} aria-label="Método VDE, painel do Quiz OAB">
+          <Image src="/brand/logo-branco.png" alt="Método VDE" width={118} height={34} priority className="h-[34px] w-auto" />
+          <span className="hidden rounded-full bg-brand-yel px-3 py-1 text-[12px] font-semibold text-brand-roxo-2 sm:inline-block">Painel</span>
+        </Link>
+        <nav className="flex flex-1 gap-1" aria-label="Principal">
           {ITENS.map(({ href, label }) => {
             const ativo = pathname === href || pathname.startsWith(href + '/')
             return (
-              <a
+              <Link
                 key={href}
                 href={href}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium ${ativo ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-100'}`}
+                aria-current={ativo ? 'page' : undefined}
+                className={`${item} ${ativo ? 'bg-white/15 text-white' : 'text-brand-line hover:bg-white/10 hover:text-white'}`}
               >
                 {label}
-              </a>
+              </Link>
             )
           })}
         </nav>
-        <button type="button" onClick={() => void sair()} className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
+        <button type="button" onClick={() => void sair()} className={`${item} text-brand-line hover:bg-white/10 hover:text-white`}>
           Sair
         </button>
       </div>

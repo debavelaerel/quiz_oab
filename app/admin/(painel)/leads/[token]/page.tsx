@@ -7,6 +7,7 @@ import {
   formatarData, mensagemAviso, rotuloDiagnostico, rotuloExame, rotuloResposta, rotuloStatus, rotuloTeste, rotuloTipo, rotuloTurma, tituloPergunta,
 } from '@/lib/adminLabels'
 import FormAcao from '@/components/admin/FormAcao'
+import { Alerta, BTN_CONTORNO, BTN_PRIMARIO, Cartao, LINK } from '@/components/admin/ui'
 import { obterRepo } from '@/lib/server/container'
 import { statusEfetivo } from '@/lib/server/quizService'
 import { isUuid } from '@/lib/server/uuid'
@@ -15,19 +16,10 @@ export const runtime = 'nodejs'
 
 const GABARITO = (data.teste as { gabarito: string }[]).map((q) => q.gabarito)
 
-function Bloco({ titulo, children }: { titulo: string; children: ReactNode }) {
-  return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-5">
-      <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">{titulo}</h2>
-      {children}
-    </section>
-  )
-}
-
 function Linha({ rotulo, children }: { rotulo: string; children: ReactNode }) {
   return (
-    <div className="grid grid-cols-[minmax(110px,160px)_1fr] gap-3 border-b border-slate-100 py-1.5 text-sm last:border-0">
-      <dt className="text-slate-500">{rotulo}</dt>
+    <div className="grid grid-cols-[minmax(110px,160px)_1fr] gap-3 border-b border-brand-line py-2 text-[14.5px] last:border-0">
+      <dt className="text-[13px] text-brand-ink-soft">{rotulo}</dt>
       <dd className="min-w-0 break-words">{children}</dd>
     </div>
   )
@@ -52,36 +44,34 @@ export default async function LeadDetalhePage({
   const podeRegenerar = diag === 'erro' || diag === 'pendente' || diag === 'desligado'
   const respostas = s.respostas as Record<string, string | undefined>
   const rec = s.recomendacao
-  const botao = 'rounded-lg border px-3 py-1.5 text-sm font-semibold'
 
   return (
     <div>
-      <Link href="/admin/leads" className="text-sm text-slate-500 underline">← Leads</Link>
-      <h1 className="mt-2 text-2xl font-bold">
-        {(s.nomeCompleto ?? s.nome) ?? 'Lead sem contato'} <span className="font-mono text-slate-400">#{s.refCurta}</span>
+      <Link href="/admin/leads" className={`${LINK} text-[13px]`}>← Leads</Link>
+      <h1 className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-2xl font-bold tracking-[-0.01em]">
+        {(s.nomeCompleto ?? s.nome) ?? 'Lead sem contato'}
+        <span className="rounded-full bg-brand-yel px-3 py-1 font-mono text-[12px] font-semibold tracking-normal text-brand-roxo-2">#{s.refCurta}</span>
       </h1>
-      <p className="text-sm text-slate-500">{rotuloStatus(s.status)} · início {formatarData(s.startedAt)}{s.completedAt ? ` · concluído ${formatarData(s.completedAt)}` : ''}</p>
+      <p className="mt-0.5 text-[13px] text-brand-ink-soft">{rotuloStatus(s.status)} · início {formatarData(s.startedAt)}{s.completedAt ? ` · concluído ${formatarData(s.completedAt)}` : ''}</p>
 
       {aviso && (
-        <p role="status" className={`mt-4 rounded-lg border px-4 py-2 text-sm ${aviso.tom === 'ok' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-red-200 bg-red-50 text-red-800'}`}>
-          {aviso.texto}
-        </p>
+        <Alerta tom={aviso.tom === 'ok' ? 'ok' : 'erro'} className="mt-4">{aviso.texto}</Alerta>
       )}
 
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
-        <Bloco titulo="Resultado">
+        <Cartao titulo="Resultado">
           <dl>
             <Linha rotulo="Tipo">{rotuloTipo(s.tipo)}</Linha>
             <Linha rotulo="Prova">{rotuloExame(s.exame)}</Linha>
             <Linha rotulo="Turma">{rotuloTurma(s.turma)}</Linha>
             <Linha rotulo="Atalho">{rec?.atalho ? `${rotuloExame(rec.atalho.exame)} · ${rotuloTurma(rec.atalho.turma)} · ${rec.atalho.horas}h/dia` : '—'}</Linha>
             {s.saidaTipo && <Linha rotulo="Saída antecipada">{s.saidaTipo === 'cedo' ? 'Cedo demais' : '2ª fase'}</Linha>}
-            <Linha rotulo="Código">{s.codigo ? <code className="break-all text-xs">{s.codigo}</code> : '—'}</Linha>
+            <Linha rotulo="Código">{s.codigo ? <code className="break-all font-mono text-[12.5px]">{s.codigo}</code> : '—'}</Linha>
             <Linha rotulo="Clicou no WhatsApp">{formatarData(s.whatsappClicadoEm)}</Linha>
           </dl>
-        </Bloco>
+        </Cartao>
 
-        <Bloco titulo="Contato">
+        <Cartao titulo="Contato">
           <dl>
             <Linha rotulo="Nome">{(s.nomeCompleto ?? s.nome) ?? '—'}</Linha>
             <Linha rotulo="E-mail">{s.email ?? '—'}</Linha>
@@ -93,67 +83,67 @@ export default async function LeadDetalhePage({
             <Linha rotulo="UTM content">{s.utmContent ?? '—'}</Linha>
             <Linha rotulo="UTM term">{s.utmTerm ?? '—'}</Linha>
           </dl>
-        </Bloco>
+        </Cartao>
 
-        <Bloco titulo="Diagnóstico">
+        <Cartao titulo="Diagnóstico">
           <dl>
             <Linha rotulo="Status">{rotuloDiagnostico(diag)}</Linha>
-            {s.diagnosticoPdfErro && <Linha rotulo="Erro"><span className="text-red-700">{s.diagnosticoPdfErro}</span></Linha>}
+            {s.diagnosticoPdfErro && <Linha rotulo="Erro"><span className="text-brand-red">{s.diagnosticoPdfErro}</span></Linha>}
             <Linha rotulo="Solicitado em">{formatarData(s.diagnosticoSolicitadoEm)}</Linha>
             <Linha rotulo="E-mail enviado em">{formatarData(s.emailEnviadoEm)}</Linha>
-            {s.emailErro && <Linha rotulo="Erro do e-mail"><span className="text-red-700">{s.emailErro}</span></Linha>}
+            {s.emailErro && <Linha rotulo="Erro do e-mail"><span className="text-brand-red">{s.emailErro}</span></Linha>}
           </dl>
           <div className="mt-3 flex flex-wrap gap-2">
             {diag === 'pronto' && (
-              <a href={`/api/admin/leads/${s.diagnosticoToken}/pdf`} className={`${botao} border-slate-900 bg-slate-900 text-white`}>Baixar PDF</a>
+              <a href={`/api/admin/leads/${s.diagnosticoToken}/pdf`} className={BTN_PRIMARIO}>Baixar PDF</a>
             )}
             {podeRegenerar && (
-              <FormAcao action={`/api/admin/leads/${s.diagnosticoToken}/regenerar`} rotulo="Regenerar" rotuloEnviando="Regenerando…" className={`${botao} border-slate-300`} />
+              <FormAcao action={`/api/admin/leads/${s.diagnosticoToken}/regenerar`} rotulo="Regenerar" rotuloEnviando="Regenerando…" className={BTN_CONTORNO} />
             )}
             {diag === 'pronto' && s.email && (
               <form method="post" action={`/api/admin/leads/${s.diagnosticoToken}/reenviar-email`}>
-                <button type="submit" className={`${botao} border-slate-300`}>Reenviar e-mail</button>
+                <button type="submit" className={BTN_CONTORNO}>Reenviar e-mail</button>
               </form>
             )}
           </div>
-          {podeRegenerar && <p className="mt-2 text-xs text-slate-500">Regenerar espera o serviço de PDF (pode levar até 1 minuto).</p>}
-        </Bloco>
+          {podeRegenerar && <p className="mt-2 text-[12.5px] text-brand-ink-soft">Regenerar espera o serviço de PDF (pode levar até 1 minuto).</p>}
+        </Cartao>
 
-        <Bloco titulo="Outras tentativas">
+        <Cartao titulo="Outras tentativas">
           {outras.length === 0 ? (
-            <p className="text-sm text-slate-500">Nenhuma outra tentativa com o mesmo e-mail ou WhatsApp.</p>
+            <p className="text-[13px] text-brand-ink-soft">Nenhuma outra tentativa com o mesmo e-mail ou WhatsApp.</p>
           ) : (
-            <ul className="space-y-1.5 text-sm">
+            <ul className="space-y-1.5 text-[14.5px]">
               {outras.map((o) => {
                 const destaque = o.id === maisRecenteConcluida?.id
                 return (
-                  <li key={o.id} className={`rounded-lg px-2 py-1.5 ${destaque ? 'border border-amber-300 bg-amber-50' : ''}`}>
-                    <Link href={`/admin/leads/${o.diagnosticoToken}`} className="font-mono font-semibold underline">#{o.refCurta}</Link>{' '}
+                  <li key={o.id} className={`rounded-xl px-3 py-2 ${destaque ? 'border border-brand-yel/60 bg-brand-yel-tint' : ''}`}>
+                    <Link href={`/admin/leads/${o.diagnosticoToken}`} className={`${LINK} font-mono font-semibold`}>#{o.refCurta}</Link>{' '}
                     · {formatarData(o.completedAt ?? o.startedAt)} · {rotuloStatus(o.status)} · {rotuloTipo(o.tipo)}
-                    {destaque && <span className="ml-2 text-xs font-semibold text-amber-800">mais recente concluída</span>}
+                    {destaque && <span className="ml-2 text-[12px] font-semibold text-brand-yel-text">mais recente concluída</span>}
                   </li>
                 )
               })}
             </ul>
           )}
-        </Bloco>
+        </Cartao>
       </div>
 
       <div className="mt-4">
-        <Bloco titulo="Respostas">
+        <Cartao titulo="Respostas">
           <dl>
             {ORDER.filter((c) => respostas[c]).map((c) => (
               <Linha key={c} rotulo={c}>
-                <div className="text-xs text-slate-500">{titulo(c)}</div>
+                <div className="text-[12.5px] text-brand-ink-soft">{titulo(c)}</div>
                 {rotuloResposta(c, respostas[c])}
               </Linha>
             ))}
             <Linha rotulo="teste">
               <span className="font-mono">{rotuloTeste(s.teste)}</span>
-              {s.teste.length > 0 && <div className="text-xs text-slate-500">gabarito: <span className="font-mono">{GABARITO.join(' ')}</span></div>}
+              {s.teste.length > 0 && <div className="text-[12.5px] text-brand-ink-soft">gabarito: <span className="font-mono">{GABARITO.join(' ')}</span></div>}
             </Linha>
           </dl>
-        </Bloco>
+        </Cartao>
       </div>
     </div>
   )

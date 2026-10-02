@@ -201,6 +201,12 @@ Todas estão no [`.env.example`](.env.example), com comentários.
   Não cole URLs do admin em canais compartilhados (Slack, grupos, tickets): quem tiver a URL
   baixa o PDF com os dados pessoais do lead.
 
+## Design
+
+O design (cores, tipografia, raios, sombras, estados e regras) está em [`DESIGN.md`](DESIGN.md). O quiz usa o CSS
+gerado do original (`app/(quiz)/quiz.css`); o painel `/admin` usa os mesmos valores como tokens em
+`app/globals.css` e os componentes de `components/admin/ui.tsx`. Tela nova do admin parte desses componentes.
+
 ## 6. Banco
 
 Uma tabela (`quiz_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`

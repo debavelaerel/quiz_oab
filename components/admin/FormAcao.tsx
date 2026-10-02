@@ -16,7 +16,7 @@ export default function FormAcao({ action, rotulo, rotuloEnviando, className }: 
         else setEnviando(true)
       }}
     >
-      <button type="submit" disabled={enviando} className={`${className ?? ''} disabled:opacity-50`}>
+      <button type="submit" disabled={enviando} className={className}>
         {enviando ? rotuloEnviando : rotulo}
       </button>
     </form>
