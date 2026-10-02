@@ -203,8 +203,10 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 
 ## 6. Banco
 
-Migrations em `supabase/migrations/`. Local: `npx supabase start` aplica; produção: criar o
-projeto e rodar `npx supabase db push` (ou aplicar os SQL) com as migrations do repo.
+Uma tabela (`quiz_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`
+aplica sozinho. **Produção (Supabase na nuvem):** siga o guia passo a passo em
+[`supabase/README.md`](supabase/README.md) (criar o projeto, `supabase link` + `supabase db push`, e
+conferir com `supabase/verificacao.sql`). No app só entram `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.
 
 ## 7. Atualizar as turmas / datas
 
