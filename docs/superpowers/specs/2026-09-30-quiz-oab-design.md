@@ -1,6 +1,6 @@
 # Quiz OAB (Método VDE) — design
 
-Data: 2026-09-30 · Status: v2 implementada; **v3 (§10, 2026-10-01) aguardando revisão**
+Data: 2026-09-30 · Status: v2 implementada; v3 (§10) e v3.1 (§11) implementadas; **v4 (§12, admin no padrão do Tribunais) aguardando revisão**
 
 ## 1. Objetivo
 
@@ -326,3 +326,49 @@ Substitui o que contradiz §3.3 (tela `resultado`), §5.4-5.7 (mensagem do Whats
   `api.whatsapp` do cliente, `CONFIG.whatsapp` e `NEXT_PUBLIC_WHATSAPP` (não é mais preciso informar o número do WhatsApp).
   Os endpoints `/api/quiz/result` e `/api/quiz/whatsapp` permanecem no servidor sem uso pelo quiz.
 - **Eventos de analytics:** `quiz_whatsapp` e `quiz_download` deixam de existir.
+
+## 12. Revisão v4 (2026-10-02) — admin com as funcionalidades do Tribunais, adaptado ao OAB
+
+Fonte de comparação: `reference/tribunais-patterns` (admin, `components/admin/*`, `lib/analytics.ts`). Visual: `DESIGN.md` do OAB
+e `components/admin/ui.tsx`. Ícones: `lucide-react` (dependência nova). Desenho aprovado pelo usuário em 2026-10-02.
+
+### 12.1 Navegação e lista de leads
+- Menu: **Leads** e **Analytics**, com ícones (`Users`, `PieChart`).
+- Lista: busca (ref, nome, e-mail, WhatsApp), filtros tipo, prova, status e **diagnóstico** (novo), CSV, selos de estado com bolinha
+  (`Pill`), paginação. Colunas: Nome+e-mail, Resultado (tipo, prova·turma), **Teste (X de 5)**, Status, Diagnóstico, **Origem** (`utm_source`),
+  Início. Sai a coluna/uso de "clicou no WhatsApp" (o botão não existe mais).
+
+### 12.2 Detalhe do lead
+- Topo: voltar; nome; selos (status, resultado, diagnóstico); ações: **Baixar PDF** (primário), **Regenerar**, **Reenviar e-mail**, e
+  **Abrir no WhatsApp** (`https://wa.me/<whatsapp do lead>?text=<mensagem pronta>`; a mensagem cita o nome, a prova e leva o link estável do
+  PDF `${APP_URL}/api/diagnostico/<token>`).
+- Cartões (só borda): Contato (inclui consentimento e datas), Origem (UTM, só se houver), Resultado (tipo, prova, turma, atalho, saída),
+  Perfil do lead (respostas com rótulo legível em grade de 2 colunas), **Teste questão a questão** (✓/✗, disciplina, resposta e gabarito,
+  total X de 5), **Links para o CRM** (campo copiável: PDF estável), Outras tentativas.
+- **Diagnóstico completo:** seção abaixo dos cartões com o diagnóstico formatado, **idêntico ao PDF**, embutido num `iframe` com
+  `sandbox` e `srcdoc`, em moldura de página. O serviço Python ganha `POST /diagnostico/html` (mesma autenticação e mesmas validações
+  de `/diagnostico`; devolve `text/html` de `report.build_html`, sem Chromium). O Next busca esse HTML no servidor ao abrir a página;
+  se o serviço estiver fora do ar ou o hash divergir, a seção mostra um aviso e o resto da página funciona. Nenhum texto do diagnóstico é
+  duplicado no app: o pacote do VDE continua sendo a única fonte.
+
+### 12.3 Analytics (`/admin/analytics`)
+- Seletor de período: **tudo / 30 dias / 7 dias** (`?periodo=`).
+- Indicadores (6): sessões iniciadas, taxa de conclusão, concluídas, média de acertos, diagnósticos prontos (%), tempo médio até concluir.
+- Sessões por dia (sparkline); **funil**: iniciou → terminou as perguntas → fez o teste → deixou o contato (concluiu) → diagnóstico gerado.
+- **Onde desistem:** sessões `em_andamento`/`saiu` por `ultima_pergunta` (barras ordenadas).
+- Resultados: por tipo (`ok/acima/sem_turma/sem_prova`), por prova (48/49/50), por turma (dias) e saídas antecipadas (`cedo/f2`).
+- Perfil das respostas: uma distribuição por pergunta (situação, regime/período, tentativa, nível, horas, trabalho, trava, motivo,
+  compromisso, investir/parcela), rótulos do `data.json`.
+- Teste: distribuição de acertos (0–5) e questões mais erradas. Origem: por `utm_source` e `utm_campaign`, com conversão (concluídas/iniciadas).
+- **Prioridade comercial:** segmentos (prova recomendada × compromisso × disposição de investir) com contagem de concluídos.
+- Agregações em funções puras (`lib/adminAnalytics.ts`), testadas; leitura de até 5000 sessões em páginas pelo repositório.
+  Gráficos portados do Tribunais com os tokens do OAB: `Sparkline`, `Funnel`, `PieChart`, `RankedBars`, `CampoCopiavel`.
+
+### 12.4 Fora do escopo
+Apresentação comercial, leads desqualificados (o OAB não pede contato de quem sai antes), "clique no WhatsApp", exclusão de lead (LGPD
+pendente), usuários individuais.
+
+### 12.5 Testes e verificação
+Vitest para as agregações, para o gerador da mensagem do WhatsApp e para a leitura paginada; pytest para `/diagnostico/html` (401, 409
+de hash/recomendação, 422, HTML dos casos de teste); telas por verificação manual no navegador (desktop 1280 e celular 390) e e2e
+existente continua passando.
