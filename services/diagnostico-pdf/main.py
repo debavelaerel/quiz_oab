@@ -18,7 +18,7 @@ from diagnosis import logic as L  # noqa: E402
 from diagnosis import report  # noqa: E402
 from diagnosis.answers import LeadInvalido, from_code  # noqa: E402
 from fastapi import Depends, FastAPI, Header, HTTPException  # noqa: E402
-from fastapi.responses import JSONResponse, Response  # noqa: E402
+from fastapi.responses import HTMLResponse, JSONResponse, Response  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
 
 logger = logging.getLogger("diagnostico-pdf")
@@ -74,8 +74,8 @@ def health():
     return {"ok": True}
 
 
-@app.post("/diagnostico")
-async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verificar_segredo)) -> Response:
+def _validar(req: DiagnosticoRequest) -> tuple[dict, str]:
+    """Hash do data.json, código QO1 e recomendação: as mesmas checagens para o PDF e para o HTML."""
     if req.data_hash != DATA_HASH:
         raise HTTPException(status_code=409, detail="data.json divergente entre o app e o serviço")
     try:
@@ -85,6 +85,19 @@ async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verif
     pedido = (req.recomendacao.tipo, req.recomendacao.exame, req.recomendacao.turma)
     if _chave_recomendacao(L.recomendar(A, hoje)) != pedido:
         raise HTTPException(status_code=409, detail="recomendação do serviço difere da gravada pelo app")
+    return A, hoje
+
+
+@app.post("/diagnostico/html")
+async def diagnostico_html(req: DiagnosticoRequest, _auth: None = Depends(verificar_segredo)) -> HTMLResponse:
+    """O mesmo HTML que vira PDF, para o admin exibir o diagnóstico formatado (sem Chromium, sem S3)."""
+    A, hoje = _validar(req)
+    return HTMLResponse(report.build_html(A, hoje, req.nome))
+
+
+@app.post("/diagnostico")
+async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verificar_segredo)) -> Response:
+    A, hoje = _validar(req)
 
     headers: dict[str, str] = {}
     chave = None

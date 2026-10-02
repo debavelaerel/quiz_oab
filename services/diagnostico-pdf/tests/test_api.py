@@ -135,3 +135,23 @@ def test_502_quando_o_upload_falha(client, monkeypatch):
 
     monkeypatch.setattr(main.s3, "upload_pdf", quebra)
     assert client.post("/diagnostico", json=corpo(), headers=H).status_code == 502
+
+
+def test_html_devolve_o_diagnostico_sem_chromium_nem_s3(client, monkeypatch):
+    monkeypatch.setenv("BUCKET_NAME", "b")  # mesmo com S3 ligado, não sobe nada
+
+    async def nao_deve_renderizar(html):  # pragma: no cover
+        raise AssertionError("html não usa o Chromium")
+
+    monkeypatch.setattr(main.render, "html_para_pdf", nao_deve_renderizar)
+    r = client.post("/diagnostico/html", json=corpo(), headers=H)
+    assert r.status_code == 200
+    assert r.headers["content-type"].startswith("text/html")
+    assert "<html" in r.text.lower() and "Maria" in r.text
+
+
+def test_html_exige_segredo_e_valida_hash_codigo_e_recomendacao(client):
+    assert client.post("/diagnostico/html", json=corpo()).status_code == 401
+    assert client.post("/diagnostico/html", json=corpo(data_hash="0" * 64), headers=H).status_code == 409
+    assert client.post("/diagnostico/html", json=corpo(codigo="lixo"), headers=H).status_code == 422
+    assert client.post("/diagnostico/html", json=corpo(recomendacao={"tipo": "ok", "exame": "99", "turma": 1}), headers=H).status_code == 409
