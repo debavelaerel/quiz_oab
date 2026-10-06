@@ -50,11 +50,11 @@ services:
       - "${DIAGNOSTICO_PDF_PORT:-8000}:8000"
     environment:
       DIAGNOSTICO_SERVICE_SECRET: ${DIAGNOSTICO_SERVICE_SECRET:-segredo-local}
-      BUCKET_NAME: diagnosticos-oab
-      REGION: us-east-1
-      S3_ENDPOINT: http://minio:9000 # rede interna do compose
-      ACCESS_KEY: minioadmin # só local
-      SECRET_KEY: minioadmin # só local
+      BUCKET_NAME: ${BUCKET_NAME:-diagnosticos-oab}
+      REGION: ${REGION:-us-east-1}
+      S3_ENDPOINT: ${S3_PDF_ENDPOINT-http://minio:9000} # padrão: MinIO na rede interna; vazio = AWS
+      ACCESS_KEY: ${ACCESS_KEY:-minioadmin}
+      SECRET_KEY: ${SECRET_KEY:-minioadmin}
     depends_on:
       minio-init:
         condition: service_completed_successfully
