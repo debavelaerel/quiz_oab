@@ -35,6 +35,7 @@ export function Quiz() {
   const [resultado, setResultado] = useState<DadosResultado | null>(null)
   const avanco = useRef(new Avanco()).current
   const larguraBarra = useRef(0)
+  const [enviando, setEnviando] = useState(false)
   const tela = telaAtual(vista.nav)
   const { hoje } = s
 
@@ -87,14 +88,22 @@ export function Quiz() {
   }
 
   // O finish leva o snapshot inteiro (respostas + teste + nome) do momento do clique.
-  const enviarDados = (f: Form) => finalizar<DadosResultado>({
-    token: s.token(),
-    novaSessao: s.novaSessao,
-    enviar: (token) => {
-      const { respostas, teste, nome } = s.snapshot()
-      return api.finish({ session_token: token, respostas, teste, ...(nome ? { nome } : {}), contato: contatoDe(f), consentimento: true })
-    },
-  })
+  // Enquanto o envio está em andamento, o "Voltar" some (voltar apagaria respostas que o finish ainda usa).
+  const enviarDados = async (f: Form) => {
+    setEnviando(true)
+    try {
+      return await finalizar<DadosResultado>({
+        token: s.token(),
+        novaSessao: s.novaSessao,
+        enviar: (token) => {
+          const { respostas, teste, nome } = s.snapshot()
+          return api.finish({ session_token: token, respostas, teste, ...(nome ? { nome } : {}), contato: contatoDe(f), consentimento: true })
+        },
+      })
+    } finally {
+      setEnviando(false)
+    }
+  }
 
   const pct = progresso(tela, vista.A, hoje, QTD_TESTE)
   if (pct !== null) larguraBarra.current = pct
@@ -108,7 +117,7 @@ export function Quiz() {
         <div className="track"><div className="fill" style={{ width: `${larguraBarra.current}%` }} /></div>
       </div>
       <main key={vista.nav.hist.length + tela}>{renderTela()}</main>
-      {podeVoltar(vista.nav) && tela !== 'resultado' && (
+      {podeVoltar(vista.nav) && tela !== 'resultado' && !enviando && (
         <div className="voltar-rodape"><button type="button" className="voltar" onClick={onVoltar}>← Voltar</button></div>
       )}
     </>

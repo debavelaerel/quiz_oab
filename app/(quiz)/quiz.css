@@ -25,9 +25,6 @@
 .qz .bar{background:var(--deep)}
 .qz .top{max-width:620px;width:100%;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .qz .logo{display:block;width:118px;height:34px;background:url('/brand/logo-branco.png') left center/contain no-repeat}
-.qz .back{border:0;background:transparent;color:#e7d8f6;font-size:13px;font-weight:500;padding:6px 8px;border-radius:8px}
-.qz .back:hover{background:rgba(255,255,255,.12);color:#fff}
-.qz .back[hidden]{display:none}
 .qz .progress{max-width:620px;width:100%;margin:14px auto 0;padding:0 20px}
 .qz .progress[hidden]{display:none}
 .qz .track{height:7px;border-radius:99px;background:var(--lil2);overflow:hidden}

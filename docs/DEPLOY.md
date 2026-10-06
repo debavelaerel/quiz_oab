@@ -55,7 +55,7 @@ não existirem, deixe vazio: o quiz roda sem eles.
 | `ADMIN_SESSION_SECRET` | `openssl rand -base64 48` |
 | `DIAGNOSTICO_SERVICE_URL` | URL **interna** do serviço de PDF |
 | `DIAGNOSTICO_SERVICE_SECRET` | segredo forte, **igual** nos dois serviços |
-| `BUCKET_NAME` / `REGION` | `vicio-quiz-oab-s3` / `sa-east-1` |
+| `BUCKET_NAME` / `REGION` | `vicio-quiz-oab-s3` / `sa-east-1` — **`REGION` é obrigatória**: sem ela o código assume `us-east-1` e a URL assinada de download falha |
 | `APP_URL` | URL pública do quiz (links do admin) |
 | `SMTP_*` | opcional; só para o botão "Reenviar e-mail" do admin |
 
@@ -65,7 +65,7 @@ não existirem, deixe vazio: o quiz roda sem eles.
 
 ## 5. Verificação depois do deploy
 
-1. `GET <serviço-pdf>/health` → `200 {"ok": true}`.
+1. `GET <serviço-pdf>/health` → `200 {"ok": true}`. Logo depois de subir, o Chromium pode levar alguns segundos e o endpoint responde `503` até conectar; configure o health check do ALB/ECS com tolerância (período inicial de ~30 s e 3 falhas seguidas) para não reiniciar a tarefa em loop.
 2. Abra o quiz, responda como **"TESTE"** até o fim; a tela final deve mostrar o resultado e o aviso do WhatsApp.
 3. Em `/admin`, o lead "TESTE" deve aparecer com diagnóstico **Pronto** e o PDF deve baixar.
 4. Apague o lead de teste: `delete from quiz_oab_sessions where nome = 'TESTE';`.

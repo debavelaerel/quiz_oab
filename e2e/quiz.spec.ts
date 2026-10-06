@@ -22,7 +22,8 @@ async function responderPergunta(page: Page) {
 }
 
 // E2E_NOME: use um nome reconhecível (ex.: TESTE) ao rodar contra um banco compartilhado.
-const NOME = process.env.E2E_NOME ?? 'Maria'
+const NOME = process.env.E2E_NOME ?? 'TESTE'
+const NOME_RE = NOME.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', async ({ page }) => {
   await page.goto('/?hoje=2026-09-30')
@@ -31,7 +32,7 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   // Nome primeiro.
   await page.getByLabel('Seu nome').fill(NOME)
   await page.getByRole('button', { name: /Começar o quiz/ }).click()
-  await expect(page.getByRole('heading', { name: new RegExp(`Pra começar, ${NOME}:`) })).toBeVisible()
+  await expect(page.getByRole('heading', { name: new RegExp(`Pra começar, ${NOME_RE}:`) })).toBeVisible()
 
   // Formado e nunca fez a prova.
   await expect(passo(page)).toHaveText(/^Pergunta 1 de/)
@@ -61,15 +62,15 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   }
 
   // Contato (e-mail único por execução), WhatsApp primeiro.
-  await expect(page.getByRole('heading', { name: new RegExp(`^${NOME}, deixe seu e-mail e WhatsApp`) })).toBeVisible()
+  await expect(page.getByRole('heading', { name: new RegExp(`^${NOME_RE}, deixe seu e-mail e WhatsApp`) })).toBeVisible()
   await page.getByLabel('WhatsApp').fill('85999990000')
-  await page.getByLabel('E-mail').fill(`maria+${Date.now()}@exemplo.com`)
+  await page.getByLabel('E-mail').fill(`teste+${Date.now()}@exemplo.com`)
   await page.getByRole('button', { name: /Ver o meu resultado agora/ }).click()
 
   // Resultado: a OAB recomendada é uma das três de 2027.
   await expect(page.getByText(/a OAB da sua aprovação é a/)).toBeVisible()
   await expect(page.locator('.big .num')).toHaveText(/^(48|49|50)$/)
-  await expect(page.getByText(new RegExp(`^${NOME}, a OAB da sua aprovação é a`))).toBeVisible()
+  await expect(page.getByText(new RegExp(`^${NOME_RE}, a OAB da sua aprovação é a`))).toBeVisible()
 
   // Sem botão de WhatsApp nem de download: só o aviso de que o time envia o resultado pelo WhatsApp.
   await expect(page.getByText('Nossa equipe vai te enviar o seu resultado no WhatsApp')).toBeVisible()

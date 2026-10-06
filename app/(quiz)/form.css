@@ -15,8 +15,8 @@
 .qz .form2 .small{margin-top:12px}
 .qz .sro{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* "Voltar" fica logo abaixo da pergunta (no celular, perto do polegar). */
-.qz .voltar-rodape{display:flex;justify-content:center;padding:0 20px 32px}
+/* "Voltar" fica fixo na base da tela (no celular, na zona do polegar), sempre visível. */
+.qz .voltar-rodape{position:sticky;bottom:0;display:flex;justify-content:center;padding:8px 20px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent)}
 .qz .voltar{border:0;background:transparent;color:var(--roxo);font:500 14.5px 'Poppins',system-ui,sans-serif;min-height:44px;padding:10px 16px;border-radius:999px;cursor:pointer}
 .qz .voltar:hover{background:var(--lil2)}
 .qz .voltar:focus-visible{outline:2px solid var(--roxo);outline-offset:2px}

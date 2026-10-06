@@ -121,8 +121,8 @@ E2E_PORT=3100 npm run e2e              # sobe (ou reutiliza) `next dev` na E2E_P
 O e2e percorre intro → nome → formado → nunca fez → demais perguntas → parte 2 → 5 questões → contato
 (WhatsApp e e-mail) → resultado (com o nome), e confere a OAB (48/49/50) e a mensagem "Nossa equipe vai te enviar o seu resultado no WhatsApp"
 (a tela não tem botão de WhatsApp nem de download); também testa o botão **Voltar**. Cada execução cria um lead novo
-(`maria+<timestamp>@exemplo.com`). Se o `.env.local` apontar para um banco compartilhado, use um nome reconhecível:
-`E2E_NOME=TESTE E2E_PORT=3100 npm run e2e` e depois apague com `delete from quiz_oab_sessions where nome = 'TESTE';`.
+(`teste+<timestamp>@exemplo.com`) com o nome **TESTE** (mude com `E2E_NOME`). Se o `.env.local` apontar para um banco compartilhado,
+apague os leads depois: `delete from quiz_oab_sessions where nome = 'TESTE';`.
 
 ### Problemas comuns
 

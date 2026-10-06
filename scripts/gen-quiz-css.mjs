@@ -87,6 +87,7 @@ function quizCss() {
   if (css.includes('{{')) throw new Error('placeholder sobrando')
   css = css.replaceAll("url('assets/", "url('/brand/").replace('animation:in ', 'animation:qz-in ')
   if (css.includes('assets/')) throw new Error('URL assets/ sobrando')
+  css = css.replace(/^\.back[^\n]*\n/gm, '') // o "Voltar" agora é o .voltar (form.css)
   return `${AVISO}\n${COMPAT}\n${transformar(css)}`
 }
 
