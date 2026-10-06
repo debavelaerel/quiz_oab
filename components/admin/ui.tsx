@@ -33,18 +33,6 @@ export function Cartao({ titulo, children, className = '' }: { titulo?: string; 
 
 export type Tom = 'ok' | 'aviso' | 'erro' | 'neutro'
 
-const TOM_BADGE: Record<Tom, string> = {
-  ok: 'bg-brand-green-tint text-brand-green',
-  aviso: 'bg-brand-yel-tint text-brand-yel-text',
-  erro: 'bg-brand-red-tint text-brand-red',
-  neutro: 'bg-brand-tint text-brand-roxo',
-}
-
-/** Estado em pílula (pronto, pendente, erro...). */
-export function Badge({ tom, children }: { tom: Tom; children: ReactNode }) {
-  return <span className={`inline-block rounded-full px-2.5 py-0.5 text-[12px] font-semibold ${TOM_BADGE[tom]}`}>{children}</span>
-}
-
 const TOM_ALERTA: Record<'ok' | 'erro', string> = {
   ok: 'border-brand-green/30 bg-brand-green-tint text-brand-green',
   erro: 'border-brand-red/30 bg-brand-red-tint text-brand-red',

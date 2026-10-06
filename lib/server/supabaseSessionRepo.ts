@@ -7,7 +7,7 @@ const paraSnake = (k: string) => k.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}
 const paraCamel = (k: string) => k.replace(/_([a-z])/g, (_, c) => c.toUpperCase())
 const mapChaves = (o: Record<string, unknown>, f: (k: string) => string) =>
   Object.fromEntries(Object.entries(o).map(([k, v]) => [f(k), v]))
-export const deLinha = (l: Record<string, unknown>) => mapChaves(l, paraCamel) as unknown as QuizSession
+const deLinha = (l: Record<string, unknown>) => mapChaves(l, paraCamel) as unknown as QuizSession
 const paraLinha = (p: Partial<QuizSession>) => mapChaves(p as Record<string, unknown>, paraSnake)
 
 const TABELA = 'quiz_oab_sessions'

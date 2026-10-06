@@ -103,4 +103,3 @@ export function useQuizSession() {
   }
 }
 
-export type QuizSession = ReturnType<typeof useQuizSession>

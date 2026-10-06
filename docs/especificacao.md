@@ -329,7 +329,7 @@ Substitui o que contradiz §3.3 (tela `resultado`), §5.4-5.7 (mensagem do Whats
 
 ## 12. Revisão v4 (2026-10-02) — admin com as funcionalidades do Tribunais, adaptado ao OAB
 
-Fonte de comparação: `reference/tribunais-patterns` (admin, `components/admin/*`, `lib/analytics.ts`). Visual: `DESIGN.md` do OAB
+Fonte de comparação: o admin do quiz Tribunais (repositório separado) (admin, `components/admin/*`, `lib/analytics.ts`). Visual: `DESIGN.md` do OAB
 e `components/admin/ui.tsx`. Ícones: `lucide-react` (dependência nova). Desenho aprovado pelo usuário em 2026-10-02.
 
 ### 12.1 Navegação e lista de leads

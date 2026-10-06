@@ -2,7 +2,7 @@
 // portadas de go()/$back.onclick do original.
 import { aplica, ORDER, totalPassos, type Campo, type Resp } from '@/lib/oab/fluxo'
 
-export type TelaTeste = 't0' | 't1' | 't2' | 't3' | 't4'
+type TelaTeste = 't0' | 't1' | 't2' | 't3' | 't4'
 export type Tela = 'intro' | 'nome' | Campo | 'parte2' | TelaTeste | 'dados' | 'resultado' | 'cedo' | 'f2'
 
 export const ehPergunta = (t: Tela): t is Campo => (ORDER as readonly string[]).includes(t)

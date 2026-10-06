@@ -6,7 +6,6 @@ services
 supabase
 e2e
 docs
-.superpowers
 .playwright-mcp
 test-results
 playwright-report

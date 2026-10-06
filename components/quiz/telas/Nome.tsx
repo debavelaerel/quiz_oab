@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { nomeCurtoValido } from '@/lib/validacao'
 
-export const MSG_NOME = 'Digite o seu primeiro nome.'
+const MSG_NOME = 'Digite o seu primeiro nome.'
 
 type Props = { inicial: string; onContinuar: (nome: string) => void }
 

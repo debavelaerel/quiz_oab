@@ -7,7 +7,7 @@ import { normalizeEmail, normalizeWhatsapp } from '@/lib/normalize'
 import type { SessionRepo } from './sessionRepo'
 import type { DiagnosticoStatus, QuizSession, RecomendacaoGravada, Utm } from './types'
 
-export const VERSAO_CONSENTIMENTO = 'v1'
+const VERSAO_CONSENTIMENTO = 'v1'
 export const TIPOS_COM_DIAGNOSTICO = ['ok', 'acima', 'sem_turma']
 const PENDENTE_MAX_MS = 10 * 60 * 1000
 

@@ -2,7 +2,7 @@
 
 <!-- meta
 source: CSS do quiz original (reference/qual-a-oab-dev/_build/index.src.html, convertido em app/(quiz)/quiz.css)
-        + regras de disciplina do DESIGN.md do quiz Tribunais (reference/tribunais-patterns/DESIGN.md)
+        + regras de disciplina do DESIGN.md do quiz Tribunais (repositório do Tribunais, `DESIGN.md`)
 last-reviewed: 2026-10-02
 -->
 

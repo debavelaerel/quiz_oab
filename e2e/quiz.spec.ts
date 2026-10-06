@@ -21,16 +21,24 @@ async function responderPergunta(page: Page) {
     .not.toBe(antes)
 }
 
+// E2E_NOME: use um nome reconhecível (ex.: TESTE) ao rodar contra um banco compartilhado.
+const NOME = process.env.E2E_NOME ?? 'Maria'
+
 test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', async ({ page }) => {
   await page.goto('/?hoje=2026-09-30')
   await page.getByRole('button', { name: 'Descobrir a minha OAB' }).click()
 
   // Nome primeiro.
-  await page.getByLabel('Seu nome').fill('Maria')
+  await page.getByLabel('Seu nome').fill(NOME)
   await page.getByRole('button', { name: /Começar o quiz/ }).click()
-  await expect(page.getByRole('heading', { name: /Pra começar, Maria:/ })).toBeVisible()
+  await expect(page.getByRole('heading', { name: new RegExp(`Pra começar, ${NOME}:`) })).toBeVisible()
 
   // Formado e nunca fez a prova.
+  await expect(passo(page)).toHaveText(/^Pergunta 1 de/)
+  await page.getByRole('button', { name: /^Já me formei/ }).click()
+  await expect(passo(page)).toHaveText(/^Pergunta 2 de/)
+  // "Voltar" volta uma pergunta (e a resposta dela é refeita).
+  await page.getByRole('button', { name: '← Voltar' }).click()
   await expect(passo(page)).toHaveText(/^Pergunta 1 de/)
   await page.getByRole('button', { name: /^Já me formei/ }).click()
   await expect(passo(page)).toHaveText(/^Pergunta 2 de/)
@@ -53,7 +61,7 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   }
 
   // Contato (e-mail único por execução), WhatsApp primeiro.
-  await expect(page.getByRole('heading', { name: /^Maria, deixe seu e-mail e WhatsApp/ })).toBeVisible()
+  await expect(page.getByRole('heading', { name: new RegExp(`^${NOME}, deixe seu e-mail e WhatsApp`) })).toBeVisible()
   await page.getByLabel('WhatsApp').fill('85999990000')
   await page.getByLabel('E-mail').fill(`maria+${Date.now()}@exemplo.com`)
   await page.getByRole('button', { name: /Ver o meu resultado agora/ }).click()
@@ -61,7 +69,7 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   // Resultado: a OAB recomendada é uma das três de 2027.
   await expect(page.getByText(/a OAB da sua aprovação é a/)).toBeVisible()
   await expect(page.locator('.big .num')).toHaveText(/^(48|49|50)$/)
-  await expect(page.getByText(/^Maria, a OAB da sua aprovação é a/)).toBeVisible()
+  await expect(page.getByText(new RegExp(`^${NOME}, a OAB da sua aprovação é a`))).toBeVisible()
 
   // Sem botão de WhatsApp nem de download: só o aviso de que o time envia o resultado pelo WhatsApp.
   await expect(page.getByText('Nossa equipe vai te enviar o seu resultado no WhatsApp')).toBeVisible()

@@ -1,6 +1,6 @@
 """HTML -> PDF via Playwright, direto em Python — sem Node.
 
-Copiado do molde (reference/tribunais-patterns/services/diagnostico-pdf/render.py)
+Copiado do molde (serviço de PDF do quiz Tribunais)
 e adaptado a este pacote. O `pdf.py` do pacote `diagnosis` delega pra um
 script Node (`_build/html2pdf.mjs`); em vez de subir um segundo runtime só
 pra isso, geramos o PDF daqui — mesmo motor (Chromium headless) e as mesmas

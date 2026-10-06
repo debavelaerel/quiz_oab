@@ -8,7 +8,22 @@ vê o resultado na tela (com o diagnóstico desfocado). O time do VDE envia o **
 WhatsApp da pessoa. O lead fica no banco (Supabase), o PDF é gerado sozinho em segundo plano e o
 comercial o baixa no painel `/admin`.
 
-A pasta `reference/` é só referência (entrega original estática + CLI Python) e não é editada.
+**Vai subir na AWS?** Comece por [`docs/DEPLOY.md`](docs/DEPLOY.md) (checklist do devops). O desenho completo
+das decisões está em [`docs/especificacao.md`](docs/especificacao.md).
+
+### Mapa do repositório
+
+| Pasta | O que tem |
+| --- | --- |
+| `app/` | rotas do Next: quiz `(quiz)/`, API `api/`, painel `admin/` |
+| `components/quiz/`, `components/admin/` | telas do quiz e do painel |
+| `lib/` | regras (`oab/` = lógica e turmas do VDE), validação, serviços de servidor (`server/`) e analytics do admin |
+| `services/diagnostico-pdf/` | serviço Python que gera o PDF (FastAPI + Chromium) |
+| `supabase/` | migration, verificação e guia de produção do banco |
+| `reference/qual-a-oab-dev/` | **fonte de verdade** do VDE (perguntas, turmas, textos do diagnóstico, casos de teste); não editar à mão |
+| `scripts/` | `sync-oab.mjs` (copia a referência para o app) e `gen-quiz-css.mjs` |
+| `e2e/` | teste ponta a ponta (Playwright) |
+| `docs/` | guia de deploy e especificação |
 
 ## 2. Stack e arquitetura
 
@@ -17,7 +32,7 @@ A pasta `reference/` é só referência (entrega original estática + CLI Python
 - **Supabase (Postgres)**: sessões do quiz / leads (`supabase/migrations/`).
 - **`services/diagnostico-pdf`**: FastAPI + Chromium (Playwright para Python), gera o PDF e grava
   no S3. Sem Node na imagem.
-- **S3** (MinIO local), **SMTP** (Mailpit local).
+- **S3** (MinIO local; na AWS, bucket `vicio-quiz-oab-s3`), **SMTP** opcional (Mailpit local) só para o botão "Reenviar e-mail" do admin.
 
 ```
 Navegador (Quiz React)
@@ -105,7 +120,9 @@ E2E_PORT=3100 npm run e2e              # sobe (ou reutiliza) `next dev` na E2E_P
 
 O e2e percorre intro → nome → formado → nunca fez → demais perguntas → parte 2 → 5 questões → contato
 (WhatsApp e e-mail) → resultado (com o nome), e confere a OAB (48/49/50) e a mensagem "Nossa equipe vai te enviar o seu resultado no WhatsApp"
-(a tela não tem botão de WhatsApp nem de download). Cada execução cria um lead novo (`maria+<timestamp>@exemplo.com`).
+(a tela não tem botão de WhatsApp nem de download); também testa o botão **Voltar**. Cada execução cria um lead novo
+(`maria+<timestamp>@exemplo.com`). Se o `.env.local` apontar para um banco compartilhado, use um nome reconhecível:
+`E2E_NOME=TESTE E2E_PORT=3100 npm run e2e` e depois apague com `delete from quiz_oab_sessions where nome = 'TESTE';`.
 
 ### Problemas comuns
 
@@ -135,9 +152,9 @@ Todas estão no [`.env.example`](.env.example), com comentários.
 | `ADMIN_SESSION_SECRET` | Next | qualquer | `openssl rand -base64 48`; trocar invalida todas as sessões |
 | `DIAGNOSTICO_SERVICE_URL` | Next | `http://localhost:8000` | URL interna do serviço |
 | `DIAGNOSTICO_SERVICE_SECRET` | Next **e** serviço | `segredo-local` | segredo forte, igual nos dois |
-| `BUCKET_NAME`, `REGION` | Next **e** serviço | `diagnosticos-oab`, `us-east-1` | bucket real |
+| `BUCKET_NAME`, `REGION` | Next **e** serviço | `diagnosticos-oab`, `us-east-1` | `vicio-quiz-oab-s3`, `sa-east-1` |
 | `ACCESS_KEY`, `SECRET_KEY` | Next **e** serviço | `minioadmin` | **não definir** (IAM role) |
-| `S3_ENDPOINT` | Next **e** serviço | `http://localhost:9000` (no compose o serviço usa `http://minio:9000`) | vazio |
+| `S3_ENDPOINT` | Next **e** serviço | `http://localhost:9000` (no compose o serviço usa `http://minio:9000`; `S3_PDF_ENDPOINT` troca isso, vazio = AWS) | vazio |
 | `S3_PUBLIC_ENDPOINT` | Next | `http://localhost:9000` (o que o navegador enxerga) | vazio |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Next | Mailpit `localhost:1025` | SMTP do provedor; `SMTP_HOST` vazio = não envia (registra `email_erro`) |
 | `APP_URL` | Next | `http://localhost:3000` | URL pública do quiz (base do link do e-mail reenviado pelo `/admin`) |
@@ -220,7 +237,8 @@ gerado do original (`app/(quiz)/quiz.css`); o painel `/admin` usa os mesmos valo
 
 ## 6. Banco
 
-Uma tabela (`quiz_oab_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`
+Uma tabela (`quiz_oab_sessions`), criada pela migration em `supabase/migrations/`. O prefixo `quiz_oab_` evita conflito
+com a `quiz_sessions` do quiz Tribunais, então os dois podem dividir o mesmo projeto Supabase (a migration só cria objetos novos). Local: `npx supabase start`
 aplica sozinho. **Produção (Supabase na nuvem):** siga o guia passo a passo em
 [`supabase/README.md`](supabase/README.md) (criar o projeto, `supabase link` + `supabase db push`, e
 conferir com `supabase/verificacao.sql`). No app só entram `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.
@@ -257,6 +275,7 @@ diagnósticos ficam `erro` até o container ser **recriado** a partir da imagem 
 
 ## 8. Pendências
 
+- **Devops:** subir as duas imagens, a IAM role do bucket e as variáveis (veja [`docs/DEPLOY.md`](docs/DEPLOY.md)).
 - **VDE:** URL da política de privacidade e vídeo da parte 2 (o quiz roda sem eles, com
   placeholders). Não é mais preciso informar o número do WhatsApp: a tela final não o usa.
 - **LGPD:** não há política de retenção/exclusão nem ação de excluir lead no admin; precisa ser

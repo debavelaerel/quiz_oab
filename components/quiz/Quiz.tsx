@@ -103,12 +103,14 @@ export function Quiz() {
     <>
       <div className="bar"><header className="top">
         <span className="logo" role="img" aria-label="Método VDE, OAB 1ª fase" />
-        <button className="back" hidden={!podeVoltar(vista.nav) || tela === 'resultado'} onClick={onVoltar}>← Voltar</button>
       </header></div>
       <div className="progress" hidden={pct === null}>
         <div className="track"><div className="fill" style={{ width: `${larguraBarra.current}%` }} /></div>
       </div>
       <main key={vista.nav.hist.length + tela}>{renderTela()}</main>
+      {podeVoltar(vista.nav) && tela !== 'resultado' && (
+        <div className="voltar-rodape"><button type="button" className="voltar" onClick={onVoltar}>← Voltar</button></div>
+      )}
     </>
   )
 
