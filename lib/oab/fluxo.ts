@@ -110,7 +110,7 @@ export function validarTeste(teste: unknown, parcial: boolean): string[] {
   return teste as string[]
 }
 
-/** Onde a pessoa está (vai em quiz_sessions.ultima_pergunta — base do abandono por pergunta). */
+/** Onde a pessoa está (vai em quiz_oab_sessions.ultima_pergunta — base do abandono por pergunta). */
 export function etapaAtual(A: Resp, teste: string[], hoje: string): string {
   const s = saida(A, hoje)
   if (s) return s

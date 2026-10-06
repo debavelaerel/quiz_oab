@@ -119,7 +119,7 @@ por caminho relativo (`diagnosis/data.py`, `assets.py`). Por isso:
 
 ## 4. Banco de dados
 
-Uma tabela, `quiz_sessions`, uma linha por **tentativa**. RLS ligado **sem policy pública**; só
+Uma tabela, `quiz_oab_sessions`, uma linha por **tentativa**. RLS ligado **sem policy pública**; só
 a `service_role` acessa. Migrations em `supabase/migrations/`, nome `AAAAMMDDHHMMSS_*.sql`.
 
 | Grupo | Colunas |
@@ -260,7 +260,7 @@ Esta seção **substitui** o que contradiz as seções anteriores (§3.3 tela `d
 - Nova tela **"Como podemos te chamar?"** logo depois do botão da intro e antes da primeira pergunta: selo "Antes de
   começar", título, uma linha de apoio ("Assim a gente deixa o quiz com a sua cara."), **um** campo e o botão "Começar o quiz →".
 - O campo é o **primeiro nome ou apelido**: aparado, 2 a 80 caracteres, ao menos 2 letras. **Não** exige sobrenome.
-- O nome vai no **snapshot** do `answer` (`nome`, junto de `respostas` e `teste`) e é gravado em `quiz_sessions.nome`
+- O nome vai no **snapshot** do `answer` (`nome`, junto de `respostas` e `teste`) e é gravado em `quiz_oab_sessions.nome`
   desde o início. O `start` devolve `nome` quando retoma a sessão. `nome_completo` deixa de ser coletado: a coluna fica
   (sem migration) e fica `null` nas sessões novas; o admin e o CSV mostram `nome`.
 - O `finish` passa a receber `contato: { email, whatsapp }` + `consentimento`; o nome vem da sessão. Sem nome na sessão

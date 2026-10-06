@@ -10,7 +10,7 @@ const mapChaves = (o: Record<string, unknown>, f: (k: string) => string) =>
 export const deLinha = (l: Record<string, unknown>) => mapChaves(l, paraCamel) as unknown as QuizSession
 const paraLinha = (p: Partial<QuizSession>) => mapChaves(p as Record<string, unknown>, paraSnake)
 
-const TABELA = 'quiz_sessions'
+const TABELA = 'quiz_oab_sessions'
 const COLISAO = '23505' // unique_violation
 
 export function criarSupabaseSessionRepo(db: SupabaseClient): SessionRepo {

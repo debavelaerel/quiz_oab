@@ -1,6 +1,6 @@
 # Banco de dados (Supabase) — guia de deploy
 
-O quiz grava tudo em **uma tabela**, `public.quiz_sessions` (uma linha por tentativa). Este guia mostra
+O quiz grava tudo em **uma tabela**, `public.quiz_oab_sessions` (uma linha por tentativa). Este guia mostra
 como criar o banco no Supabase (nuvem) a partir das migrations deste repositório e como conferir que
 ficou certo. **Nada aqui é enviado automaticamente**: o deploy é um passo manual seu.
 
@@ -8,7 +8,7 @@ ficou certo. **Nada aqui é enviado automaticamente**: o deploy é um passo manu
 
 | Arquivo | Para quê |
 |---|---|
-| `migrations/20260930120000_quiz_sessions.sql` | Cria a tabela, índices, trigger de `updated_at`, RLS e os grants. É a **única** migration. |
+| `migrations/20260930120000_quiz_oab_sessions.sql` | Cria a tabela, índices, trigger de `updated_at`, RLS e os grants. É a **única** migration. |
 | `verificacao.sql` | Conferência **somente leitura** para rodar depois do deploy (todas as linhas devem dar `ok = true`). |
 | `config.toml` | Configuração do Supabase **local** (`supabase start`). **Não afeta o projeto na nuvem.** As portas estão deslocadas (643xx) para não colidir com outros Supabase locais. |
 
@@ -31,7 +31,7 @@ supabase db push                                  # aplica as migrations pendent
 ```
 
 Alternativa sem CLI: abra **SQL Editor** no dashboard, cole o conteúdo de
-`migrations/20260930120000_quiz_sessions.sql` e execute **uma vez**.
+`migrations/20260930120000_quiz_oab_sessions.sql` e execute **uma vez**.
 
 ## Conferir depois do deploy
 
@@ -60,7 +60,7 @@ O app só fala com o banco pelo servidor (as rotas de API), sempre com a **servi
 
 - Toda mudança vira uma **migration nova**, com nome `AAAAMMDDHHMMSS_descricao.sql` (ordem cronológica).
 - **Nunca edite** uma migration já aplicada em produção (a v1 foi ajustada só enquanto ainda era local).
-  Para alterar a tabela, crie `..._altera_quiz_sessions.sql` com `alter table ...`.
+  Para alterar a tabela, crie `..._altera_quiz_oab_sessions.sql` com `alter table ...`.
 - Teste local antes: `supabase db reset` recria o banco local do zero aplicando todas as migrations
   (apaga os leads de teste locais).
 - A coluna `nome_completo` foi mantida de propósito (fica `null` nas sessões novas; ver a spec §10.1).
@@ -76,8 +76,8 @@ O app só fala com o banco pelo servidor (as rotas de API), sempre com a **servi
 
 | Sintoma | Causa provável | O que fazer |
 |---|---|---|
-| `permission denied for table quiz_sessions` no app | Faltou o grant para a `service_role` (projetos novos não expõem tabelas novas) | Reaplicar as últimas linhas da migration (`grant ... to service_role`) |
+| `permission denied for table quiz_oab_sessions` no app | Faltou o grant para a `service_role` (projetos novos não expõem tabelas novas) | Reaplicar as últimas linhas da migration (`grant ... to service_role`) |
 | App devolve 500 em `/api/quiz/start` | `SUPABASE_URL` ou a chave errada/ausente no ambiente | Conferir as duas variáveis no container |
 | `verificacao.sql`: "nenhuma policy" dá `false` | Alguém criou policy pelo dashboard | Remover a policy (o acesso é só pela `service_role`) |
-| `verificacao.sql`: "anon e authenticated sem privilégio" dá `false` | Grant manual no dashboard | `revoke all on public.quiz_sessions from anon, authenticated;` |
+| `verificacao.sql`: "anon e authenticated sem privilégio" dá `false` | Grant manual no dashboard | `revoke all on public.quiz_oab_sessions from anon, authenticated;` |
 | `supabase db push` reclama de histórico divergente | A tabela foi criada à mão antes pelo SQL Editor | `supabase migration repair --status applied 20260930120000` e rodar `db push` de novo |

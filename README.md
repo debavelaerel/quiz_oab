@@ -220,7 +220,7 @@ gerado do original (`app/(quiz)/quiz.css`); o painel `/admin` usa os mesmos valo
 
 ## 6. Banco
 
-Uma tabela (`quiz_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`
+Uma tabela (`quiz_oab_sessions`), criada pela migration em `supabase/migrations/`. Local: `npx supabase start`
 aplica sozinho. **Produção (Supabase na nuvem):** siga o guia passo a passo em
 [`supabase/README.md`](supabase/README.md) (criar o projeto, `supabase link` + `supabase db push`, e
 conferir com `supabase/verificacao.sql`). No app só entram `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.

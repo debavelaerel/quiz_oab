@@ -1,4 +1,4 @@
-create table quiz_sessions (
+create table quiz_oab_sessions (
   id bigint generated always as identity primary key,
   session_token uuid not null unique default gen_random_uuid(),
   diagnostico_token uuid not null unique default gen_random_uuid(),
@@ -40,24 +40,24 @@ create table quiz_sessions (
   completed_at timestamptz
 );
 
-create index quiz_sessions_email_norm_idx on quiz_sessions (email_normalizado);
-create index quiz_sessions_whatsapp_norm_idx on quiz_sessions (whatsapp_normalizado);
-create index quiz_sessions_started_at_idx on quiz_sessions (started_at desc);
-create index quiz_sessions_tipo_exame_idx on quiz_sessions (tipo, exame);
+create index quiz_oab_sessions_email_norm_idx on quiz_oab_sessions (email_normalizado);
+create index quiz_oab_sessions_whatsapp_norm_idx on quiz_oab_sessions (whatsapp_normalizado);
+create index quiz_oab_sessions_started_at_idx on quiz_oab_sessions (started_at desc);
+create index quiz_oab_sessions_tipo_exame_idx on quiz_oab_sessions (tipo, exame);
 
 -- search_path vazio: a função não resolve nomes por um search_path que alguém
 -- possa manipular (lint "function_search_path_mutable" do Supabase). now() é do
 -- pg_catalog, sempre visível.
-create function quiz_sessions_set_updated_at() returns trigger language plpgsql
+create function quiz_oab_sessions_set_updated_at() returns trigger language plpgsql
 set search_path = '' as $$
 begin new.updated_at = now(); return new; end $$;
-create trigger quiz_sessions_updated_at before update on quiz_sessions
-  for each row execute function quiz_sessions_set_updated_at();
+create trigger quiz_oab_sessions_updated_at before update on quiz_oab_sessions
+  for each row execute function quiz_oab_sessions_set_updated_at();
 
 -- RLS ligado e SEM policy: só a service_role (que ignora RLS) acessa.
-alter table quiz_sessions enable row level security;
+alter table quiz_oab_sessions enable row level security;
 
 -- Grants explícitos: projetos novos do Supabase não expõem tabelas novas às roles da Data API.
-grant select, insert, update, delete on quiz_sessions to service_role;
-grant usage, select on sequence quiz_sessions_id_seq to service_role;
-revoke all on quiz_sessions from anon, authenticated;
+grant select, insert, update, delete on quiz_oab_sessions to service_role;
+grant usage, select on sequence quiz_oab_sessions_id_seq to service_role;
+revoke all on quiz_oab_sessions from anon, authenticated;
