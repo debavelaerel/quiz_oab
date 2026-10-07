@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { proxima, totalPassos, type Campo, type Resp } from '@/lib/oab/fluxo'
 import { api, type Resultado as DadosResultado } from './api'
 import { Avanco } from './avanco'
-import { P, QTD_TESTE } from './copy'
+import { CONFIG, P, QTD_TESTE } from './copy'
 import {
   ehPergunta, indicePergunta, indiceTeste, irPara, navInicial, podeVoltar, progresso, telaAtual, voltar,
   type Nav, type Tela,
@@ -116,6 +116,10 @@ export function Quiz() {
       <div className="progress" hidden={pct === null}>
         <div className="track"><div className="fill" style={{ width: `${larguraBarra.current}%` }} /></div>
       </div>
+      {tela !== 'intro' && tela !== 'parte2' && CONFIG.videoParte2Src && (
+        // aquece o cache do player (sem autoplay) para a Parte 2 abrir mais rápido
+        <iframe src={CONFIG.videoParte2Src} title="" aria-hidden tabIndex={-1} hidden />
+      )}
       <main key={vista.nav.hist.length + tela}>{renderTela()}</main>
       {podeVoltar(vista.nav) && tela !== 'resultado' && !enviando && (
         <div className="voltar-rodape"><button type="button" className="voltar" onClick={onVoltar}>← Voltar</button></div>

@@ -105,7 +105,7 @@
 .qz .lad div.hit b{color:#fff}
 .qz .lad em{font-style:normal;font-size:12px;opacity:.85;display:block}
 .qz .video{margin:14px 0 4px;border-radius:18px;overflow:hidden;background:var(--deep);aspect-ratio:9/16;max-height:62vh;margin-left:auto;margin-right:auto;max-width:360px}
-.qz .video video{width:100%;height:100%;object-fit:cover;display:block}
+.qz .video iframe{width:100%;height:100%;border:0;display:block}
 .qz .ph{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:#fff;background:var(--grad)}
 .qz .ph .play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center}
 .qz .ph .play svg{width:28px;height:28px;fill:#fff;margin-left:4px}

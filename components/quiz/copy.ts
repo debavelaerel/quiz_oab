@@ -8,7 +8,7 @@ export const CONFIG = {
   instagramHandle: '@metodovde',
   privacidadeTxt: 'Ao continuar, você concorda em receber contato do Método VDE pelo WhatsApp e por e-mail.',
   privacidadeUrl: process.env.NEXT_PUBLIC_PRIVACIDADE_URL || '',
-  videoParte2Src: process.env.NEXT_PUBLIC_VIDEO_PARTE2 || '',
+  videoParte2Src: process.env.NEXT_PUBLIC_VIDEO_PARTE2 || 'https://player-vz-2733de96-443.tv.pandavideo.com.br/embed/?v=cb3813c8-c8b1-432f-aee0-14d36ae216b8',
 }
 
 type Pergunta = {
