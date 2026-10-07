@@ -2,13 +2,13 @@
 import { useState } from 'react'
 import { TESTE } from '../resultado'
 
-type Props = { i: number; inicial?: string; onMarcar: (letra: string) => void; onConfirmar: (letra: string) => void }
+type Props = { i: number; inicial?: string; onConfirmar: (letra: string, comAtraso?: boolean) => void }
 
-/** telaQuestao(i): marcar uma alternativa, confirmar, ou "Não sei responder" (letra X). */
-export function Questao({ i, inicial, onMarcar, onConfirmar }: Props) {
+/** telaQuestao(i): clicar numa alternativa já responde e avança; ou "Não sei responder" (letra X). */
+export function Questao({ i, inicial, onConfirmar }: Props) {
   const q = TESTE[i]
   const [sel, setSel] = useState<string | null>(inicial && inicial !== 'X' ? inicial : null)
-  const marcar = (l: string) => { setSel(l); onMarcar(l) }
+  const marcar = (l: string) => { setSel(l); onConfirmar(l, true) }
   return (
     <section className="screen">
       <p className="step">Questão {i + 1} de {TESTE.length} · {q.disciplina} · OAB {q.exame}</p>
@@ -20,9 +20,6 @@ export function Questao({ i, inicial, onMarcar, onConfirmar }: Props) {
           </button>
         ))}
       </div>
-      <button className="cta" disabled={!sel} onClick={() => sel && onConfirmar(sel)}>
-        {i + 1 < TESTE.length ? 'Confirmar e seguir' : 'Confirmar e ver o resultado'}
-      </button>
       <button className="restart" onClick={() => onConfirmar('X')}>Não sei responder</button>
     </section>
   )

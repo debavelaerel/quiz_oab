@@ -79,12 +79,13 @@ export function Quiz() {
     })
   }
 
-  const responderQuestao = (i: number, letra: string) => {
+  const responderQuestao = (i: number, letra: string, comAtraso = false) => {
+    if (comAtraso && !avanco.livre) return
     avanco.agendar(() => {
       s.responderTeste(i, letra)
       track('quiz_teste', { questao: TESTE[i].id, resposta: letra, acertou: letra === TESTE[i].gabarito })
       ir(i + 1 < QTD_TESTE ? (`t${i + 1}` as Tela) : 'dados', s.A)
-    })
+    }, comAtraso ? ATRASO_MS : undefined)
   }
 
   // O finish leva o snapshot inteiro (respostas + teste + nome) do momento do clique.
@@ -142,7 +143,7 @@ export function Quiz() {
     }
     const i = indiceTeste(tela)
     if (i >= 0) {
-      return <Questao i={i} inicial={s.teste[i]} onMarcar={(l) => s.responderTeste(i, l)} onConfirmar={(l) => responderQuestao(i, l)} />
+      return <Questao i={i} inicial={s.teste[i]} onConfirmar={(l, comAtraso) => responderQuestao(i, l, comAtraso)} />
     }
     if (tela === 'parte2') return <Parte2 onComecar={() => avanco.agendar(() => ir('t0', s.A))} />
     if (tela === 'dados') {

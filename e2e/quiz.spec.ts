@@ -54,11 +54,10 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   await expect(comecarTeste).toBeVisible()
   await comecarTeste.click()
 
-  // Teste de nível: 5 questões, primeira alternativa e confirmar.
+  // Teste de nível: 5 questões, clicar na primeira alternativa já avança.
   for (let q = 1; q <= 5; q++) {
     await expect(passo(page)).toHaveText(new RegExp(`^Questão ${q} de 5`))
     await page.locator('main button.opt.alt').first().click()
-    await page.getByRole('button', { name: /^Confirmar e (seguir|ver o resultado)$/ }).click()
   }
 
   // Contato (e-mail único por execução), WhatsApp primeiro.

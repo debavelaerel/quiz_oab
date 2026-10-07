@@ -19,7 +19,7 @@ export function Intro({ onComecar, esperando = false }: { onComecar: () => void;
         <div className="factor"><i>3</i><span><b>O seu nível hoje.</b> Toda turma do VDE começa do zero, e o diagnóstico mostra o que ajustar no seu jeito de estudar.</span></div>
       </div>
       <button className="cta" disabled={esperando} onClick={onComecar}>Descobrir a minha OAB</button>
-      <p className="small">Sem cadastro. No fim, você recebe o diagnóstico completo pelo WhatsApp.</p>
+      <p className="small">No fim, você recebe o diagnóstico completo pelo WhatsApp.</p>
     </section>
   )
 }
