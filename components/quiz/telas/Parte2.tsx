@@ -30,11 +30,6 @@ export function Parte2({ onComecar }: { onComecar: () => void }) {
           allowFullScreen
         />
       </div>
-      <div className="box"><ul>
-        <li><b>5 questões reais</b> das últimas provas da OAB, uma de cada: Ética, Constitucional, Trabalho, Penal e Processo Civil.</li>
-        <li>Responda sem consultar nada. É o seu nível de hoje que importa.</li>
-        <li>Não sabe? Marque <b>&quot;Não sei&quot;</b>. Chute atrapalha o diagnóstico.</li>
-      </ul></div>
       <button className="cta" onClick={onComecar}>Começar o teste</button>
     </section>
   )

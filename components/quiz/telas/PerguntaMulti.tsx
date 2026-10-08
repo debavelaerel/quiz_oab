@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import type { Campo, Resp } from '@/lib/oab/fluxo'
-import { alternar, juntar, opcoesDe, P } from '../copy'
+import { alternar, juntar, marcadas, opcoesDe, P } from '../copy'
 import { Cabecalho } from './Cabecalho'
 
 type Props = { k: Campo; A: Resp; hoje: string; idx: number; total: number; nome: string; onConfirmar: (v: string) => void }
@@ -9,7 +9,7 @@ type Props = { k: Campo; A: Resp; hoje: string; idx: number; total: number; nome
 /** Múltipla escolha: gravada como "a+b" na ordem das opções; a opção exclusiva limpa as outras. */
 export function PerguntaMulti({ k, A, hoje, idx, total, nome, onConfirmar }: Props) {
   const ops = opcoesDe(k, A)
-  const [sel, setSel] = useState<string[]>(() => (A[k] ?? '').split('+').filter(Boolean))
+  const [sel, setSel] = useState<string[]>(() => marcadas(ops, A[k] ?? ''))
   return (
     <section className="screen">
       <Cabecalho k={k} A={A} hoje={hoje} idx={idx} total={total} nome={nome} />

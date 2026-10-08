@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { alternar, fimSemestre, hintDe, juntar, opcoesDe, tituloContato, tituloDe } from './copy'
+import { alternar, fimSemestre, hintDe, juntar, marcadas, opcoesDe, tituloContato, tituloDe } from './copy'
 
 describe('tituloDe', () => {
   it('periodo semestral troca {fimSemestre} conforme o semestre de hoje', () => {
@@ -46,6 +46,30 @@ describe('opcoesDe', () => {
     expect(opcoesDe('periodo', { regime: 'ano' }).map((o) => o.v)).toEqual(['1', '2', '3', '4', '5'])
     expect(opcoesDe('trava', { tentativa: 'nunca' }).map((o) => o.v)).not.toContain('denovo')
     expect(opcoesDe('trava', { tentativa: 'reprov' }).map((o) => o.v)).toContain('denovo')
+  })
+})
+
+describe('"O que te trava" e "Por que quer passar": menos opções, grupo unido', () => {
+  const A = { situacao: 'formado', tentativa: 'nunca' }
+  it('trava: 6 opções, com as 3 primeiras unidas numa só e sem o medo do índice de reprovação', () => {
+    const ops = opcoesDe('trava', A)
+    expect(ops.map((o) => o.v)).toEqual(['prova', 'rotina', 'tempo', 'esqueci', 'questao', 'nervoso'])
+    expect(ops[0].t).toBe('Não sei como a prova funciona, por onde começar e nem quais materiais são ideais')
+  })
+  it('trava de quem reprovou continua com "já reprovei e tenho medo de repetir"', () => {
+    expect(opcoesDe('trava', { tentativa: 'reprov' }).map((o) => o.v)).toContain('denovo')
+  })
+  it('motivo: 6 opções, sem "provar" e sem "emprego"', () => {
+    expect(opcoesDe('motivo', A).map((o) => o.v)).toEqual(['ciclo', 'orgulho', 'advocacia', 'concursos', 'mudar', 'adiei'])
+  })
+  it('a opção unida grava as três respostas, na ordem do data.json', () => {
+    const ops = opcoesDe('trava', A)
+    expect(juntar(ops, ['rotina', 'prova'])).toBe('prova+materia+materiais+rotina')
+  })
+  it('ao voltar, a opção unida só aparece marcada se as três respostas estão gravadas', () => {
+    const ops = opcoesDe('trava', A)
+    expect(marcadas(ops, 'prova+materia+materiais+rotina')).toEqual(['prova', 'rotina'])
+    expect(marcadas(ops, 'prova+rotina')).toEqual(['rotina'])
   })
 })
 

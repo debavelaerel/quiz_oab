@@ -25,7 +25,7 @@ export const EXAMES = data.exames
 export const QTD_TESTE = data.teste.length
 
 /** Uma opção como o original desenha: valor, rótulo e (opcional) linha de apoio. */
-export type Opcao = { v: string; t: string; s?: string }
+export type Opcao = { v: string; t: string; s?: string; /** valores gravados quando a opção junta várias respostas */ vs?: string[] }
 
 type ExameInsc = { nome: string; inscFim: string }
 const exameInsc = (A: Resp, hoje: string) =>
@@ -84,13 +84,24 @@ export function hintDe(k: Campo, A: Resp, hoje: string): string {
   }
 }
 
-/** As opções visíveis (mesmo filtro do servidor, `opcoesValidas`) com os rótulos do original. */
+/** Opções que o quiz não mostra mais (continuam válidas para respostas já gravadas). */
+const OCULTAS: Partial<Record<Campo, string[]>> = { trava: ['reprovacao'], motivo: ['provar', 'emprego'] }
+/** Opções que juntam várias respostas do data.json numa só: a primeira entra no lugar do grupo, as outras somem. */
+const GRUPOS: Partial<Record<Campo, { t: string; vs: string[] }>> = {
+  trava: { t: 'Não sei como a prova funciona, por onde começar e nem quais materiais são ideais', vs: ['prova', 'materia', 'materiais'] },
+}
+
+/** As opções visíveis (as válidas do servidor, menos as ocultas e com os grupos unidos) com os rótulos do original. */
 export function opcoesDe(k: Campo, A: Resp): Opcao[] {
   const validas = new Set(opcoesValidas(k, A))
   const reprov = k === 'metodo' && A.tentativa === 'reprov' ? P.metodo.rotulosReprov ?? {} : {}
+  const ocultas = new Set(OCULTAS[k] ?? [])
+  const grupo = GRUPOS[k]
   return P[k].opcoes
-    .filter((o) => validas.has(o[0]))
-    .map(([v, t, s]) => ({ v, t: reprov[v] ?? t, ...(s ? { s } : {}) }))
+    .filter((o) => validas.has(o[0]) && !ocultas.has(o[0]) && !(grupo && grupo.vs.slice(1).includes(o[0])))
+    .map(([v, t, s]) => (grupo && v === grupo.vs[0]
+      ? { v, t: grupo.t, vs: grupo.vs }
+      : { v, t: reprov[v] ?? t, ...(s ? { s } : {}) }))
 }
 
 /** Clique numa opção de múltipla escolha: a exclusiva limpa as outras e vice-versa. */
@@ -102,5 +113,11 @@ export function alternar(sel: readonly string[], v: string, exclusiva?: string):
 
 /** Valor gravado: "a+b" na ordem canônica das opções. */
 export function juntar(ops: readonly Opcao[], sel: readonly string[]): string {
-  return ops.map((o) => o.v).filter((v) => sel.includes(v)).join('+')
+  return ops.filter((o) => sel.includes(o.v)).flatMap((o) => o.vs ?? [o.v]).join('+')
+}
+
+/** Quais opções aparecem marcadas dado o valor gravado ("a+b"): a que junta várias só conta se todas estão lá. */
+export function marcadas(ops: readonly Opcao[], gravado: string): string[] {
+  const valores = gravado.split('+').filter(Boolean)
+  return ops.filter((o) => (o.vs ?? [o.v]).every((v) => valores.includes(v))).map((o) => o.v)
 }
