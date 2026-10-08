@@ -163,3 +163,33 @@ def test_html_escapa_o_nome_do_lead(client):
     assert r.status_code == 200
     assert "&lt;img" in r.text
     assert "<img src=x" not in r.text
+
+
+def _turmas_do_json(**mudancas):
+    """As turmas do data.json no formato do pedido; `mudancas` troca campos da turma recomendada no CASO_OK."""
+    import copy
+
+    turmas = copy.deepcopy(main.DATA["turmas"])
+    e = CASO_OK["esperado"]
+    for t in turmas:
+        if t["exame"] == e["exame"] and t["dias"] == e["turma"]:
+            t.update(mudancas)
+    return turmas
+
+
+def test_turmas_iguais_as_do_json_funcionam_e_nada_vaza(client):
+    antes = [dict(t) for t in main.DATA["turmas"]]
+    r = client.post("/diagnostico/html", json=corpo(turmas=_turmas_do_json(inicio="2099-01-01")), headers=H)
+    assert r.status_code == 200
+    assert "01/01/2099" in r.text  # a data do admin chegou ao diagnóstico
+    assert main.DATA["turmas"] == antes  # e foi desfeita depois
+
+
+def test_turma_encerrada_pelo_admin_muda_a_recomendacao_e_da_409(client):
+    r = client.post("/diagnostico/html", json=corpo(turmas=_turmas_do_json(vendasFim="2000-01-01")), headers=H)
+    assert r.status_code == 409
+
+
+def test_lista_de_turmas_incompleta_da_422(client):
+    r = client.post("/diagnostico/html", json=corpo(turmas=_turmas_do_json()[1:]), headers=H)
+    assert r.status_code == 422

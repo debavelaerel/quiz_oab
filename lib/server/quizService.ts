@@ -1,4 +1,5 @@
 import { montarCodigo } from '@/lib/oab/codigo'
+import { logicaCom, type Turma } from '@/lib/oab/turmas'
 import {
   completo, etapaAtual, L, RespostaInvalidaError, sanear, saida, validarTeste,
 } from '@/lib/oab/fluxo'
@@ -90,7 +91,7 @@ function resolverNome(doCorpo: unknown, daSessao: string | null, contato: Contat
 
 export async function concluirSessao(
   repo: SessionRepo,
-  p: { sessionToken: string; respostas: Record<string, unknown>; teste: unknown; contato: Contato; consentimento: unknown; nome?: unknown },
+  p: { sessionToken: string; respostas: Record<string, unknown>; teste: unknown; contato: Contato; consentimento: unknown; nome?: unknown; turmas?: Turma[] },
 ): Promise<{ sessao: QuizSession; novo: boolean }> {
   const s = await repo.buscarPorToken(p.sessionToken)
   if (!s) throw new SessaoInvalidaError()
@@ -104,8 +105,9 @@ export async function concluirSessao(
   if (!completo(respostas, s.hoje)) throw new EntradaInvalidaError('respostas incompletas ou com saída antecipada', ['respostas'])
   const teste = comoEntradaInvalida(() => validarTeste(p.teste, false))
 
-  const rec = L.recomendar(respostas as Record<string, string>, s.hoje)
-  const gravada: RecomendacaoGravada = { ...rec, atalho: L.atalho(respostas as Record<string, string>, s.hoje, rec) }
+  const logica = p.turmas ? logicaCom(p.turmas) : L
+  const rec = logica.recomendar(respostas as Record<string, string>, s.hoje)
+  const gravada: RecomendacaoGravada = { ...rec, atalho: logica.atalho(respostas as Record<string, string>, s.hoje, rec), ...(p.turmas ? { turmas: p.turmas } : {}) }
   const comDiagnostico = TIPOS_COM_DIAGNOSTICO.includes(rec.tipo)
   const agora = new Date().toISOString()
 

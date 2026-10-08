@@ -2,7 +2,8 @@
 // telaCedo() do original. A recomendação vem sempre do servidor; aqui só se monta o que a tela mostra.
 import data from '@/lib/oab/data.json'
 import { L, type Resp } from '@/lib/oab/fluxo'
-import type { Recomendacao } from '@/lib/oab/logic'
+import type { Recomendacao, Turma } from '@/lib/oab/logic'
+import { logicaCom } from '@/lib/oab/turmas'
 import { br } from './copy'
 
 export const TESTE = data.teste
@@ -63,12 +64,13 @@ export type Previa = {
 }
 
 /** previa(rec): a prévia borrada do diagnóstico (títulos legíveis, conteúdo não). */
-export function previaDe(rec: { exame: string; turma?: number | null }, teste: readonly string[], hoje: string): Previa {
-  const t = rec.turma ? data.turmas.find((x) => x.exame === rec.exame && x.dias === rec.turma) ?? null : null
+export function previaDe(rec: { exame: string; turma?: number | null }, teste: readonly string[], hoje: string, turmas?: Turma[]): Previa {
+  const logica = turmas ? logicaCom(turmas) : L
+  const t = rec.turma ? (turmas ?? data.turmas).find((x) => x.exame === rec.exame && x.dias === rec.turma) ?? null : null
   const erradas = TESTE.filter((q, i) => teste[i] !== q.gabarito)
   return {
     turma: t ? { dias: t.dias, texto: inicioTxt(t) } : null,
-    turmas: L.turmasDisponiveis(rec.exame, hoje).slice(0, 3)
+    turmas: logica.turmasDisponiveis(rec.exame, hoje).slice(0, 3)
       .map((x) => ({ dias: x.dias, rotina: ROTINAS[String(x.dias)].rotina, on: !!t && x.dias === t.dias })),
     sinais: (erradas.length ? erradas : TESTE.slice(0, 1)).slice(0, 2).map((q) => q.sinal.texto),
     correcao: TESTE.map((q, i) => ({ n: i + 1, disciplina: q.disciplina, comentario: `${q.comentario.slice(0, 90)}…` })),

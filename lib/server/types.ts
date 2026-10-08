@@ -1,9 +1,10 @@
 import type { Resp } from '@/lib/oab/fluxo'
-import type { Atalho, Recomendacao } from '@/lib/oab/logic'
+import type { Atalho, Recomendacao, Turma } from '@/lib/oab/logic'
 
 export type StatusSessao = 'em_andamento' | 'concluido' | 'saiu'
 export type DiagnosticoStatus = 'nao_se_aplica' | 'pendente' | 'pronto' | 'erro' | 'desligado'
-export type RecomendacaoGravada = Recomendacao & { atalho: Atalho }
+/** `turmas`: as datas em vigor quando a pessoa respondeu (o PDF e a tela usam estas, mesmo que o admin mude depois). */
+export type RecomendacaoGravada = Recomendacao & { atalho: Atalho; turmas?: Turma[] }
 
 export type QuizSession = {
   id: number

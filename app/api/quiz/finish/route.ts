@@ -1,12 +1,13 @@
 import { after, NextResponse } from 'next/server'
 import { gerarEArmazenarDiagnostico } from '@/lib/server/diagnosticoBackground'
-import { obterRepo } from '@/lib/server/container'
+import { obterRepo, obterTurmas } from '@/lib/server/container'
 import { ipDaRequisicao } from '@/lib/server/ip'
 import { permitirRequisicao } from '@/lib/server/rateLimit'
 import {
   concluirSessao, EntradaInvalidaError, obterResultado, SessaoInvalidaError, TIPOS_COM_DIAGNOSTICO,
 } from '@/lib/server/quizService'
 import type { SessionRepo } from '@/lib/server/sessionRepo'
+import type { Turma } from '@/lib/oab/turmas'
 import type { QuizSession } from '@/lib/server/types'
 import { isUuid } from '@/lib/server/uuid'
 
@@ -16,7 +17,7 @@ export const maxDuration = 90
 // `after()` exige contexto de requisição do Next; nos testes entra um stub.
 type Agendar = (tarefa: () => void | Promise<void>) => void
 
-export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; gerar?: (repo: SessionRepo, s: QuizSession) => Promise<void> }) {
+export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; turmas?: () => Promise<Turma[]>; gerar?: (repo: SessionRepo, s: QuizSession) => Promise<void> }) {
   const gerar = d.gerar ?? ((repo, s) => gerarEArmazenarDiagnostico(repo, s))
   return async function handler(req: Request): Promise<Response> {
     if (!permitirRequisicao(`finish:${ipDaRequisicao(req)}`, 10, 60_000)) {
@@ -31,6 +32,7 @@ export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; ger
       const { sessao, novo } = await concluirSessao(d.repo, {
         sessionToken: c.session_token, respostas: c.respostas as Record<string, unknown>, teste: c.teste,
         contato: c.contato as never, consentimento: c.consentimento, nome: c.nome,
+        turmas: d.turmas ? await d.turmas() : undefined,
       })
       if (novo && sessao.tipo && TIPOS_COM_DIAGNOSTICO.includes(sessao.tipo)) {
         d.agendar(() => gerar(d.repo, sessao).catch((e) => console.error('[finish] diagnóstico em background falhou', e)))
@@ -45,4 +47,4 @@ export function criarHandlerFinish(d: { repo: SessionRepo; agendar: Agendar; ger
   }
 }
 
-export const POST = (req: Request) => criarHandlerFinish({ repo: obterRepo(), agendar: after })(req)
+export const POST = (req: Request) => criarHandlerFinish({ repo: obterRepo(), agendar: after, turmas: async () => (await obterTurmas().atuais()).turmas })(req)

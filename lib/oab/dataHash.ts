@@ -1,2 +1,2 @@
 // GERADO por scripts/sync-oab.mjs — não editar.
-export const DATA_HASH = '29da5bc2b5fde4c480c266595858e22fbe632cda78315de2de36c9eb7b53f394'
+export const DATA_HASH = '7a72d5ed10a682fdb789825c3ca3f17361cd27edded5883422b08d47f5443705'

@@ -11,7 +11,7 @@ function montarCorpo(s: DadosSessao): string {
   if (!s.codigo || !s.recomendacao) throw new DiagnosticoIndisponivel('sessão sem código ou recomendação')
   const { tipo } = s.recomendacao
   const rec = { tipo, exame: 'exame' in s.recomendacao ? s.recomendacao.exame : null, turma: 'turma' in s.recomendacao ? s.recomendacao.turma : null }
-  return JSON.stringify({ codigo: s.codigo, nome: s.nome ?? '', diagnostico_token: s.diagnosticoToken, data_hash: DATA_HASH, recomendacao: rec })
+  return JSON.stringify({ codigo: s.codigo, nome: s.nome ?? '', diagnostico_token: s.diagnosticoToken, data_hash: DATA_HASH, recomendacao: rec, turmas: s.recomendacao.turmas ?? null })
 }
 
 function configuracao(): { base: string; segredo: string } {

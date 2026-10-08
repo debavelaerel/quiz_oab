@@ -15,7 +15,7 @@ export default async function PainelLayout({ children }: { children: ReactNode }
   return (
     <>
       <AdminNav />
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-7 sm:px-6">{children}</main>
+      <main className="mx-auto max-w-7xl px-5 pb-16 pt-7 sm:px-8 lg:px-12">{children}</main>
     </>
   )
 }

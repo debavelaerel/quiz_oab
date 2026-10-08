@@ -6,7 +6,8 @@ import os
 import re
 import secrets
 import sys
-from contextlib import asynccontextmanager
+import threading
+from contextlib import asynccontextmanager, contextmanager
 from pathlib import Path
 
 SERVICO = Path(__file__).resolve().parent
@@ -16,6 +17,7 @@ import render  # noqa: E402
 import s3  # noqa: E402
 from diagnosis import logic as L  # noqa: E402
 from diagnosis import report  # noqa: E402
+from diagnosis.data import DATA  # noqa: E402
 from diagnosis.answers import LeadInvalido, from_code  # noqa: E402
 from fastapi import Depends, FastAPI, Header, HTTPException  # noqa: E402
 from fastapi.responses import HTMLResponse, JSONResponse, Response  # noqa: E402
@@ -41,12 +43,46 @@ class Recomendacao(BaseModel):
     turma: int | None = None
 
 
+class TurmaDatas(BaseModel):
+    exame: str
+    dias: int
+    vendasIni: str
+    vendasFim: str
+    inicio: str
+    inicio2: str | None = None
+    aConfirmar: bool | None = None
+    fimVendasAConfirmar: bool | None = None
+
+
 class DiagnosticoRequest(BaseModel):
     codigo: str
     nome: str = ""
     diagnostico_token: str
     data_hash: str
     recomendacao: Recomendacao
+    # Datas das turmas em vigor quando o lead respondeu (editadas no admin). Sem isso, vale o data.json.
+    turmas: list[TurmaDatas] | None = None
+
+
+_TRAVA_TURMAS = threading.Lock()
+
+
+@contextmanager
+def _usando_turmas(turmas: list[TurmaDatas] | None):
+    """Troca as datas das turmas do pacote `diagnosis` (estado global) só durante uma geração."""
+    if turmas is None:
+        yield
+        return
+    novas = [t.model_dump(exclude_none=True) for t in turmas]
+    if {(t["exame"], t["dias"]) for t in novas} != {(t["exame"], t["dias"]) for t in DATA["turmas"]}:
+        raise HTTPException(status_code=422, detail="lista de turmas diferente da do data.json")
+    with _TRAVA_TURMAS:
+        originais = list(DATA["turmas"])
+        DATA["turmas"][:] = novas
+        try:
+            yield
+        finally:
+            DATA["turmas"][:] = originais
 
 
 def verificar_segredo(x_diagnostico_secret: str | None = Header(default=None)) -> None:
@@ -91,13 +127,17 @@ def _validar(req: DiagnosticoRequest) -> tuple[dict, str]:
 @app.post("/diagnostico/html")
 async def diagnostico_html(req: DiagnosticoRequest, _auth: None = Depends(verificar_segredo)) -> HTMLResponse:
     """O mesmo HTML que vira PDF, para o admin exibir o diagnóstico formatado (sem Chromium, sem S3)."""
-    A, hoje = _validar(req)
-    return HTMLResponse(report.build_html(A, hoje, req.nome))
+    with _usando_turmas(req.turmas):
+        A, hoje = _validar(req)
+        html = report.build_html(A, hoje, req.nome)
+    return HTMLResponse(html)
 
 
 @app.post("/diagnostico")
 async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verificar_segredo)) -> Response:
-    A, hoje = _validar(req)
+    with _usando_turmas(req.turmas):
+        A, hoje = _validar(req)
+        html = report.build_html(A, hoje, req.nome)
 
     headers: dict[str, str] = {}
     chave = None
@@ -107,7 +147,6 @@ async def gerar_diagnostico(req: DiagnosticoRequest, _auth: None = Depends(verif
             raise HTTPException(status_code=422, detail="diagnostico_token inválido")
         chave = f"diagnosticos/{req.diagnostico_token}.pdf"
 
-    html = report.build_html(A, hoje, req.nome)
     try:
         pdf = await render.html_para_pdf(html)
     except TimeoutError:

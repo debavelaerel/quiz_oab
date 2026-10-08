@@ -22,6 +22,9 @@ prefixo `quiz_oab_` (tabela, 4 índices, função e trigger). Não altera nenhum
 num projeto compartilhado. Passo a passo e verificação: [`supabase/README.md`](../supabase/README.md) e
 `supabase/verificacao.sql`.
 
+A migration `20261008120000_quiz_oab_config.sql` cria a tabela `quiz_oab_config` (datas das turmas editadas na aba
+**Turmas** do admin). Sem ela o quiz funciona com as datas do `data.json`, mas a tela de datas não consegue salvar.
+
 O app precisa só de `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` (chave de servidor; nunca no navegador).
 
 ## 2. Bucket e permissões (IAM role, sem chave)

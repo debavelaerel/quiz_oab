@@ -2,13 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { PieChart, Users } from 'lucide-react'
+import { CalendarDays, PieChart, Users } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { FOCO } from './ui'
 
 const ITENS = [
   { href: '/admin/leads', label: 'Leads', Icone: Users },
   { href: '/admin/analytics', label: 'Analytics', Icone: PieChart },
+  { href: '/admin/turmas', label: 'Turmas', Icone: CalendarDays },
 ]
 
 /** Barra de topo no roxo profundo do quiz, com o logotipo branco. */
@@ -26,7 +27,7 @@ export default function AdminNav() {
 
   return (
     <header className="bg-brand-roxo-2">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-5 gap-y-2 px-5 py-3 sm:px-8 lg:px-12">
         <Link href="/admin/leads" className={`flex items-center gap-3 rounded-lg ${FOCO} focus-visible:ring-white/40`} aria-label="Método VDE, painel do Quiz OAB">
           <Image src="/brand/logo-branco.png" alt="Método VDE" width={118} height={34} priority className="h-[34px] w-[120px]" />
           <span className="hidden rounded-full bg-brand-yel px-3 py-1 text-[12px] font-semibold text-brand-roxo-2 sm:inline-block">Painel</span>

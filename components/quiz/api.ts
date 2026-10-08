@@ -1,5 +1,5 @@
 import type { Resp } from '@/lib/oab/fluxo'
-import type { Recomendacao } from '@/lib/oab/logic'
+import type { Recomendacao, Turma } from '@/lib/oab/logic'
 
 type Erro = Error & { status: number; corpo: unknown }
 
@@ -16,7 +16,7 @@ export type Utm = { source: string | null; medium: string | null; campaign: stri
 export type RespostaStart = { session_token: string; hoje: string; retomada: boolean; respostas: Resp; teste: string[]; seq: number; nome: string | null }
 
 export type Resultado = {
-  recomendacao: Recomendacao & { atalho: unknown }
+  recomendacao: Recomendacao & { atalho: unknown; turmas?: Turma[] }
   nome: string | null
   ref_curta: string
   hoje: string
