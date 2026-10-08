@@ -1,4 +1,5 @@
 import data from './data.json'
+import { respostaAssumida, type Campo } from './fluxo'
 import type { Respostas } from './logic'
 
 const CAMPOS = data.campos as string[]
@@ -6,7 +7,7 @@ const PREFIXO = data.prefixo as string
 
 /** hoje: 'AAAA-MM-DD'. teste: letras A–D ou X, na ordem das questões. */
 export function montarCodigo(A: Respostas, teste: string[], hoje: string): string {
-  const partes = CAMPOS.map((c) => (c === 'teste' ? (teste.length ? teste.join('') : '-') : (A[c] ?? '-')))
+  const partes = CAMPOS.map((c) => (c === 'teste' ? (teste.length ? teste.join('') : '-') : (A[c] ?? respostaAssumida(c as Campo, A) ?? '-')))
   return `${PREFIXO}.${partes.join('.')}.${hoje.replaceAll('-', '')}`
 }
 

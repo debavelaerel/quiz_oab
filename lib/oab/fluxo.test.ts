@@ -21,6 +21,30 @@ describe('aplica / proxima', () => {
   })
 })
 
+describe('estudante que ainda não podia ter feito a prova', () => {
+  const sem6: Resp = { situacao: 'cursando', regime: 'sem', periodo: '6' }
+  it('no 6º período não pergunta se já fez a OAB (e vai direto ao nível)', () => {
+    expect(aplica('tentativa', sem6, '2026-12-12')).toBe(false)
+    expect(proxima('grade', sem6, '2026-12-12')).toBe('nivel')
+  })
+  it('a partir do 9º período (ou 5º ano) pergunta', () => {
+    expect(aplica('tentativa', { ...sem6, periodo: '9' }, HOJE)).toBe(true)
+    expect(aplica('tentativa', { ...sem6, periodo: '8' }, HOJE)).toBe(false)
+    expect(aplica('tentativa', { situacao: 'cursando', regime: 'ano', periodo: '4' }, HOJE)).toBe(false)
+    expect(aplica('tentativa', { situacao: 'cursando', regime: 'ano', periodo: '5' }, HOJE)).toBe(true)
+    expect(aplica('tentativa', { situacao: 'formado' }, HOJE)).toBe(true)
+  })
+  it('descarta uma tentativa adulterada e não guarda a resposta assumida', () => {
+    const A = sanear({ ...sem6, tentativa: 'reprov', vezes: 'v2' }, '2026-12-12')
+    expect(A.tentativa).toBeUndefined()
+    expect(A.vezes).toBeUndefined()
+  })
+  it('o código do diagnóstico leva "nunca"', async () => {
+    const { montarCodigo } = await import('./codigo')
+    expect(montarCodigo(sem6 as Record<string, string>, [], '2026-12-12').split('.')[5]).toBe('nunca')
+  })
+})
+
 describe('saida', () => {
   it('f2 sai na hora', () => {
     expect(saida({ situacao: 'formado', tentativa: 'f2' }, HOJE)).toBe('f2')

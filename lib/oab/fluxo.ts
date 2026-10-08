@@ -17,11 +17,24 @@ export type Saida = 'cedo' | 'f2'
 
 export class RespostaInvalidaError extends Error {}
 
+const REGRA = data.regra as { periodoMinimo: number; anoMinimo: number }
+
+/** Estudante que ainda não chegou ao 9º período (5º ano): o edital nunca o liberou, então não pode já ter feito a prova. */
+function aindaNaoPodiaTerFeito(A: Resp): boolean {
+  if (A.situacao !== 'cursando' || !A.periodo) return false
+  return Number(A.periodo) < (A.regime === 'ano' ? REGRA.anoMinimo : REGRA.periodoMinimo)
+}
+
+/** Resposta assumida quando a pergunta nem é feita (ver `aplica`). Não é guardada: só entra no código do diagnóstico. */
+export function respostaAssumida(k: Campo, A: Resp): string | undefined {
+  return k === 'tentativa' && aindaNaoPodiaTerFeito(A) ? 'nunca' : undefined
+}
+
 export function aplica(k: Campo, A: Resp, hoje: string): boolean {
   const cur = A.situacao === 'cursando'
   switch (k) {
     case 'regime': case 'periodo': case 'grade': return cur
-    case 'tentativa': return L.perguntaTentativa(A as Record<string, string>)
+    case 'tentativa': return !aindaNaoPodiaTerFeito(A) && L.perguntaTentativa(A as Record<string, string>)
     case 'pontos': case 'vezes': return A.tentativa === 'reprov'
     case 'nivel': return A.tentativa !== 'reprov'
     case 'inscrito': return !!L.exameInscricaoFechada(A as Record<string, string>, hoje)

@@ -1,31 +1,43 @@
 import type { Dia } from '@/lib/adminAnalytics'
 
-const LARGURA = 320
-const ALTURA = 64
-const MARGEM = 6
 const dataCurta = (iso: string) => { const [, m, d] = iso.split('-'); return `${d}/${m}` }
 
-/** Sessões por dia: linha roxa com o último ponto em amarelo. */
+/** Sessões por dia: uma coluna por dia, a do dia mais recente em amarelo. Com muitos dias, só as datas de referência. */
 export default function Sparkline({ dados }: { dados: Dia[] }) {
-  if (dados.length < 2) {
-    return <p className="mt-2 text-[13px] text-brand-ink-soft">Dados insuficientes para mostrar tendência (mínimo de 2 dias com sessão).</p>
-  }
+  if (dados.length === 0) return <p className="mt-2 text-[13px] text-brand-ink-soft">Nenhuma sessão neste período.</p>
   const max = Math.max(...dados.map((d) => d.contagem), 1)
-  const pontos = dados.map((d, i) => ({
-    x: (i / (dados.length - 1)) * (LARGURA - MARGEM * 2) + MARGEM,
-    y: ALTURA - MARGEM - (d.contagem / max) * (ALTURA - MARGEM * 2),
-  }))
-  const ultimo = pontos[pontos.length - 1]
+  const total = dados.reduce((s, d) => s + d.contagem, 0)
+  const media = total / dados.length
+  const mostraValor = dados.length <= 16
+  const passo = Math.ceil(dados.length / 8)
+  const plural = (n: number) => (n === 1 ? 'sessão' : 'sessões')
   return (
     <div>
-      <svg viewBox={`0 0 ${LARGURA} ${ALTURA}`} width="100%" height={ALTURA} className="mt-3" preserveAspectRatio="none" role="img" aria-label="Sessões iniciadas por dia">
-        <polyline points={pontos.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--color-brand-roxo)" strokeWidth={2.5} strokeLinejoin="round" />
-        <circle cx={ultimo.x} cy={ultimo.y} r={4.5} fill="var(--color-brand-yel)" stroke="var(--color-brand-roxo-2)" strokeWidth={1.5} />
-      </svg>
-      <div className="mt-1 flex justify-between text-[12px] text-brand-ink-soft">
-        <span>{dataCurta(dados[0].data)}</span>
-        <span>pico: {max} {max === 1 ? 'sessão' : 'sessões'}/dia</span>
-        <span>{dataCurta(dados[dados.length - 1].data)}</span>
+      <p className="text-[13px] text-brand-ink-soft">
+        <b className="text-brand-ink">{total}</b> {plural(total)} em {dados.length} {dados.length === 1 ? 'dia' : 'dias'} · média de{' '}
+        <b className="text-brand-ink">{media.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}</b> por dia · pico de{' '}
+        <b className="text-brand-ink">{max}</b>
+      </p>
+      <div className="mt-4 flex h-[160px] items-end gap-1.5 border-b border-brand-line" role="img" aria-label="Sessões iniciadas por dia">
+        {dados.map((d, i) => {
+          const ultimo = i === dados.length - 1
+          return (
+            <div key={d.data} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end" title={`${dataCurta(d.data)}: ${d.contagem} ${plural(d.contagem)}`}>
+              {mostraValor && <span className="mb-1 text-[12px] font-semibold tabular-nums text-brand-ink">{d.contagem}</span>}
+              <div
+                className={`w-full max-w-14 rounded-t-lg ${ultimo ? 'bg-brand-yel' : 'bg-brand-roxo'}`}
+                style={{ height: `calc((100% - ${mostraValor ? '1.5rem' : '0px'}) * ${d.contagem / max})`, minHeight: d.contagem > 0 ? 3 : 0 }}
+              />
+            </div>
+          )
+        })}
+      </div>
+      <div className="mt-1.5 flex gap-1.5 text-[12px] text-brand-ink-soft">
+        {dados.map((d, i) => (
+          <span key={d.data} className="min-w-0 flex-1 text-center tabular-nums">
+            {i % passo === 0 || i === dados.length - 1 ? dataCurta(d.data) : ''}
+          </span>
+        ))}
       </div>
     </div>
   )

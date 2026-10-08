@@ -41,7 +41,8 @@ b{font-weight:700}
 .kpis b{font-size:17pt;line-height:1.1}
 h2{font-weight:700;font-size:13pt;color:var(--roxo);line-height:1.25;margin-bottom:2.2mm}
 p+p{margin-top:2mm}
-.blk{margin-top:6mm;break-inside:avoid}
+.blk{margin-top:6mm}
+.ags>h2+.note{break-after:avoid}
 .blk:empty{display:none}
 .note{color:var(--cinza);font-size:8.8pt;margin-bottom:2.5mm}
 .alert,.tip{border-radius:3.5mm;padding:3.6mm 5mm 3.6mm 14mm;position:relative;margin-top:3mm;break-inside:avoid}
