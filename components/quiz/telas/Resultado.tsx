@@ -3,11 +3,10 @@ import type { Resp } from '@/lib/oab/fluxo'
 import { ofertaAnual } from '@/lib/oab/oferta'
 import type { Resultado as DadosResultado } from '../api'
 import { br } from '../copy'
-import { acertos, brc, diasAteProva, exameDe, itensDiagnostico, previaDe, TESTE } from '../resultado'
+import { acertos, brc, diasAteProva, exameDe, itensDiagnostico, TESTE } from '../resultado'
 import { track } from '../track'
 import { useDiagnostico } from '../useDiagnostico'
 import { useTrackAoMontar } from '../useTrackAoMontar'
-import { Previa } from './Previa'
 
 type Props = { inicial: DadosResultado; A: Resp; teste: string[]; token: string | null }
 
@@ -90,7 +89,6 @@ export function Resultado({ inicial, A, teste, token }: Props) {
         <ul>{itensDiagnostico(A, exame, hoje).map((i) => <li key={i}>{i}</li>)}</ul>
       </div>
       {anual?.posicao !== 'segunda' && cardAnual}
-      <Previa nome={nome} exame={e.id} p={previaDe({ exame, turma }, teste, hoje, rec.turmas)} qtdTeste={TESTE.length} />
       {anual?.posicao === 'segunda' && cardAnual}
       <div className="next">
         <p className="next-t">Dentro do PDF:</p>
