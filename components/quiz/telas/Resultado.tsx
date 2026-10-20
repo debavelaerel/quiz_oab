@@ -3,7 +3,7 @@ import type { Resp } from '@/lib/oab/fluxo'
 import { ofertaAnual } from '@/lib/oab/oferta'
 import type { Resultado as DadosResultado } from '../api'
 import { br } from '../copy'
-import { acertos, brc, diasAteProva, exameDe, itensDiagnostico, TESTE } from '../resultado'
+import { acertos, brc, diasAteProva, exameDe, TESTE } from '../resultado'
 import { track } from '../track'
 import { useDiagnostico } from '../useDiagnostico'
 import { useTrackAoMontar } from '../useTrackAoMontar'
@@ -48,6 +48,11 @@ export function Resultado({ inicial, A, teste, token }: Props) {
 
   const e = exameDe(exame)
   const hoje = res.hoje
+  const itensPdf = [
+    'A turma indicada pra você e a rotina de estudo',
+    'O que os seus erros dizem sobre o seu preparo',
+    'A correção comentada das 5 questões',
+  ]
   const anual = ofertaAnual(A as Record<string, string>, rec)
   const cardAnual = anual && (
     <div className="box"><h2>{TITULO_ANUAL[anual.motivo]}</h2><p>{TEXTO_ANUAL[anual.motivo]}</p></div>
@@ -85,15 +90,11 @@ export function Resultado({ inicial, A, teste, token }: Props) {
           <span>Nossa equipe vai te enviar o diagnóstico completo e o plano de ação.</span>
         </div>
       )}
-      <div className="box"><h2>O seu diagnóstico completo já está pronto</h2>
-        <ul>{itensDiagnostico(A, exame, hoje).map((i) => <li key={i}>{i}</li>)}</ul>
-      </div>
       {anual?.posicao !== 'segunda' && cardAnual}
       {anual?.posicao === 'segunda' && cardAnual}
       <div className="next">
         <p className="next-t">Dentro do PDF:</p>
-        <div className="next-i"><span className="num">1</span><p><b>O seu diagnóstico completo</b>, com a correção do teste.</p></div>
-        <div className="next-i"><span className="num">2</span><p><b>Um plano de ação pra você começar AGORA</b> a se preparar pra {e.nome}: por onde começar, em que ordem e como encaixar na sua semana.</p></div>
+        {itensPdf.map((t, n) => <div key={t} className="next-i"><span className="num">{n + 1}</span><p>{t}</p></div>)}
       </div>
       <button className="restart" onClick={() => location.reload()}>Refazer o quiz</button>
     </section>
