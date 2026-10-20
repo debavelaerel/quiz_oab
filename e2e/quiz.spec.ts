@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test'
 // Caminho feliz completo contra o stack local (Supabase + MinIO + serviço de
 // PDF + Mailpit + `next dev`): intro → nome → formado → nunca fez → demais perguntas
 // (primeira opção; nas de múltipla escolha, uma opção + Continuar) → parte 2 →
-// 5 questões do teste → dados → resultado (sem botões de WhatsApp/download, só o aviso).
+// 5 questões do teste → dados → resultado (botão de download do PDF, sem WhatsApp).
 // Usa ?hoje=2026-09-30: exige ALLOW_HOJE_OVERRIDE=1 no .env.local (só local/e2e,
 // NUNCA em produção — o .env.example traz a variável vazia).
 
@@ -25,7 +25,7 @@ async function responderPergunta(page: Page) {
 const NOME = process.env.E2E_NOME ?? 'TESTE'
 const NOME_RE = NOME.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', async ({ page }) => {
+test('caminho feliz: quiz → resultado com download do PDF', async ({ page }) => {
   await page.goto('/?hoje=2026-09-30')
   await page.getByRole('button', { name: 'Descobrir a minha OAB' }).click()
 
@@ -71,9 +71,14 @@ test('caminho feliz: quiz → resultado com aviso do WhatsApp (sem botões)', as
   await expect(page.locator('.big .num')).toHaveText(/^(48|49|50)$/)
   await expect(page.getByText(new RegExp(`^${NOME_RE}, a OAB da sua aprovação é a`))).toBeVisible()
 
-  // Sem botão de WhatsApp nem de download: só o aviso de que o time envia o resultado pelo WhatsApp.
-  await expect(page.getByText('Nossa equipe vai te enviar o seu resultado no WhatsApp')).toBeVisible()
-  await expect(page.locator('a.cta.wa')).toHaveCount(0)
-  await expect(page.getByRole('link', { name: /Baixar meu diagnóstico/ })).toHaveCount(0)
+  // Sem WhatsApp: o botão de download libera quando o PDF fica pronto e baixa um PDF de verdade.
+  const baixar = page.getByRole('link', { name: /Baixar meu diagnóstico/ })
+  await expect(baixar).toBeVisible({ timeout: 60_000 })
+  await expect(page.getByText('Seu diagnóstico completo está pronto')).toBeVisible()
+  const url = await baixar.getAttribute('href')
+  const r = await page.request.get(url!)
+  expect(r.status()).toBe(200)
+  expect(r.headers()['content-type']).toContain('application/pdf')
+  expect((await r.body()).subarray(0, 4).toString()).toBe('%PDF')
   await expect(page.locator('a[href*="wa.me"]')).toHaveCount(0)
 })

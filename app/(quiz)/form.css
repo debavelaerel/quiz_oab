@@ -21,8 +21,9 @@
 .qz .voltar:hover{background:var(--lil2)}
 .qz .voltar:focus-visible{outline:2px solid var(--roxo);outline-offset:2px}
 
-/* Tela final: aviso de que o time envia o resultado pelo WhatsApp (no lugar dos botões). */
+/* Tela final: aviso do diagnóstico (verde = PDF pronto; amarelo = gerando ou falha). */
 .qz .aviso{display:flex;flex-direction:column;gap:4px;margin-top:16px;padding:16px 18px;border-radius:16px;background:var(--yelt);border:1px solid #f1dc8b;text-align:center}
+.qz .aviso.ok{background:var(--okt);border-color:#b7e2cb}
 .qz .aviso b{font-size:15.5px;color:var(--deep);line-height:1.35}
 .qz .aviso span{font-size:13.5px;color:var(--cinza);line-height:1.45}
 

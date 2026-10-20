@@ -108,7 +108,7 @@ describe('títulos com o nome (v3)', () => {
     expect(tituloDe('nivel', {}, HOJE, '<b>x</b>')).toContain('<b>x</b>, com sinceridade')
   })
   it('título da tela de contato', () => {
-    expect(tituloContato('Maria')).toBe('Maria, deixe seu e-mail e WhatsApp pra receber o seu resultado')
-    expect(tituloContato('')).toBe('Deixe seu e-mail e WhatsApp pra receber o seu resultado')
+    expect(tituloContato('Maria')).toBe('Maria, deixe seu e-mail e WhatsApp pra liberar o seu resultado')
+    expect(tituloContato('')).toBe('Deixe seu e-mail e WhatsApp pra liberar o seu resultado')
   })
 })

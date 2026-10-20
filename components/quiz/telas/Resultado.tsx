@@ -4,10 +4,12 @@ import { ofertaAnual } from '@/lib/oab/oferta'
 import type { Resultado as DadosResultado } from '../api'
 import { br } from '../copy'
 import { acertos, brc, diasAteProva, exameDe, itensDiagnostico, previaDe, TESTE } from '../resultado'
+import { track } from '../track'
+import { useDiagnostico } from '../useDiagnostico'
 import { useTrackAoMontar } from '../useTrackAoMontar'
 import { Previa } from './Previa'
 
-type Props = { inicial: DadosResultado; A: Resp; teste: string[] }
+type Props = { inicial: DadosResultado; A: Resp; teste: string[]; token: string | null }
 
 // Texto provisório da anual: trocar quando o time do VDE definir a copy oficial.
 const TITULO_ANUAL = {
@@ -23,9 +25,10 @@ const TEXTO_ANUAL = {
 
 /**
  * resultado(): o que o /finish devolveu (o cliente não recalcula a recomendação). A tela não tem botão
- * de WhatsApp nem de download: o time do VDE envia o diagnóstico completo pelo WhatsApp do lead.
+ * de WhatsApp: o lead baixa o diagnóstico em PDF aqui mesmo (o botão espera a geração terminar).
  */
-export function Resultado({ inicial, A, teste }: Props) {
+export function Resultado({ inicial, A, teste, token }: Props) {
+  const diag = useDiagnostico(inicial.diagnostico, token)
   const res = inicial
   const rec = res.recomendacao
   const exame = 'exame' in rec ? rec.exame : ''
@@ -38,7 +41,7 @@ export function Resultado({ inicial, A, teste }: Props) {
     return (
       <section className="screen">
         <div className="res"><h2 className="q">Obrigada por responder, {nome}!</h2>
-          <p className="when">Nossa equipe vai te enviar uma orientação para a sua próxima prova no seu WhatsApp.</p></div>
+          <p className="when">Nossa equipe vai entrar em contato com uma orientação para a sua próxima prova.</p></div>
         <button className="restart" onClick={() => location.reload()}>Refazer o quiz</button>
       </section>
     )
@@ -58,10 +61,31 @@ export function Resultado({ inicial, A, teste }: Props) {
         <p className="when">1ª fase em <b>{br(e.fase1)}</b>, daqui a <b>{diasAteProva(exame, hoje)} dias</b>.</p>
         <div className="chips"><span className="chip">prova em {e.mes}</span><span className="chip p">2ª fase em {brc(e.fase2)}</span><span className="chip">teste: {acertos(teste)} de {TESTE.length}</span></div>
       </div>
-      <div className="aviso" role="status">
-        <b>Nossa equipe vai te enviar o seu resultado no WhatsApp</b>
-        <span>Fique de olho nas mensagens: o diagnóstico completo e o plano de ação chegam por lá.</span>
-      </div>
+      {diag.status === 'pronto' && diag.url ? (
+        <>
+          <div className="aviso ok" role="status">
+            <b>Seu diagnóstico completo está pronto</b>
+            <span>Baixe o PDF com o seu resultado, a correção do teste e o plano de ação pra começar agora.</span>
+          </div>
+          <a className="cta yel" href={diag.url} download onClick={() => track('quiz_download', { exame })}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12" /><path d="m7 11 5 5 5-5" /><path d="M5 21h14" /></svg>
+            Baixar meu diagnóstico (PDF)
+          </a>
+        </>
+      ) : diag.status === 'pendente' ? (
+        <>
+          <div className="aviso" role="status">
+            <b>Estamos montando o seu diagnóstico</b>
+            <span>Leva alguns segundos. O botão de download libera aqui mesmo, não feche esta tela.</span>
+          </div>
+          <button className="cta yel" type="button" disabled>Gerando seu PDF…</button>
+        </>
+      ) : (
+        <div className="aviso" role="status">
+          <b>Não conseguimos gerar o seu PDF agora</b>
+          <span>Nossa equipe vai te enviar o diagnóstico completo e o plano de ação.</span>
+        </div>
+      )}
       <div className="box"><h2>O seu diagnóstico completo já está pronto</h2>
         <ul>{itensDiagnostico(A, exame, hoje).map((i) => <li key={i}>{i}</li>)}</ul>
       </div>
@@ -69,8 +93,8 @@ export function Resultado({ inicial, A, teste }: Props) {
       <Previa nome={nome} exame={e.id} p={previaDe({ exame, turma }, teste, hoje, rec.turmas)} qtdTeste={TESTE.length} />
       {anual?.posicao === 'segunda' && cardAnual}
       <div className="next">
-        <p className="next-t">No WhatsApp, o time do VDE te entrega:</p>
-        <div className="next-i"><span className="num">1</span><p><b>O seu diagnóstico completo</b>, em PDF, com a correção do teste.</p></div>
+        <p className="next-t">Dentro do PDF:</p>
+        <div className="next-i"><span className="num">1</span><p><b>O seu diagnóstico completo</b>, com a correção do teste.</p></div>
         <div className="next-i"><span className="num">2</span><p><b>Um plano de ação pra você começar AGORA</b> a se preparar pra {e.nome}: por onde começar, em que ordem e como encaixar na sua semana.</p></div>
       </div>
       <button className="restart" onClick={() => location.reload()}>Refazer o quiz</button>

@@ -49,7 +49,7 @@ const COM_NOME: Partial<Record<Campo, string>> = {
 }
 
 export function tituloContato(nome: string): string {
-  return nome ? `${nome}, deixe seu e-mail e WhatsApp pra receber o seu resultado` : 'Deixe seu e-mail e WhatsApp pra receber o seu resultado'
+  return nome ? `${nome}, deixe seu e-mail e WhatsApp pra liberar o seu resultado` : 'Deixe seu e-mail e WhatsApp pra liberar o seu resultado'
 }
 
 export function tituloDe(k: Campo, A: Resp, hoje: string, nome = ''): string {

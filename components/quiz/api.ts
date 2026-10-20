@@ -23,10 +23,17 @@ export type Resultado = {
   diagnostico: { status: string | null; url: string | null }
 }
 
+async function get<T>(url: string): Promise<T> {
+  const r = await fetch(url, { cache: 'no-store' })
+  if (!r.ok) throw Object.assign(new Error(`HTTP ${r.status}`), { status: r.status }) as Erro
+  return r.json()
+}
+
 export const api = {
   start: (b: { session_token?: string; utm?: Utm; hoje_override?: string }, signal?: AbortSignal) =>
     post<RespostaStart>('/api/quiz/start', b, { signal }),
   answer: (b: { session_token: string; seq: number; respostas: Resp; teste: string[]; nome?: string }) =>
     post<{ aceito: boolean; status: string; etapa: string }>('/api/quiz/answer', b, { keepalive: true }),
   finish: (b: unknown) => post<Resultado>('/api/quiz/finish', b),
+  resultado: (token: string) => get<Resultado>(`/api/quiz/result?session_token=${encodeURIComponent(token)}`),
 }
